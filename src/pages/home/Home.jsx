@@ -1,6 +1,14 @@
-import { Slider } from "./components";
+import { Divider } from "@mui/material";
+import { Categories, Slider } from "./components";
 
 const Home = () => {
-  return <Slider />;
+  return (
+    <>
+      <Slider />
+      <Divider />
+      <Categories />
+      <Divider />
+    </>
+  );
 };
 export default Home;
