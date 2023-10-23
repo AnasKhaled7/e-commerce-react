@@ -1,13 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-
+import { Divider } from "@mui/material";
 import { UserContext } from "../context/UserProvider";
-import { Navbar, Footer, LoadingScreen } from "./";
+import { Navbar, Footer, Newsletter, ScrollToTop } from "./";
 
 const Layout = () => {
   const { setUserToken } = useContext(UserContext);
-
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -15,16 +13,15 @@ const Layout = () => {
     // eslint-disable-next-line
   }, []);
 
-  if (loading) {
-    return <LoadingScreen />;
-  } else {
-    return (
-      <>
-        <Navbar setLoading={setLoading} />
-        <Outlet />
-        <Footer />
-      </>
-    );
-  }
+  return (
+    <ScrollToTop>
+      <Navbar />
+      <Outlet />
+      <Divider />
+      <Newsletter />
+      <Divider />
+      <Footer />
+    </ScrollToTop>
+  );
 };
 export default Layout;

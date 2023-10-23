@@ -1,5 +1,5 @@
 import { Divider } from "@mui/material";
-import { Categories, Newsletter, Products, Slider } from "./components";
+import { Categories, Products, Slider } from "./components";
 
 const Home = () => {
   return (
@@ -9,9 +9,6 @@ const Home = () => {
       <Categories />
       <Divider />
       <Products />
-      <Divider />
-      <Newsletter />
-      <Divider />
     </>
   );
 };

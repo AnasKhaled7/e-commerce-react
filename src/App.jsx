@@ -5,7 +5,15 @@ import "@fontsource/roboto/700.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 import { Layout } from "./components";
-import { Cart, Home, Login, NotFound, Register, ResetPassword } from "./pages";
+import {
+  Cart,
+  Home,
+  Login,
+  NotFound,
+  Products,
+  Register,
+  ResetPassword,
+} from "./pages";
 import UserProvider from "./context/UserProvider";
 
 const router = createBrowserRouter([
@@ -14,6 +22,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
+      { path: "products", element: <Products /> },
       { path: "register", element: <Register /> },
       { path: "login", element: <Login /> },
       { path: "reset-password", element: <ResetPassword /> },
