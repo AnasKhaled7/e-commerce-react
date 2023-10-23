@@ -10,6 +10,7 @@ import {
   Home,
   Login,
   NotFound,
+  Product,
   Products,
   Register,
   ResetPassword,
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "products", element: <Products /> },
+      { path: "product", element: <Product /> },
       { path: "register", element: <Register /> },
       { path: "login", element: <Login /> },
       { path: "reset-password", element: <ResetPassword /> },

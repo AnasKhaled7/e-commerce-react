@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Box, Grid, Paper, Stack } from "@mui/material";
 import AddShoppingCartRoundedIcon from "@mui/icons-material/AddShoppingCartRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
@@ -63,6 +64,8 @@ const iconContainer = {
 };
 
 const Product = ({ item }) => {
+  const navigate = useNavigate();
+
   return (
     <Paper
       variant="outlined"
@@ -110,7 +113,7 @@ const Product = ({ item }) => {
         <Box sx={iconContainer}>
           <AddShoppingCartRoundedIcon />
         </Box>
-        <Box sx={iconContainer}>
+        <Box sx={iconContainer} onClick={() => navigate("/product")}>
           <SearchRoundedIcon />
         </Box>
         <Box sx={iconContainer}>

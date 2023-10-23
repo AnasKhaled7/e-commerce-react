@@ -8,22 +8,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { ProductsList } from "../components";
+import { ProductsList, SizeFilter } from "../components";
 import { useState } from "react";
 
 const Products = () => {
   const [color, setColor] = useState("");
-  const [size, setSize] = useState("");
   const [sort, setSort] = useState("");
 
   const handleColorChange = (event) => {
     setColor(event.target.value);
   };
-
-  const handleSizeChange = (event) => {
-    setSize(event.target.value);
-  };
-
   const handleSortChange = (event) => {
     setSort(event.target.value);
   };
@@ -75,26 +69,7 @@ const Products = () => {
           </Box>
 
           {/* filter by size */}
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="size">Size</InputLabel>
-              <Select
-                labelId="size"
-                id="size-menu"
-                name="size"
-                value={size}
-                label="Size"
-                onChange={handleSizeChange}
-              >
-                <MenuItem value="xs">XS</MenuItem>
-                <MenuItem value="s">S</MenuItem>
-                <MenuItem value="m">M</MenuItem>
-                <MenuItem value="l">L</MenuItem>
-                <MenuItem value="xl">XL</MenuItem>
-                <MenuItem value="xxl">XXL</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
+          <SizeFilter />
         </Stack>
 
         {/* sort */}
