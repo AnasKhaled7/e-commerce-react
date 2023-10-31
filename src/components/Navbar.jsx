@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { PropTypes } from "prop-types";
 import { useNavigate } from "react-router-dom";
 import {
@@ -22,11 +22,7 @@ import {
   styled,
   useScrollTrigger,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import MenuIcon from "@mui/icons-material/Menu";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-
-import { UserContext } from "../context/UserProvider";
+import { Search, Menu, ShoppingCartOutlined } from "@mui/icons-material";
 
 function HideOnScroll({ children, window }) {
   const trigger = useScrollTrigger({
@@ -47,7 +43,7 @@ HideOnScroll.propTypes = {
 const drawerWidth = 240;
 
 // search bar
-const Search = styled("div")(({ theme }) => ({
+const SearchBox = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -90,7 +86,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = (props) => {
-  const { userToken } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -112,26 +107,11 @@ const Navbar = (props) => {
       </Link>
       <Divider />
       <List>
-        {userToken ? (
-          <ListItem disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary="Logout" />
-            </ListItemButton>
-          </ListItem>
-        ) : (
-          <>
-            <ListItem disablePadding onClick={() => navigate("/register")}>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary="Register" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding onClick={() => navigate("/login")}>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary="Login" />
-              </ListItemButton>
-            </ListItem>
-          </>
-        )}
+        <ListItem disablePadding onClick={() => navigate("/login")}>
+          <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemText primary="Sign In" />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
@@ -157,43 +137,34 @@ const Navbar = (props) => {
             </Link>
 
             {/* center */}
-            <Search>
+            <SearchBox>
               <SearchIconWrapper>
-                <SearchIcon />
+                <Search />
               </SearchIconWrapper>
               <StyledInputBase
                 id="search"
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
               />
-            </Search>
+            </SearchBox>
 
             {/* right */}
-            <Stack direction="row" alignItems="center">
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                {userToken ? (
-                  <Button color="inherit">Logout</Button>
-                ) : (
-                  <>
-                    <Button
-                      color="inherit"
-                      onClick={() => navigate("/register")}
-                    >
-                      Register
-                    </Button>
-                    <Button color="inherit" onClick={() => navigate("/login")}>
-                      Login
-                    </Button>
-                  </>
-                )}
-              </Box>
+            <Stack gap={0.5} direction="row" alignItems="center">
+              <Button
+                color="inherit"
+                sx={{ display: { xs: "none", sm: "block" } }}
+                onClick={() => navigate("/login")}
+              >
+                Sign In
+              </Button>
+
               <IconButton
                 color="inherit"
                 aria-label="go to cart"
                 onClick={() => navigate("/cart")}
               >
                 <Badge badgeContent={5} color="success">
-                  <ShoppingCartOutlinedIcon />
+                  <ShoppingCartOutlined />
                 </Badge>
               </IconButton>
 
@@ -203,7 +174,7 @@ const Navbar = (props) => {
                 onClick={handleDrawerToggle}
                 sx={{ display: { sm: "none" } }}
               >
-                <MenuIcon />
+                <Menu />
               </IconButton>
             </Stack>
           </Toolbar>

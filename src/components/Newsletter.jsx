@@ -1,4 +1,11 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  InputBase,
+  Stack,
+  Typography,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
 const Newsletter = () => {
@@ -19,7 +26,7 @@ const Newsletter = () => {
         </Typography>
 
         {/* description */}
-        <Typography component="p" variant="h6" fontWeight={300}>
+        <Typography variant="h6" fontWeight={300} textAlign="center">
           Get timely updates from your favorite products.
         </Typography>
 
@@ -27,23 +34,22 @@ const Newsletter = () => {
         <Stack
           component="form"
           direction="row"
-          width="50%"
-          minWidth={200}
+          width="100%"
+          maxWidth="600px"
           height={50}
         >
           {/* input */}
-          <input
+          <InputBase
             type="email"
             name="email"
             autoComplete="email"
-            placeholder="Your email"
-            style={{
-              border: "none",
-              borderRadius: "4px 0 0 4px",
+            placeholder="Enter your email"
+            inputProps={{ "aria-label": "search" }}
+            sx={{
               flex: 8,
+              backgroundColor: "#fff",
               padding: "0 10px",
-              outline: "none",
-              fontSize: 15,
+              borderRadius: "4px 0 0 4px",
             }}
           />
           {/* button */}

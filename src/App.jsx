@@ -15,7 +15,6 @@ import {
   Register,
   ResetPassword,
 } from "./pages";
-import UserProvider from "./context/UserProvider";
 
 const router = createBrowserRouter([
   {
@@ -36,10 +35,9 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <UserProvider>
-      <CssBaseline />
+    <CssBaseline>
       <RouterProvider router={router} />
-    </UserProvider>
+    </CssBaseline>
   );
 };
 
