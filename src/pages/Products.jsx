@@ -1,27 +1,7 @@
-import {
-  Box,
-  Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { ProductsList, SizeFilter } from "../components";
-import { useState } from "react";
+import { Container, Typography } from "@mui/material";
+import { ProductsList } from "../components";
 
 const Products = () => {
-  const [color, setColor] = useState("");
-  const [sort, setSort] = useState("");
-
-  const handleColorChange = (event) => {
-    setColor(event.target.value);
-  };
-  const handleSortChange = (event) => {
-    setSort(event.target.value);
-  };
-
   return (
     <Container
       maxWidth="xl"
@@ -36,61 +16,6 @@ const Products = () => {
       <Typography component="h2" variant="h3">
         Our Products
       </Typography>
-
-      {/* filter container */}
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        gap={2}
-        flexWrap="wrap"
-      >
-        <Stack direction="row" alignItems="center" gap={2}>
-          {/* filter by color */}
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="color">Color</InputLabel>
-              <Select
-                labelId="color"
-                id="color-menu"
-                name="color"
-                value={color}
-                label="Color"
-                onChange={handleColorChange}
-              >
-                <MenuItem value="white">White</MenuItem>
-                <MenuItem value="black">Black</MenuItem>
-                <MenuItem value="red">Red</MenuItem>
-                <MenuItem value="blue">Blue</MenuItem>
-                <MenuItem value="yellow">Yellow</MenuItem>
-                <MenuItem value="green">Green</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-
-          {/* filter by size */}
-          <SizeFilter />
-        </Stack>
-
-        {/* sort */}
-        <Box sx={{ minWidth: 200 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel id="sort">Sort</InputLabel>
-            <Select
-              labelId="sort"
-              id="sort-menu"
-              name="sort"
-              value={sort}
-              label="Sort"
-              onChange={handleSortChange}
-            >
-              <MenuItem value="xs">Newest</MenuItem>
-              <MenuItem value="s">Price (Low to High)</MenuItem>
-              <MenuItem value="m">Price (High to Low)</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </Stack>
 
       {/* products */}
       <ProductsList />

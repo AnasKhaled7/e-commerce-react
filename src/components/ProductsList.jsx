@@ -1,135 +1,61 @@
 import { useNavigate } from "react-router-dom";
-import { Box, Grid, Paper, Stack } from "@mui/material";
-import AddShoppingCartRoundedIcon from "@mui/icons-material/AddShoppingCartRounded";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
-import product1 from "../assets/product-1.png";
-import product2 from "../assets/product-2.png";
-import product3 from "../assets/product-3.png";
-import product4 from "../assets/product-4.png";
-import product5 from "../assets/product-5.png";
-import product6 from "../assets/product-6.png";
-import product7 from "../assets/product-7.png";
-import product8 from "../assets/product-8.png";
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Grid,
+  Rating,
+  Stack,
+  Typography,
+} from "@mui/material";
 
-const products = [
-  {
-    img: product1,
-    title: "Nike Air Max 270",
-  },
-  {
-    img: product2,
-    title: "Nike Air Force 1 '07",
-  },
-  {
-    img: product3,
-    title: "Nike Air Max 97",
-  },
-  {
-    img: product4,
-    title: "Nike Air Max 270 React",
-  },
-  {
-    img: product5,
-    title: "Nike Air Max 270 React",
-  },
-  {
-    img: product6,
-    title: "Nike Air Max 270 React",
-  },
-  {
-    img: product7,
-    title: "Nike Air Max 270 React",
-  },
-  {
-    img: product8,
-    title: "Nike Air Max 270 React",
-  },
-];
+import products from "./../assets/products";
 
-const iconContainer = {
-  width: 40,
-  height: 40,
-  borderRadius: "50%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  bgcolor: "#fff",
-  cursor: "pointer",
-  transition: "all 0.4s ease",
-  "&:hover": {
-    bgcolor: "#e9f5f5",
-    transform: "scale(1.1)",
-  },
-};
-
-const Product = ({ item }) => {
+const Product = ({ product }) => {
   const navigate = useNavigate();
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: 300,
-        bgcolor: "#f5fbfd",
-        position: "relative",
-      }}
-    >
-      {/* circle */}
-      <Box
-        width={200}
-        height={200}
-        borderRadius="50%"
-        bgcolor="#fff"
-        position="absolute"
-      />
+    <Card>
+      <CardActionArea onClick={() => navigate(`/product/${product._id}`)}>
+        <CardMedia
+          component="img"
+          height="200"
+          image={product.img}
+          alt={product.name}
+          sx={{ objectFit: "contain" }}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h6" component="div" noWrap>
+            {product.name}
+          </Typography>
 
-      <img
-        src={item.img}
-        alt={item.title}
-        style={{ height: "75%", zIndex: 2 }}
-      />
+          <Stack direction="row" alignItems="center" my={1} gap={1}>
+            <Rating
+              name="rating"
+              value={product.rating}
+              precision={0.5}
+              readOnly
+            />
 
-      <Stack
-        direction="row"
-        position="absolute"
-        zIndex={3}
-        bgcolor="rgba(0,0,0,0.2)"
-        alignItems="center"
-        justifyContent="center"
-        gap={2}
-        sx={{
-          inset: 0,
-          opacity: 0,
-          transition: "all 0.4s ease",
-          "&:hover": {
-            opacity: 1,
-          },
-        }}
-      >
-        <Box sx={iconContainer}>
-          <AddShoppingCartRoundedIcon />
-        </Box>
-        <Box sx={iconContainer} onClick={() => navigate("/product")}>
-          <SearchRoundedIcon />
-        </Box>
-        <Box sx={iconContainer}>
-          <FavoriteBorderRoundedIcon />
-        </Box>
-      </Stack>
-    </Paper>
+            <Typography variant="caption" color="text.secondary">
+              ({product.numReviews} reviews)
+            </Typography>
+          </Stack>
+
+          <Typography>EGP {product.price}</Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 };
 
 const ProductsList = () => {
   return (
     <Grid container spacing={2}>
-      {products.map((item, index) => (
+      {products.map((product, index) => (
         <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-          <Product item={item} />
+          <Product product={product} />
         </Grid>
       ))}
     </Grid>

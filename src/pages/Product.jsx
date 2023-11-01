@@ -1,113 +1,96 @@
+import { useParams } from "react-router-dom";
 import {
   Box,
   Button,
   Container,
-  IconButton,
+  Divider,
+  Rating,
   Stack,
   Typography,
 } from "@mui/material";
-import AddShoppingCartRoundedIcon from "@mui/icons-material/AddShoppingCartRounded";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
-import product from "../assets/product-5.png";
-import { SizeFilter } from "../components";
+import { AddShoppingCartRounded } from "@mui/icons-material";
+
+import products from "../assets/products";
 
 const Product = () => {
+  const { productId } = useParams();
+  const product = products.find((product) => product._id === productId);
+
   return (
     <Container
       maxWidth="xl"
       sx={{
-        my: 4,
+        py: 4,
         display: "flex",
-        alignItems: "center",
-        flexDirection: { xs: "column", md: "row" },
+        alignItems: { sm: "center" },
+        flexDirection: { xs: "column", sm: "row" },
         gap: 4,
+        minHeight: "calc(100vh - 64px)",
       }}
     >
       {/* image container */}
       <Box flex={1}>
         <img
-          src={product}
-          alt="product"
+          src={product.img}
+          alt={product.name}
           style={{
             width: "100%",
             height: "100%",
-            maxHeight: "450px",
+            maxHeight: "400px",
             objectFit: "contain",
           }}
         />
       </Box>
 
       {/* info container */}
-      <Stack flex={1} gap={4}>
-        {/* title */}
-        <Typography variant="h4">Product Title</Typography>
+      <Stack flex={1} gap={2}>
+        {/* name */}
+        <Typography variant="h4">{product.name}</Typography>
+
+        <Divider />
 
         {/* description */}
-        <Typography>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-          laboriosam. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Quisquam, laboriosam. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Quisquam, laboriosam. Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Quisquam, laboriosam. Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Quisquam, laboriosam. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-          laboriosam. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Quisquam, laboriosam. Lorem ipsum dolor sit amet consectetur
-          adipisicing elit. Quisquam, laboriosam. Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. Quisquam, laboriosam. Lorem ipsum dolor
-          sit amet consectetur adipisicing elit. Quisquam, laboriosam.
-        </Typography>
+        <Typography variant="body2">{product.description}</Typography>
+
+        <Divider />
+
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Rating
+            name="rating"
+            value={product.rating}
+            precision={0.5}
+            readOnly
+          />
+
+          <Typography variant="caption" color="text.secondary">
+            ({product.numReviews} reviews)
+          </Typography>
+        </Stack>
+
+        <Divider />
 
         {/* price */}
-        <Typography variant="h5">Price: 500 LE</Typography>
+        <Typography variant="h6">EGP {product.price}</Typography>
 
-        {/* colors */}
-        <Stack direction="row" alignItems="center" gap={2}>
-          <Typography variant="h6">Available Colors:</Typography>
-          <Stack direction="row" gap={1}>
-            {["red", "blue", "green", "yellow", "black", "white"].map(
-              (color) => (
-                <Box
-                  key={color}
-                  sx={{
-                    width: 25,
-                    height: 25,
-                    border: "1px solid #ccc",
-                    borderRadius: "50%",
-                    bgcolor: color,
-                    cursor: "pointer",
-                  }}
-                />
-              )
-            )}
-          </Stack>
-        </Stack>
+        <Divider />
 
-        {/* filter by size */}
-        <SizeFilter />
+        {/* status */}
+        <Typography
+          variant="body1"
+          color={product.countInStock > 0 ? "green" : "error"}
+        >
+          {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
+        </Typography>
 
-        {/* add count */}
-        <Stack direction="row" alignItems="center" gap={2}>
-          <Typography variant="h6">Count:</Typography>
-          <Stack direction="row" alignItems="center" gap={1}>
-            <IconButton size="small">
-              <RemoveRoundedIcon />
-            </IconButton>
-            <Typography component="p" variant="h5" fontWeight={300}>
-              1
-            </Typography>
-            <IconButton size="small">
-              <AddRoundedIcon />
-            </IconButton>
-          </Stack>
-        </Stack>
+        <Divider />
 
         {/* add to cart */}
         <Button
           variant="contained"
           size="large"
-          endIcon={<AddShoppingCartRoundedIcon />}
+          endIcon={<AddShoppingCartRounded />}
+          disabled={product.countInStock === 0}
+          sx={{ alignSelf: "flex-start" }}
         >
           Add to Cart
         </Button>
