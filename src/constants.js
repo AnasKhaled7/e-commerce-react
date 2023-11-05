@@ -1,5 +1,4 @@
-export const BASE_URL =
-  process.env.REACT_APP_ENV === "development" ? "http://localhost:5000" : "";
+export const BASE_URL = "";
 
 export const API_URL = `${BASE_URL}/api/v1`;
 
