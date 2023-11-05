@@ -10,92 +10,105 @@ import {
 } from "@mui/material";
 import { AddShoppingCartRounded } from "@mui/icons-material";
 
-import products from "../assets/products";
+import { useGetProductQuery } from "../slices/productsApiSlice";
+import { LoadingScreen, Message } from "../components";
 
 const Product = () => {
   const { productId } = useParams();
-  const product = products.find((product) => product._id === productId);
+  const { data, isLoading, error } = useGetProductQuery(productId);
 
   return (
-    <Container
-      maxWidth="xl"
-      sx={{
-        py: 4,
-        display: "flex",
-        alignItems: { sm: "center" },
-        flexDirection: { xs: "column", sm: "row" },
-        gap: 4,
-        minHeight: "calc(100vh - 64px)",
-      }}
-    >
-      {/* image container */}
-      <Box flex={1}>
-        <img
-          src={product.img}
-          alt={product.name}
-          style={{
-            width: "100%",
-            height: "100%",
-            maxHeight: "400px",
-            objectFit: "contain",
+    <>
+      {isLoading ? (
+        <LoadingScreen />
+      ) : error ? (
+        <Message severity="error">
+          {error?.data?.message || error.error}
+        </Message>
+      ) : (
+        <Container
+          maxWidth="xl"
+          sx={{
+            py: 4,
+            display: "flex",
+            alignItems: { sm: "center" },
+            flexDirection: { xs: "column", sm: "row" },
+            gap: 4,
+            minHeight: "calc(100vh - 64px)",
           }}
-        />
-      </Box>
-
-      {/* info container */}
-      <Stack flex={1} gap={2}>
-        {/* name */}
-        <Typography variant="h4">{product.name}</Typography>
-
-        <Divider />
-
-        {/* description */}
-        <Typography variant="body2">{product.description}</Typography>
-
-        <Divider />
-
-        <Stack direction="row" alignItems="center" gap={1}>
-          <Rating
-            name="rating"
-            value={product.rating}
-            precision={0.5}
-            readOnly
-          />
-
-          <Typography variant="caption" color="text.secondary">
-            ({product.numReviews} reviews)
-          </Typography>
-        </Stack>
-
-        <Divider />
-
-        {/* price */}
-        <Typography variant="h6">EGP {product.price}</Typography>
-
-        <Divider />
-
-        {/* status */}
-        <Typography
-          variant="body1"
-          color={product.countInStock > 0 ? "green" : "error"}
         >
-          {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
-        </Typography>
+          {/* image container */}
+          <Box flex={1}>
+            <img
+              src={data?.product?.defaultImage.url}
+              alt={data?.product?.name}
+              style={{
+                width: "100%",
+                height: "100%",
+                maxHeight: "400px",
+                objectFit: "contain",
+              }}
+            />
+          </Box>
 
-        <Divider />
+          {/* info container */}
+          <Stack flex={1} gap={2}>
+            {/* name */}
+            <Typography variant="h4">{data?.product?.name}</Typography>
 
-        {/* add to cart */}
-        <Button
-          variant="contained"
-          size="large"
-          endIcon={<AddShoppingCartRounded />}
-          disabled={product.countInStock === 0}
-          sx={{ alignSelf: "flex-start" }}
-        >
-          Add to Cart
-        </Button>
-      </Stack>
-    </Container>
+            <Divider />
+
+            {/* description */}
+            <Typography variant="body2">
+              {data?.product?.description}
+            </Typography>
+
+            <Divider />
+
+            <Stack direction="row" alignItems="center" gap={1}>
+              <Rating
+                name="rating"
+                value={data?.product?.rating}
+                precision={0.5}
+                readOnly
+              />
+
+              <Typography variant="caption" color="text.secondary">
+                ({data?.product?.numReviews} reviews)
+              </Typography>
+            </Stack>
+
+            <Divider />
+
+            {/* price */}
+            <Typography variant="h6">EGP {data?.product?.price}</Typography>
+
+            <Divider />
+
+            {/* status */}
+            <Typography
+              variant="body1"
+              color={data?.product?.countInStock > 0 ? "green" : "error"}
+            >
+              {data?.product?.countInStock > 0 ? "In Stock" : "Out of Stock"}
+            </Typography>
+
+            <Divider />
+
+            {/* add to cart */}
+            <Button
+              variant="contained"
+              size="large"
+              endIcon={<AddShoppingCartRounded />}
+              disabled={data?.product?.countInStock === 0}
+              sx={{ alignSelf: "flex-start" }}
+            >
+              Add to Cart
+            </Button>
+          </Stack>
+        </Container>
+      )}
+    </>
   );
 };
 export default Product;
