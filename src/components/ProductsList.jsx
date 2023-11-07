@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useGetProductsQuery } from "../slices/productsApiSlice";
+import { useGetProductsQuery } from "../slices/products.api.slice";
 import { Message } from "./";
 
 const Product = ({ product }) => {
