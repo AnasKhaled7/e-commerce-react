@@ -1,12 +1,13 @@
-import { Alert, Container } from "@mui/material";
+import Alert from "@mui/material/Alert";
 
 const Message = ({ severity, children }) => {
   return (
-    <Container maxWidth="xl" sx={{ my: 2 }}>
-      <Alert variant="filled" severity={severity}>
-        {children}
-      </Alert>
-    </Container>
+    <Alert
+      severity={severity}
+      sx={{ width: "100%", maxWidth: "600px", mx: "auto", my: 2 }}
+    >
+      {children}
+    </Alert>
   );
 };
 
