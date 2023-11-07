@@ -19,7 +19,7 @@ const Product = ({ product }) => {
 
   return (
     <Card>
-      <CardActionArea onClick={() => navigate(`/product/${product?._id}`)}>
+      <CardActionArea onClick={() => navigate(`/products/${product?._id}`)}>
         <CardMedia
           component="img"
           height="200"

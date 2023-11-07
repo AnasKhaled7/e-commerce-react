@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PropTypes } from "prop-types";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -86,6 +87,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = (props) => {
+  const { cartItems } = useSelector((state) => state.cart);
   const navigate = useNavigate();
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -163,7 +165,13 @@ const Navbar = (props) => {
                 aria-label="go to cart"
                 onClick={() => navigate("/cart")}
               >
-                <Badge badgeContent={5} color="success">
+                <Badge
+                  badgeContent={cartItems.reduce(
+                    (acc, currentValue) => acc + currentValue.qty,
+                    0
+                  )}
+                  color="success"
+                >
                   <ShoppingCartOutlined />
                 </Badge>
               </IconButton>

@@ -10,6 +10,7 @@ const Products = () => {
         display: "flex",
         flexDirection: "column",
         gap: 4,
+        minHeight: "80vh",
       }}
     >
       {/* title */}

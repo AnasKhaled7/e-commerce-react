@@ -1,20 +1,49 @@
-import React from "react";
+import { Fragment } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
   Container,
   Divider,
+  FormControl,
   IconButton,
+  InputLabel,
+  Link,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   Typography,
 } from "@mui/material";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
-import ShoppingCartCheckoutRoundedIcon from "@mui/icons-material/ShoppingCartCheckoutRounded";
-import product from "../assets/product-5.png";
+import {
+  DeleteOutlineRounded,
+  ShoppingCartCheckoutRounded,
+} from "@mui/icons-material";
+
+import { Message } from "../components";
+import { addToCart, removeFromCart } from "../slices/cart.slice";
 
 const Cart = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { cartItems, itemsPrice, taxPrice, totalPrice } = useSelector(
+    (state) => state.cart
+  );
+
+  const addToCartHandler = (product, qty) => {
+    dispatch(addToCart({ ...product, qty }));
+  };
+
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
+
+  const chechotHandler = () => {
+    navigate("/login?redirect=/shipping");
+  };
+
   return (
     <Container
       maxWidth="xl"
@@ -29,149 +58,178 @@ const Cart = () => {
 
       <Divider />
 
-      <Stack direction={{ xs: "column", md: "row" }} gap={4}>
-        {/* info */}
-        <Stack flex={2} gap={2}>
-          {/* product */}
-          {[1, 2, 3].map((item) => (
-            <React.Fragment key={item}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                gap={2}
-              >
-                {/* product details */}
+      {cartItems.length === 0 ? (
+        <Stack direction="column" alignItems="center" gap={2} sx={{ flex: 1 }}>
+          <Message severity="info">
+            Your cart is empty{" "}
+            <Link component={NavLink} to="/products" color="inherit">
+              view products
+            </Link>
+          </Message>
+        </Stack>
+      ) : (
+        <Stack direction={{ xs: "column", md: "row" }} gap={4}>
+          {/* info */}
+          <Stack flex={2} gap={1}>
+            {/* product */}
+            {cartItems.map((item) => (
+              <Fragment key={item._id}>
                 <Stack
                   direction="row"
                   alignItems="center"
+                  justifyContent="space-between"
                   gap={2}
-                  flexWrap="wrap"
                 >
-                  <img
-                    src={product}
-                    alt="product"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "contain",
-                    }}
-                  />
+                  {/* product details */}
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    gap={2}
+                    flexWrap="wrap"
+                  >
+                    <img
+                      src={item.defaultImage.url}
+                      alt={item.name}
+                      style={{
+                        width: "180px",
+                        height: "180px",
+                        objectFit: "contain",
+                      }}
+                    />
 
-                  {/* details */}
-                  <Stack gap={0.5}>
-                    <Typography
-                      variant="h6"
-                      fontWeight={400}
-                      textTransform="capitalize"
-                    >
-                      product name
-                    </Typography>
-                    <Typography variant="h6">EGP 500.00</Typography>
-                    {/* color */}
-                    <Stack direction="row" alignItems="center" gap={0.5}>
-                      <Typography variant="caption">
-                        <b>Color:</b>
-                      </Typography>
-                      <Box
-                        sx={{
-                          width: "18px",
-                          height: "18px",
-                          border: "1px solid #ccc",
-                          borderRadius: "50%",
-                          bgcolor: "black",
-                        }}
-                      />
+                    {/* details */}
+                    <Stack gap={2}>
+                      <Link
+                        component={NavLink}
+                        to={`/products/${item._id}`}
+                        color="inherit"
+                        fontSize={18}
+                        underline="none"
+                      >
+                        {item.name}
+                      </Link>
+
+                      <Typography fontWeight={700}>EGP {item.price}</Typography>
+
+                      {/* product amount */}
+                      <Stack direction="row" alignItems="center" gap={2}>
+                        <Box sx={{ minWidth: 80 }}>
+                          <FormControl fullWidth size="small">
+                            <InputLabel id="select-quantity">
+                              Quantity
+                            </InputLabel>
+                            <Select
+                              labelId="select-quantity"
+                              id="quantity"
+                              value={item.qty}
+                              label="Quantity"
+                              onChange={(e) =>
+                                addToCartHandler(item, Number(e.target.value))
+                              }
+                            >
+                              {[...Array(item.countInStock).keys()].map(
+                                (index) => (
+                                  <MenuItem key={index + 1} value={index + 1}>
+                                    {index + 1}
+                                  </MenuItem>
+                                )
+                              )}
+                            </Select>
+                          </FormControl>
+                        </Box>
+
+                        <Divider orientation="vertical" flexItem />
+
+                        <IconButton
+                          color="error"
+                          onClick={() => removeFromCartHandler(item._id)}
+                        >
+                          <DeleteOutlineRounded />
+                        </IconButton>
+                      </Stack>
                     </Stack>
-
-                    <Typography variant="caption">
-                      <b>Size:</b> L
-                    </Typography>
                   </Stack>
                 </Stack>
 
-                {/* product amount */}
-                <Stack direction="row" alignItems="center" gap={1}>
-                  <IconButton size="small">
-                    <RemoveRoundedIcon />
-                  </IconButton>
-                  <Typography component="p" variant="h4" fontWeight={300}>
-                    1
-                  </Typography>
-                  <IconButton size="small">
-                    <AddRoundedIcon />
-                  </IconButton>
-                </Stack>
-              </Stack>
+                <Divider />
+              </Fragment>
+            ))}
+          </Stack>
 
-              <Divider />
-            </React.Fragment>
-          ))}
+          {/* summary */}
+          <Paper
+            variant="outlined"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              p: 2,
+              flex: 1,
+              height: "fit-content",
+            }}
+          >
+            <Typography textAlign="center" variant="h6">
+              Order Summary (
+              {cartItems.reduce((acc, item) => acc + item.qty, 0)} items)
+            </Typography>
+
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography>Subtotal</Typography>
+              <Typography>EGP {itemsPrice}</Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography>Shipping</Typography>
+              <Typography>EGP 0</Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography>Discount</Typography>
+              <Typography>EGP 0</Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography>Taxes</Typography>
+              <Typography>EGP {taxPrice}</Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography variant="h6">Total</Typography>
+              <Typography variant="h6">EGP {totalPrice}</Typography>
+            </Stack>
+
+            <Button
+              variant="contained"
+              size="large"
+              endIcon={<ShoppingCartCheckoutRounded />}
+              disabled={cartItems.length === 0}
+              onClick={chechotHandler}
+            >
+              Checkout Now
+            </Button>
+
+            <Button variant="outlined" size="large">
+              Continue Shopping
+            </Button>
+          </Paper>
         </Stack>
-
-        {/* summary */}
-        <Paper
-          variant="outlined"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            p: 2,
-            flex: 1,
-            // width: "100%",
-            height: "fit-content",
-          }}
-        >
-          <Typography textAlign="center" variant="h4">
-            Order Summary
-          </Typography>
-
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography>Subtotal</Typography>
-            <Typography>EGP 1500.00</Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography>Shipping</Typography>
-            <Typography>EGP 50.00</Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography>Discount</Typography>
-            <Typography>EGP -200.00</Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography variant="h6">Total</Typography>
-            <Typography variant="h6">EGP 1350.00</Typography>
-          </Stack>
-
-          <Button
-            variant="contained"
-            size="large"
-            endIcon={<ShoppingCartCheckoutRoundedIcon />}
-          >
-            Checkout Now
-          </Button>
-
-          <Button variant="outlined" size="large">
-            Continue Shopping
-          </Button>
-        </Paper>
-      </Stack>
+      )}
     </Container>
   );
 };
