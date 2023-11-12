@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   Button,
-  Container,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -14,6 +15,7 @@ import {
   InputLabel,
   Link,
   OutlinedInput,
+  Paper,
   Radio,
   RadioGroup,
   Stack,
@@ -22,8 +24,27 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
+import { FormSection } from "../components";
+import { useRegisterMutation } from "../slices/users.api.slice";
+import { setCredentials } from "../slices/auth.slice";
+import { useSnackbar } from "../hooks/useSnackbar";
+
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [register] = useRegisterMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [showPassword, setShowPassword] = useState(false);
+  const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
+
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const redirect = searchParams.get("redirect") || "/";
+
+  useEffect(() => {
+    if (userInfo) navigate(redirect);
+  }, [userInfo, redirect, navigate]);
 
   // formik validation schema
   const validationSchema = Yup.object({
@@ -50,7 +71,16 @@ const Register = () => {
   });
 
   // formik submit handler
-  const onSubmit = (values) => console.log(values);
+  const onSubmit = async (values) => {
+    hideSnackbar();
+    try {
+      const res = await register(values).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (error) {
+      showSnackbar(error?.data?.message || error.error, "error");
+    }
+  };
 
   // formik hook for form handling and validation schema and submit handler as props to the hook function
   const formik = useFormik({
@@ -74,28 +104,29 @@ const Register = () => {
   };
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{
-        my: 4,
-        display: "flex",
-        flexDirection: "column",
-        gap: 4,
-      }}
-    >
-      {/* heading */}
-      <Typography variant="h4" component="h2" textAlign="center">
-        Create an account to continue shopping with us 🛒
-      </Typography>
-
+    <FormSection>
       {/* form */}
-      <Stack component="form" onSubmit={formik.handleSubmit} gap={2}>
+      <Paper
+        component="form"
+        onSubmit={formik.handleSubmit}
+        sx={{
+          p: { xs: 2, sm: 4 },
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        {/* heading */}
+        <Typography variant="h4" component="h2" textAlign="center" mb={4}>
+          Create an account to continue shopping with us 🛒
+        </Typography>
+
         {/* name fields */}
         <Stack direction="row" gap={2}>
           <TextField
             fullWidth
             required
-            id="firstName"
+            id="register-firstName"
             name="firstName"
             label="First Name"
             value={formik.values.firstName}
@@ -108,7 +139,7 @@ const Register = () => {
           <TextField
             fullWidth
             required
-            id="lastName"
+            id="register-lastName"
             name="lastName"
             label="Last Name"
             value={formik.values.lastName}
@@ -123,7 +154,7 @@ const Register = () => {
         <TextField
           fullWidth
           required
-          id="email"
+          id="register-email"
           name="email"
           label="Email"
           value={formik.values.email}
@@ -140,10 +171,10 @@ const Register = () => {
             fullWidth
             error={formik.touched.password && Boolean(formik.errors.password)}
           >
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="register-password">Password</InputLabel>
             <OutlinedInput
               required
-              id="password"
+              id="register-password"
               name="password"
               label="Password"
               type={showPassword ? "text" : "password"}
@@ -176,10 +207,12 @@ const Register = () => {
               Boolean(formik.errors.confirmPassword)
             }
           >
-            <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
+            <InputLabel htmlFor="register-confirmPassword">
+              Confirm Password
+            </InputLabel>
             <OutlinedInput
               required
-              id="confirmPassword"
+              id="register-confirmPassword"
               name="confirmPassword"
               label="Confirm Password"
               type={showPassword ? "text" : "password"}
@@ -210,7 +243,7 @@ const Register = () => {
         <TextField
           fullWidth
           required
-          id="phone"
+          id="register-phone"
           name="phone"
           label="Phone"
           type="tel"
@@ -226,7 +259,7 @@ const Register = () => {
         <FormControl
           error={formik.touched.gender && Boolean(formik.errors.gender)}
         >
-          <FormLabel required id="gender">
+          <FormLabel required id="register-gender">
             Gender
           </FormLabel>
           <RadioGroup
@@ -238,12 +271,26 @@ const Register = () => {
           >
             <FormControlLabel
               value="m"
-              control={<Radio size="small" />}
+              control={
+                <Radio
+                  size="small"
+                  inputProps={{
+                    "aria-label": "Male",
+                  }}
+                />
+              }
               label="Male"
             />
             <FormControlLabel
               value="f"
-              control={<Radio size="small" />}
+              control={
+                <Radio
+                  size="small"
+                  inputProps={{
+                    "aria-label": "Female",
+                  }}
+                />
+              }
               label="Female"
             />
           </RadioGroup>
@@ -260,18 +307,28 @@ const Register = () => {
           size="large"
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
         >
-          {formik.isSubmitting ? "Submitting..." : "Submit"}
+          {formik.isSubmitting ? (
+            <CircularProgress color="inherit" size="1.6rem" />
+          ) : (
+            "Submit"
+          )}
         </Button>
 
         {/* login link */}
         <Typography variant="body2" textAlign="center" mt={2}>
           Already have an account?{" "}
-          <Link component={NavLink} to="/login" underline="hover">
+          <Link
+            component={NavLink}
+            to={redirect ? `/login?redirect=${redirect}` : "/login"}
+            underline="hover"
+          >
             Login
           </Link>
         </Typography>
-      </Stack>
-    </Container>
+      </Paper>
+
+      <SnackbarComponent />
+    </FormSection>
   );
 };
 export default Register;

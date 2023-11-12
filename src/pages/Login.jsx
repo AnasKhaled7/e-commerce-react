@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   Button,
-  Container,
+  CircularProgress,
   FormControl,
   FormHelperText,
   IconButton,
@@ -12,14 +13,33 @@ import {
   InputLabel,
   Link,
   OutlinedInput,
-  Stack,
+  Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
+import { FormSection } from "../components";
+import { useLoginMutation } from "../slices/users.api.slice";
+import { setCredentials } from "../slices/auth.slice";
+import { useSnackbar } from "../hooks/useSnackbar";
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [login] = useLoginMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [showPassword, setShowPassword] = useState(false);
+  const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
+
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const redirect = searchParams.get("redirect") || "/";
+
+  useEffect(() => {
+    if (userInfo) navigate(redirect);
+  }, [userInfo, redirect, navigate]);
 
   // formik validation schema
   const validationSchema = Yup.object({
@@ -31,7 +51,16 @@ const Login = () => {
   });
 
   // formik submit handler
-  const onSubmit = (values) => console.log(values);
+  const onSubmit = async (values) => {
+    hideSnackbar();
+    try {
+      const res = await login(values).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (error) {
+      showSnackbar(error?.data?.message || error.error, "error");
+    }
+  };
 
   // formik hook for form handling
   const formik = useFormik({
@@ -42,29 +71,28 @@ const Login = () => {
 
   // password visibility handler
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleMouseDownPassword = (event) => event.preventDefault();
 
   return (
-    <Container
-      maxWidth="sm"
-      sx={{
-        my: 4,
-        display: "flex",
-        flexDirection: "column",
-        gap: 4,
-      }}
-    >
-      {/* heading */}
-      <Typography variant="h4" component="h2" textAlign="center">
-        Welcome Back!
-        <br />
-        Login to your account 👋
-      </Typography>
-
+    <FormSection>
       {/* form */}
-      <Stack component="form" onSubmit={formik.handleSubmit} gap={2}>
+      <Paper
+        component="form"
+        onSubmit={formik.handleSubmit}
+        sx={{
+          p: { xs: 2, sm: 4 },
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        {/* heading */}
+        <Typography variant="h4" component="h2" textAlign="center" mb={4}>
+          Welcome Back!
+          <br />
+          Login to your account 👋
+        </Typography>
+
         {/* email field */}
         <TextField
           fullWidth
@@ -122,13 +150,21 @@ const Login = () => {
           size="large"
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
         >
-          {formik.isSubmitting ? "Submitting..." : "Submit"}
+          {formik.isSubmitting ? (
+            <CircularProgress color="inherit" size="1.6rem" />
+          ) : (
+            "Submit"
+          )}
         </Button>
 
         {/* register link */}
         <Typography variant="body2" textAlign="center" mt={2}>
-          Don't have an account?{" "}
-          <Link component={NavLink} to="/register" underline="hover">
+          New customer?{" "}
+          <Link
+            component={NavLink}
+            to={redirect ? `/register?redirect=${redirect}` : "/register"}
+            underline="hover"
+          >
             Register
           </Link>
         </Typography>
@@ -140,8 +176,10 @@ const Login = () => {
             Reset password
           </Link>
         </Typography>
-      </Stack>
-    </Container>
+      </Paper>
+
+      <SnackbarComponent />
+    </FormSection>
   );
 };
 export default Login;

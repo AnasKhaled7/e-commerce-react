@@ -6,3 +6,4 @@ export { default as Newsletter } from "./Newsletter";
 export { default as Footer } from "./Footer";
 export { default as ProductsList } from "./ProductsList";
 export { default as Message } from "./Message";
+export { default as FormSection } from "./FormSection";
