@@ -152,7 +152,6 @@ const Register = () => {
 
         {/* email field */}
         <TextField
-          fullWidth
           required
           id="register-email"
           name="email"
@@ -168,7 +167,6 @@ const Register = () => {
         {/* password fields */}
         <Stack direction="row" gap={2}>
           <FormControl
-            fullWidth
             error={formik.touched.password && Boolean(formik.errors.password)}
           >
             <InputLabel htmlFor="register-password">Password</InputLabel>
@@ -201,7 +199,6 @@ const Register = () => {
           </FormControl>
 
           <FormControl
-            fullWidth
             error={
               formik.touched.confirmPassword &&
               Boolean(formik.errors.confirmPassword)
@@ -241,7 +238,6 @@ const Register = () => {
 
         {/* phone field */}
         <TextField
-          fullWidth
           required
           id="register-phone"
           name="phone"
@@ -301,17 +297,12 @@ const Register = () => {
 
         {/* submit button */}
         <Button
-          fullWidth
           type="submit"
           variant="contained"
           size="large"
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
         >
-          {formik.isSubmitting ? (
-            <CircularProgress color="inherit" size="1.6rem" />
-          ) : (
-            "Submit"
-          )}
+          {formik.isSubmitting ? <CircularProgress size={24} /> : "Submit"}
         </Button>
 
         {/* login link */}

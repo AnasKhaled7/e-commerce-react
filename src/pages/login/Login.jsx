@@ -95,7 +95,6 @@ const Login = () => {
 
         {/* email field */}
         <TextField
-          fullWidth
           required
           id="login-email"
           name="email"
@@ -110,7 +109,6 @@ const Login = () => {
 
         {/* password field */}
         <FormControl
-          fullWidth
           error={formik.touched.password && Boolean(formik.errors.password)}
         >
           <InputLabel htmlFor="login-password">Password</InputLabel>
@@ -144,17 +142,12 @@ const Login = () => {
 
         {/* submit button */}
         <Button
-          fullWidth
           type="submit"
           variant="contained"
           size="large"
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
         >
-          {formik.isSubmitting ? (
-            <CircularProgress color="inherit" size="1.6rem" />
-          ) : (
-            "Submit"
-          )}
+          {formik.isSubmitting ? <CircularProgress size={24} /> : "Submit"}
         </Button>
 
         {/* register link */}
