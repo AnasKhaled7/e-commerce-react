@@ -21,8 +21,8 @@ import {
   ShoppingCartCheckoutRounded,
 } from "@mui/icons-material";
 
-import { Message } from "../components";
-import { addToCart, removeFromCart } from "../slices/cart.slice";
+import { Message } from "../../components";
+import { addToCart, removeFromCart } from "../../slices/cart.slice";
 
 const Cart = () => {
   const dispatch = useDispatch();

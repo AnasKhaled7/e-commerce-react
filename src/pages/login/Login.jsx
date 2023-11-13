@@ -19,10 +19,10 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { FormSection } from "../components";
-import { useLoginMutation } from "../slices/users.api.slice";
-import { setCredentials } from "../slices/auth.slice";
-import { useSnackbar } from "../hooks/useSnackbar";
+import { FormSection } from "../../components";
+import { useLoginMutation } from "../../slices/users.api.slice";
+import { setCredentials } from "../../slices/auth.slice";
+import { useSnackbar } from "../../hooks/useSnackbar";
 
 const Login = () => {
   const dispatch = useDispatch();

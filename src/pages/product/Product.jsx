@@ -16,9 +16,9 @@ import {
 } from "@mui/material";
 import { AddShoppingCartRounded } from "@mui/icons-material";
 
-import { useGetProductQuery } from "../slices/products.api.slice";
-import { addToCart } from "../slices/cart.slice";
-import { LoadingScreen, Message } from "../components";
+import { useGetProductQuery } from "../../slices/products.api.slice";
+import { addToCart } from "../../slices/cart.slice";
+import { LoadingScreen, Message } from "../../components";
 
 const Product = () => {
   const { productId } = useParams();

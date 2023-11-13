@@ -1,5 +1,5 @@
 import { Container, Typography } from "@mui/material";
-import { ProductsList } from "../components";
+import { ProductsList } from "../../components";
 
 const Products = () => {
   return (
