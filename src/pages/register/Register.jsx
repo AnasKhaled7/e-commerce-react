@@ -260,33 +260,19 @@ const Register = () => {
           </FormLabel>
           <RadioGroup
             row
-            aria-labelledby="gender"
+            aria-labelledby="register-gender"
             name="gender"
             value={formik.values.gender}
             onChange={formik.handleChange}
           >
             <FormControlLabel
               value="m"
-              control={
-                <Radio
-                  size="small"
-                  inputProps={{
-                    "aria-label": "Male",
-                  }}
-                />
-              }
+              control={<Radio size="small" />}
               label="Male"
             />
             <FormControlLabel
               value="f"
-              control={
-                <Radio
-                  size="small"
-                  inputProps={{
-                    "aria-label": "Female",
-                  }}
-                />
-              }
+              control={<Radio size="small" />}
               label="Female"
             />
           </RadioGroup>
