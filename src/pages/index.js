@@ -7,3 +7,4 @@ export { default as ResetPassword } from "./reset-password/ResetPassword";
 export { default as Cart } from "./cart/Cart";
 export { default as NotFound } from "./not-found/NotFound";
 export { default as Shipping } from "./shipping/Shipping";
+export { default as Payment } from "./payment/Payment";

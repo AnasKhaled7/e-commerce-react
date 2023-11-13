@@ -15,6 +15,7 @@ import {
   Home,
   Login,
   NotFound,
+  Payment,
   Product,
   Products,
   Register,
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
 
       <Route path="" element={<PrivateRoute />}>
         <Route path="shipping" element={<Shipping />} />
+        <Route path="payment" element={<Payment />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
