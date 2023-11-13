@@ -9,7 +9,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
-import { Layout } from "./components";
+import { Layout, PrivateRoute } from "./components";
 import {
   Cart,
   Home,
@@ -19,6 +19,7 @@ import {
   Products,
   Register,
   ResetPassword,
+  Shipping,
 } from "./pages";
 
 const router = createBrowserRouter(
@@ -31,6 +32,10 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="reset-password" element={<ResetPassword />} />
       <Route path="cart" element={<Cart />} />
+
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="shipping" element={<Shipping />} />
+      </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
   )
