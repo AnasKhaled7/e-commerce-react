@@ -16,6 +16,7 @@ import {
   Login,
   NotFound,
   Payment,
+  PlaceOrder,
   Product,
   Products,
   Register,
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
       <Route path="" element={<PrivateRoute />}>
         <Route path="shipping" element={<Shipping />} />
         <Route path="payment" element={<Payment />} />
+        <Route path="place-order" element={<PlaceOrder />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
