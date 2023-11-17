@@ -26,11 +26,10 @@ const Product = () => {
 
   const dispatch = useDispatch();
 
-  const [qty, setQty] = useState(1);
+  const [quantity, setQuantity] = useState(1);
 
-  const addToCartHandler = () => {
-    dispatch(addToCart({ ...data?.product, qty }));
-  };
+  const addToCartHandler = () =>
+    dispatch(addToCart({ ...data?.product, quantity }));
 
   return (
     <>
@@ -129,9 +128,9 @@ const Product = () => {
                     <Select
                       labelId="select-quantity"
                       id="quantity"
-                      value={qty}
+                      value={quantity}
                       label="Quantity"
-                      onChange={(e) => setQty(Number(e.target.value))}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
                     >
                       {[...Array(data?.product?.countInStock).keys()].map(
                         (index) => (

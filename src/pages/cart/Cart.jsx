@@ -28,21 +28,14 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { cartItems, itemsPrice, taxPrice, totalPrice } = useSelector(
-    (state) => state.cart
-  );
+  const cart = useSelector((state) => state.cart);
 
-  const addToCartHandler = (product, qty) => {
-    dispatch(addToCart({ ...product, qty }));
-  };
+  const addToCartHandler = (product, quantity) =>
+    dispatch(addToCart({ ...product, quantity }));
 
-  const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id));
-  };
+  const removeFromCartHandler = (id) => dispatch(removeFromCart(id));
 
-  const chechotHandler = () => {
-    navigate("/login?redirect=/shipping");
-  };
+  const checkoutHandler = () => navigate("/login?redirect=/shipping");
 
   return (
     <Container
@@ -58,7 +51,7 @@ const Cart = () => {
 
       <Divider />
 
-      {cartItems.length === 0 ? (
+      {cart.cartItems.length === 0 ? (
         <Stack direction="column" alignItems="center" gap={2} sx={{ flex: 1 }}>
           <Message severity="info">
             Your cart is empty{" "}
@@ -72,7 +65,7 @@ const Cart = () => {
           {/* info */}
           <Stack flex={2} gap={1}>
             {/* product */}
-            {cartItems.map((item) => (
+            {cart.cartItems.map((item) => (
               <Fragment key={item._id}>
                 <Stack
                   direction="row"
@@ -121,7 +114,7 @@ const Cart = () => {
                             <Select
                               labelId="select-quantity"
                               id="quantity"
-                              value={item.qty}
+                              value={item.quantity}
                               label="Quantity"
                               onChange={(e) =>
                                 addToCartHandler(item, Number(e.target.value))
@@ -170,7 +163,8 @@ const Cart = () => {
           >
             <Typography textAlign="center" variant="h6">
               Order Summary (
-              {cartItems.reduce((acc, item) => acc + item.qty, 0)} items)
+              {cart.cartItems.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+              items)
             </Typography>
 
             <Stack
@@ -179,7 +173,7 @@ const Cart = () => {
               alignItems="center"
             >
               <Typography>Subtotal</Typography>
-              <Typography>EGP {itemsPrice}</Typography>
+              <Typography>EGP {cart.itemsPrice}</Typography>
             </Stack>
             <Stack
               direction="row"
@@ -203,7 +197,7 @@ const Cart = () => {
               alignItems="center"
             >
               <Typography>Taxes</Typography>
-              <Typography>EGP {taxPrice}</Typography>
+              <Typography>EGP {cart.taxPrice}</Typography>
             </Stack>
             <Stack
               direction="row"
@@ -211,15 +205,15 @@ const Cart = () => {
               alignItems="center"
             >
               <Typography variant="h6">Total</Typography>
-              <Typography variant="h6">EGP {totalPrice}</Typography>
+              <Typography variant="h6">EGP {cart.totalPrice}</Typography>
             </Stack>
 
             <Button
               variant="contained"
               size="large"
               endIcon={<ShoppingCartCheckoutRounded />}
-              disabled={cartItems.length === 0}
-              onClick={chechotHandler}
+              disabled={cart.cartItems.length === 0}
+              onClick={checkoutHandler}
             >
               Checkout Now
             </Button>

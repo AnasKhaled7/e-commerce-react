@@ -212,7 +212,7 @@ const Navbar = (props) => {
               >
                 <Badge
                   badgeContent={cartItems.reduce(
-                    (acc, currentValue) => acc + currentValue.qty,
+                    (acc, currentValue) => acc + currentValue.quantity,
                     0
                   )}
                   color="success"
