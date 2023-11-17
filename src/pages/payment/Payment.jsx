@@ -30,19 +30,19 @@ const Payment = () => {
 
   // formik validation schema
   const validationSchema = Yup.object({
-    method: Yup.string().required("Required"),
+    paymentMethod: Yup.string().required("Required"),
   });
 
   // formik submit handler
   const onSubmit = (values) => {
-    dispatch(savePaymentMethod(values.method));
+    dispatch(savePaymentMethod(values.paymentMethod));
     navigate("/place-order");
   };
 
   // formik hook for form handling
   const formik = useFormik({
     initialValues: {
-      method: paymentMethod || "",
+      paymentMethod: paymentMethod || "",
     },
     validationSchema,
     onSubmit,
@@ -73,19 +73,21 @@ const Payment = () => {
           </FormLabel>
           <RadioGroup
             aria-labelledby="payment-method"
-            name="method"
+            name="paymentMethod"
             value={formik.values.method}
             onChange={formik.handleChange}
           >
             <FormControlLabel
-              value="PayPal"
+              value="card"
               control={<Radio size="small" />}
               label="PayPal"
+              checked={formik.values.paymentMethod === "card"}
             />
             <FormControlLabel
-              value="COD"
+              value="cash"
               control={<Radio size="small" />}
               label="Cash On Delivery"
+              checked={formik.values.paymentMethod === "cash"}
             />
           </RadioGroup>
           <FormHelperText>
