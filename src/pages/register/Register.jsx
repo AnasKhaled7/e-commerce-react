@@ -7,17 +7,13 @@ import {
   Button,
   CircularProgress,
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  FormLabel,
   IconButton,
   InputAdornment,
   InputLabel,
   Link,
   OutlinedInput,
   Paper,
-  Radio,
-  RadioGroup,
   Stack,
   TextField,
   Typography,
@@ -64,10 +60,6 @@ const Register = () => {
     confirmPassword: Yup.string()
       .required("Required")
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
-    gender: Yup.string().required("Required"),
-    phone: Yup.string()
-      .required("Required")
-      .matches(/^01[0-2,5]{1}[0-9]{8}$/, "Invalid phone number"),
   });
 
   // formik submit handler
@@ -78,6 +70,7 @@ const Register = () => {
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message || error.error, "error");
     }
   };
@@ -90,8 +83,6 @@ const Register = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      gender: "",
-      phone: "",
     },
     validationSchema,
     onSubmit,
@@ -236,63 +227,19 @@ const Register = () => {
           </FormControl>
         </Stack>
 
-        {/* phone field */}
-        <TextField
-          required
-          id="register-phone"
-          name="phone"
-          label="Phone"
-          type="tel"
-          value={formik.values.phone}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.phone && Boolean(formik.errors.phone)}
-          helperText={formik.touched.phone && formik.errors.phone}
-          autoComplete="tel"
-        />
-
-        {/* gender field */}
-        <FormControl
-          error={formik.touched.gender && Boolean(formik.errors.gender)}
-        >
-          <FormLabel required id="register-gender">
-            Gender
-          </FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="register-gender"
-            name="gender"
-            value={formik.values.gender}
-            onChange={formik.handleChange}
-          >
-            <FormControlLabel
-              value="m"
-              control={<Radio size="small" />}
-              label="Male"
-            />
-            <FormControlLabel
-              value="f"
-              control={<Radio size="small" />}
-              label="Female"
-            />
-          </RadioGroup>
-          <FormHelperText>
-            {formik.touched.gender && formik.errors.gender}
-          </FormHelperText>
-        </FormControl>
-
         {/* submit button */}
         <Button
           type="submit"
           variant="contained"
           size="large"
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
+          sx={{ my: 2 }}
         >
           {formik.isSubmitting ? <CircularProgress size={24} /> : "Submit"}
         </Button>
 
         {/* login link */}
-        <Typography variant="body2" textAlign="center" mt={2}>
+        <Typography variant="body2" textAlign="center">
           Already have an account?{" "}
           <Link
             component={NavLink}
