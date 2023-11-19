@@ -6,7 +6,7 @@ import {
   CircularProgress,
   Container,
   Divider,
-  Link,
+  Paper,
   Stack,
   Typography,
 } from "@mui/material";
@@ -24,7 +24,6 @@ const PlaceOrder = () => {
 
   useEffect(() => {
     if (!cart.shippingAddress.address) navigate("/shipping");
-    else if (!cart.paymentMethod) navigate("/payment");
   }, [cart, navigate]);
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
@@ -40,7 +39,7 @@ const PlaceOrder = () => {
         quantity: item.quantity,
       }));
 
-      await createOrder({
+      const res = await createOrder({
         orderItems: orderItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
@@ -49,9 +48,11 @@ const PlaceOrder = () => {
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
       }).unwrap();
+
       dispatch(clearCartItems());
-      navigate(`/orders/${orderItems[0].product}`);
+      navigate(`/orders/${res.order._id}`);
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message || error.error, "error");
     }
   };
@@ -68,11 +69,11 @@ const PlaceOrder = () => {
         minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
       }}
     >
-      <Stack direction="row">
+      <Stack direction={{ xs: "column", md: "row" }} gap={4}>
         {/* left part: details */}
-        <Stack flex={2} gap={2}>
-          <Stack gap={2}>
-            <Typography variant="h4">Shipping</Typography>
+        <Stack flex={2} gap={4}>
+          <Stack gap={1}>
+            <Typography variant="h5">Shipping</Typography>
             <Typography>
               <strong>Address: </strong>
               {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
@@ -80,16 +81,8 @@ const PlaceOrder = () => {
             </Typography>
           </Stack>
 
-          <Stack gap={2}>
-            <Typography variant="h4">Payment Method</Typography>
-            <Typography>
-              <strong>Method: </strong>
-              {cart.paymentMethod}
-            </Typography>
-          </Stack>
-
-          <Stack gap={2}>
-            <Typography variant="h4">Order Items</Typography>
+          <Stack gap={1}>
+            <Typography variant="h5">Order Items</Typography>
 
             {cart.cartItems.length === 0 ? (
               <Message severity="info">Your cart is empty</Message>
@@ -97,7 +90,12 @@ const PlaceOrder = () => {
               <Stack gap={2}>
                 {cart.cartItems.map((item) => (
                   <Fragment key={item._id}>
-                    <Stack direction="row" alignItems="center" gap={2}>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      flexWrap="wrap"
+                      gap={2}
+                    >
                       <img
                         src={item.defaultImage.url}
                         alt={item.name}
@@ -105,15 +103,15 @@ const PlaceOrder = () => {
                         height="100"
                         style={{ objectFit: "contain" }}
                       />
-                      <Link
+                      <Typography
+                        variant="h6"
                         component={NavLink}
                         to={`/products/${item._id}`}
-                        underline="hover"
                         color="inherit"
                       >
                         {item.name}
-                      </Link>
-                      <Typography>
+                      </Typography>
+                      <Typography variant="body2">
                         {item.quantity} x EGP {item.price} = EGP{" "}
                         {item.quantity * item.price}
                       </Typography>
@@ -128,8 +126,19 @@ const PlaceOrder = () => {
         </Stack>
 
         {/* right part: order summary */}
-        <Stack flex={1}>
-          <Typography variant="h4">Order Summary</Typography>
+        <Paper
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            p: 2,
+            height: "fit-content",
+          }}
+        >
+          <Typography variant="h5" textAlign="center">
+            Order Summary
+          </Typography>
 
           <Stack gap={2}>
             <Stack direction="row" justifyContent="space-between">
@@ -139,7 +148,7 @@ const PlaceOrder = () => {
 
             <Stack direction="row" justifyContent="space-between">
               <Typography>Shipping</Typography>
-              <Typography>EGP 0</Typography>
+              <Typography>EGP {cart.shippingPrice}</Typography>
             </Stack>
 
             <Stack direction="row" justifyContent="space-between">
@@ -166,10 +175,10 @@ const PlaceOrder = () => {
               </Message>
             )}
           </Stack>
-        </Stack>
+        </Paper>
       </Stack>
 
-      <CheckoutSteps activeStep={3} />
+      <CheckoutSteps activeStep={2} />
 
       <SnackbarComponent />
     </Container>
