@@ -6,7 +6,7 @@ import {
   useTheme,
 } from "@mui/material";
 
-const steps = ["Sign In", "Shipping", "Payment", "Place Order"];
+const steps = ["Sign In", "Shipping", "Place Order"];
 
 const CheckoutSteps = ({ activeStep }) => {
   const theme = useTheme();

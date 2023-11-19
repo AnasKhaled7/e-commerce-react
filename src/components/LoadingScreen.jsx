@@ -2,7 +2,11 @@ import { CircularProgress, Stack } from "@mui/material";
 
 const LoadingScreen = () => {
   return (
-    <Stack height="100vh" alignItems="center" justifyContent="center">
+    <Stack
+      alignItems="center"
+      justifyContent="center"
+      sx={{ minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" } }}
+    >
       <CircularProgress size="3.5rem" />
     </Stack>
   );
