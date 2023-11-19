@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   Box,
@@ -21,15 +21,16 @@ import { addToCart } from "../../slices/cart.slice";
 import { LoadingScreen, Message } from "../../components";
 
 const Product = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { productId } = useParams();
+  const [quantity, setQuantity] = useState(1);
   const { data, isLoading, error } = useGetProductQuery(productId);
 
-  const dispatch = useDispatch();
-
-  const [quantity, setQuantity] = useState(1);
-
-  const addToCartHandler = () =>
+  const addToCartHandler = () => {
     dispatch(addToCart({ ...data?.product, quantity }));
+    navigate("/cart");
+  };
 
   return (
     <>
@@ -45,10 +46,10 @@ const Product = () => {
           sx={{
             py: 4,
             display: "flex",
-            alignItems: { sm: "center" },
-            flexDirection: { xs: "column", sm: "row" },
+            alignItems: { md: "center" },
+            flexDirection: { xs: "column", md: "row" },
             gap: 4,
-            minHeight: "85vh",
+            minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
           }}
         >
           {/* image container */}
@@ -65,44 +66,48 @@ const Product = () => {
             />
           </Box>
 
+          <Divider orientation="vertical" flexItem />
+
           {/* info container */}
-          <Stack flex={1} gap={2}>
+          <Stack flex={1} gap={4}>
             {/* name */}
-            <Typography variant="h4">{data?.product?.name}</Typography>
-
-            <Divider />
-
-            {/* description */}
-            <Typography variant="body2">
-              {data?.product?.description}
+            <Typography variant="h4" fontWeight={700} textAlign="center">
+              {data?.product?.name}
             </Typography>
 
-            <Divider />
-
-            <Stack direction="row" alignItems="center" gap={1}>
-              <Rating
-                name="rating"
-                value={data?.product?.rating}
-                precision={0.5}
-                readOnly
-              />
-
-              <Typography variant="caption" color="text.secondary">
-                ({data?.product?.numReviews} reviews)
-              </Typography>
+            {/* description */}
+            <Stack gap={1}>
+              <Typography variant="caption">Description</Typography>
+              <Typography>{data?.product?.description}</Typography>
             </Stack>
 
-            <Divider />
+            {/* rating */}
+            <Stack gap={1}>
+              <Typography variant="caption">Rating</Typography>
+
+              <Stack direction="row" alignItems="center" gap={1}>
+                <Rating
+                  name="rating"
+                  value={data?.product?.rating}
+                  precision={0.5}
+                  readOnly
+                />
+
+                <Typography variant="caption" color="text.secondary">
+                  ({data?.product?.numReviews} reviews)
+                </Typography>
+              </Stack>
+            </Stack>
 
             {/* price */}
-            <Typography variant="h6">EGP {data?.product?.price}</Typography>
-
-            <Divider />
+            <Stack>
+              <Typography variant="caption">Price</Typography>
+              <Typography variant="h6">EGP {data?.product?.price}</Typography>
+            </Stack>
 
             {/* status */}
             <Stack direction="row" alignItems="center" gap={1}>
               <Typography
-                variant="body1"
                 color={data?.product?.countInStock > 0 ? "green" : "error"}
               >
                 {data?.product?.countInStock > 0 ? "In Stock" : "Out of Stock"}
@@ -113,8 +118,6 @@ const Product = () => {
               </Typography>
             </Stack>
 
-            <Divider />
-
             <Stack
               direction="row"
               alignItems="center"
@@ -122,14 +125,13 @@ const Product = () => {
             >
               {/* quantity selection */}
               {data?.product?.countInStock > 0 && (
-                <Box sx={{ minWidth: 80 }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="select-quantity">Quantity</InputLabel>
+                <Box sx={{ minWidth: 60 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="product-select-quantity">Qty</InputLabel>
                     <Select
-                      labelId="select-quantity"
-                      id="quantity"
+                      labelId="product-select-quantity"
                       value={quantity}
-                      label="Quantity"
+                      label="Qty"
                       onChange={(e) => setQuantity(Number(e.target.value))}
                     >
                       {[...Array(data?.product?.countInStock).keys()].map(

@@ -6,11 +6,11 @@ const Products = () => {
     <Container
       maxWidth="xl"
       sx={{
-        my: 4,
+        py: 4,
         display: "flex",
         flexDirection: "column",
         gap: 4,
-        minHeight: "80vh",
+        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
       }}
     >
       {/* title */}
