@@ -41,13 +41,14 @@ const Cart = () => {
     <Container
       maxWidth="xl"
       sx={{
-        my: 4,
+        py: 4,
         display: "flex",
         flexDirection: "column",
         gap: 4,
+        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
       }}
     >
-      <Typography variant="h4">Shopping Cart</Typography>
+      <Typography variant="h4">Shopping Cart 🛒</Typography>
 
       <Divider />
 
@@ -62,88 +63,75 @@ const Cart = () => {
         </Stack>
       ) : (
         <Stack direction={{ xs: "column", md: "row" }} gap={4}>
-          {/* info */}
-          <Stack flex={2} gap={1}>
-            {/* product */}
+          {/* products in cart */}
+          <Stack flex={2}>
             {cart.cartItems.map((item) => (
               <Fragment key={item._id}>
                 <Stack
                   direction="row"
                   alignItems="center"
-                  justifyContent="space-between"
-                  gap={2}
+                  mb={2}
+                  sx={{ gap: { xs: 1, sm: 4 } }}
                 >
-                  {/* product details */}
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    gap={2}
-                    flexWrap="wrap"
-                  >
-                    <img
-                      src={item.defaultImage.url}
-                      alt={item.name}
-                      style={{
-                        width: "180px",
-                        height: "180px",
-                        objectFit: "contain",
-                      }}
-                    />
+                  <img
+                    src={item.defaultImage.url}
+                    alt={item.name}
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                      objectFit: "contain",
+                      borderRadius: "10px",
+                    }}
+                  />
 
-                    {/* details */}
-                    <Stack gap={2}>
-                      <Link
-                        component={NavLink}
-                        to={`/products/${item._id}`}
-                        color="inherit"
-                        fontSize={18}
-                        underline="none"
+                  {/* details */}
+                  <Stack gap={1} textAlign={{ xs: "center", sm: "left" }}>
+                    <Typography
+                      variant="h6"
+                      component={NavLink}
+                      to={`/products/${item._id}`}
+                      color="inherit"
+                    >
+                      {item.name}
+                    </Typography>
+
+                    <Typography fontWeight={500}>EGP {item.price}</Typography>
+
+                    {/* product amount */}
+                    <Stack direction="row" alignItems="center" gap={2}>
+                      <Box sx={{ minWidth: 60 }}>
+                        <FormControl fullWidth size="small">
+                          <InputLabel id="cart-select-quantity">Qty</InputLabel>
+                          <Select
+                            labelId="cart-select-quantity"
+                            value={item.quantity}
+                            label="Qty"
+                            onChange={(e) =>
+                              addToCartHandler(item, Number(e.target.value))
+                            }
+                          >
+                            {[...Array(item.countInStock).keys()].map(
+                              (index) => (
+                                <MenuItem key={index + 1} value={index + 1}>
+                                  {index + 1}
+                                </MenuItem>
+                              )
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Box>
+
+                      <Divider orientation="vertical" flexItem />
+
+                      <IconButton
+                        color="error"
+                        onClick={() => removeFromCartHandler(item._id)}
                       >
-                        {item.name}
-                      </Link>
-
-                      <Typography fontWeight={700}>EGP {item.price}</Typography>
-
-                      {/* product amount */}
-                      <Stack direction="row" alignItems="center" gap={2}>
-                        <Box sx={{ minWidth: 80 }}>
-                          <FormControl fullWidth size="small">
-                            <InputLabel id="select-quantity">
-                              Quantity
-                            </InputLabel>
-                            <Select
-                              labelId="select-quantity"
-                              id="quantity"
-                              value={item.quantity}
-                              label="Quantity"
-                              onChange={(e) =>
-                                addToCartHandler(item, Number(e.target.value))
-                              }
-                            >
-                              {[...Array(item.countInStock).keys()].map(
-                                (index) => (
-                                  <MenuItem key={index + 1} value={index + 1}>
-                                    {index + 1}
-                                  </MenuItem>
-                                )
-                              )}
-                            </Select>
-                          </FormControl>
-                        </Box>
-
-                        <Divider orientation="vertical" flexItem />
-
-                        <IconButton
-                          color="error"
-                          onClick={() => removeFromCartHandler(item._id)}
-                        >
-                          <DeleteOutlineRounded />
-                        </IconButton>
-                      </Stack>
+                        <DeleteOutlineRounded />
+                      </IconButton>
                     </Stack>
                   </Stack>
                 </Stack>
-
                 <Divider />
               </Fragment>
             ))}
@@ -181,15 +169,7 @@ const Cart = () => {
               alignItems="center"
             >
               <Typography>Shipping</Typography>
-              <Typography>EGP 0</Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography>Discount</Typography>
-              <Typography>EGP 0</Typography>
+              <Typography>EGP {cart.shippingPrice}</Typography>
             </Stack>
             <Stack
               direction="row"
@@ -218,7 +198,11 @@ const Cart = () => {
               Checkout Now
             </Button>
 
-            <Button variant="outlined" size="large">
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={() => navigate("/products")}
+            >
               Continue Shopping
             </Button>
           </Paper>
