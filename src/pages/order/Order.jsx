@@ -96,7 +96,7 @@ const Order = () => {
                       <strong>Name: </strong>
                       <Typography
                         component={NavLink}
-                        to={`/products/${item._id}`}
+                        to={`/products/${item.product}`}
                         color="inherit"
                       >
                         {item.name}
