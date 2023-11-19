@@ -23,13 +23,15 @@ const Shipping = () => {
     address: Yup.string().required("Required"),
     city: Yup.string().required("Required"),
     postalCode: Yup.string().required("Required"),
-    country: Yup.string().required("Required"),
+    phone: Yup.string()
+      .required("Required")
+      .matches(/^01[0-2,5]{1}[0-9]{8}$/, "Invalid phone number"),
   });
 
   // formik submit handler
   const onSubmit = (values) => {
     dispatch(saveShippingAddress(values));
-    navigate("/payment");
+    navigate("/place-order");
   };
 
   // formik hook for form handling
@@ -38,7 +40,7 @@ const Shipping = () => {
       address: shippingAddress?.address || "",
       city: shippingAddress?.city || "",
       postalCode: shippingAddress?.postalCode || "",
-      country: shippingAddress?.country || "",
+      phone: shippingAddress?.phone || "",
     },
     validationSchema,
     onSubmit,
@@ -102,18 +104,18 @@ const Shipping = () => {
           autoComplete="postal-code"
         />
 
-        {/* country */}
+        {/* phone */}
         <TextField
-          id="shipping-country"
-          name="country"
-          label="Country"
-          value={formik.values.country}
+          id="shipping-phone"
+          name="phone"
+          label="Phone"
+          value={formik.values.phone}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.country && Boolean(formik.errors.country)}
-          helperText={formik.touched.country && formik.errors.country}
+          error={formik.touched.phone && Boolean(formik.errors.phone)}
+          helperText={formik.touched.phone && formik.errors.phone}
           required
-          autoComplete="country"
+          autoComplete="tel"
         />
 
         {/* submit button */}
