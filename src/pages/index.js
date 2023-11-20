@@ -10,3 +10,4 @@ export { default as Shipping } from "./shipping/Shipping";
 export { default as PlaceOrder } from "./place-order/PlaceOrder";
 export { default as Order } from "./order/Order";
 export { default as Profile } from "./profile/Profile";
+export { default as MyOrders } from "./my-orders/MyOrders";

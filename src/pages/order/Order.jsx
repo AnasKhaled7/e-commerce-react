@@ -46,16 +46,15 @@ const Order = () => {
         </Typography>
         <Typography>
           <strong>Address: </strong> {order.shippingAddress.address},{" "}
-          {order.shippingAddress.city}, {order.shippingAddress.postalCode},{" "}
-          {order.shippingAddress.country}
+          {order.shippingAddress.city}, {order.shippingAddress.postalCode}
         </Typography>
-        {order.isDelivered ? (
-          <Message severity="success">Delivered on {order.deliveredAt}</Message>
+        {order.status === "pending" ? (
+          <Message severity="warning">Your order is pending</Message>
+        ) : order.status === "processing" ? (
+          <Message severity="info">Your order is being processed</Message>
         ) : (
-          <Message severity="info">
-            {order.status === "pending"
-              ? "Order is pending"
-              : "Order is on the way"}
+          <Message severity="success">
+            Your order has been delivered successfully
           </Message>
         )}
       </Stack>

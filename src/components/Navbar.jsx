@@ -34,10 +34,12 @@ import {
   ShoppingCartOutlined,
   Logout,
   PersonOutlineOutlined,
+  ReceiptLongRounded,
 } from "@mui/icons-material";
 
 import { useLogoutMutation } from "../slices/users.api.slice";
 import { clearCredentials } from "../slices/auth.slice";
+import { deepPurple } from "@mui/material/colors";
 
 function HideOnScroll({ children, window }) {
   const trigger = useScrollTrigger({
@@ -223,7 +225,7 @@ const Navbar = (props) => {
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 {userInfo ? (
-                  <Tooltip title="Account settings">
+                  <Tooltip title="Account">
                     <IconButton
                       onClick={handleClick}
                       size="small"
@@ -231,7 +233,11 @@ const Navbar = (props) => {
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                     >
-                      <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+                      <Avatar
+                        sx={{ width: 32, height: 32, bgcolor: deepPurple[400] }}
+                      >
+                        {userInfo?.firstName[0]}
+                      </Avatar>
                     </IconButton>
                   </Tooltip>
                 ) : (
@@ -291,7 +297,15 @@ const Navbar = (props) => {
             </ListItemIcon>
             Your Profile
           </MenuItem>
+          <MenuItem onClick={() => navigate("/my-orders")}>
+            <ListItemIcon>
+              <ReceiptLongRounded />
+            </ListItemIcon>
+            Your Orders
+          </MenuItem>
+
           <Divider />
+
           <MenuItem onClick={logoutHandler}>
             <ListItemIcon>
               <Logout fontSize="small" />
