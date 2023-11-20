@@ -60,6 +60,9 @@ const Register = () => {
     confirmPassword: Yup.string()
       .required("Required")
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
+    phone: Yup.string()
+      .matches(/^01[0-2,5]{1}[0-9]{8}$/, "Invalid phone number")
+      .required("Required"),
   });
 
   // formik submit handler
@@ -75,7 +78,7 @@ const Register = () => {
     }
   };
 
-  // formik hook for form handling and validation schema and submit handler as props to the hook function
+  // formik hook
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -83,6 +86,7 @@ const Register = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      phone: "",
     },
     validationSchema,
     onSubmit,
@@ -90,9 +94,7 @@ const Register = () => {
 
   // password visibility handler
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleMouseDownPassword = (e) => e.preventDefault();
 
   return (
     <FormSection>
@@ -147,6 +149,7 @@ const Register = () => {
           id="register-email"
           name="email"
           label="Email"
+          type="email"
           value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -226,6 +229,20 @@ const Register = () => {
             </FormHelperText>
           </FormControl>
         </Stack>
+
+        {/* phone */}
+        <TextField
+          id="register-phone"
+          name="phone"
+          label="Phone"
+          type="tel"
+          value={formik.values.phone}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.phone && Boolean(formik.errors.phone)}
+          helperText={formik.touched.phone && formik.errors.phone}
+          autoComplete="tel"
+        />
 
         {/* submit button */}
         <Button
