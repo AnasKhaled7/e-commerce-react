@@ -19,6 +19,7 @@ import {
   PlaceOrder,
   Product,
   Products,
+  Profile,
   Register,
   ResetPassword,
   Shipping,
@@ -39,6 +40,7 @@ const router = createBrowserRouter(
         <Route path="shipping" element={<Shipping />} />
         <Route path="place-order" element={<PlaceOrder />} />
         <Route path="orders/:orderId" element={<Order />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
