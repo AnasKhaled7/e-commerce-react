@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import {
   Container,
   Divider,
@@ -96,10 +96,11 @@ const Footer = () => {
             {links.map((item, index) => (
               <Link
                 key={index}
+                component={NavLink}
                 color="inherit"
                 variant="body2"
                 underline="hover"
-                href="#"
+                to={item.to}
               >
                 {item.title}
               </Link>
