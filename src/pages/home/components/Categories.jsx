@@ -5,6 +5,8 @@ import {
   Paper,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import category1 from "../../../assets/category-1.jpg";
@@ -27,6 +29,9 @@ const categories = [
 ];
 
 const CategoryItem = ({ item }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Paper variant="outlined" sx={{ position: "relative", height: "70vh" }}>
       <img
@@ -43,7 +48,11 @@ const CategoryItem = ({ item }) => {
         gap={4}
         sx={{ inset: 0 }}
       >
-        <Typography component="h3" variant="h5" color="#fff">
+        <Typography
+          component="h3"
+          variant={isMobile ? "h6" : "h5"}
+          color="#fff"
+        >
           {item.title}
         </Typography>
         <Button variant="contained" endIcon={<KeyboardArrowRightRoundedIcon />}>
@@ -55,18 +64,25 @@ const CategoryItem = ({ item }) => {
 };
 
 const Categories = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Container
       maxWidth="xl"
       sx={{
-        my: 4,
+        py: 4,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         gap: 4,
       }}
     >
-      <Typography component="h2" variant="h3" fontWeight={700}>
+      <Typography
+        component="h2"
+        variant={isMobile ? "h4" : "h3"}
+        fontWeight={700}
+      >
         Top Categories
       </Typography>
 

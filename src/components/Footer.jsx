@@ -23,21 +23,19 @@ const icons = [
 const links = [
   {
     title: "Home",
-  },
-  {
-    title: "My Account",
-  },
-  {
-    title: "Wishlist",
+    to: "",
   },
   {
     title: "Cart",
+    to: "/cart",
+  },
+  {
+    title: "My Account",
+    to: "/profile",
   },
   {
     title: "Order Tracking",
-  },
-  {
-    title: "Terms",
+    to: "/my-orders",
   },
 ];
 
@@ -53,7 +51,7 @@ const Footer = () => {
           display: "flex",
           flexWrap: "wrap",
           gap: 4,
-          my: 4,
+          py: 4,
         }}
       >
         {/* left */}
@@ -69,7 +67,9 @@ const Footer = () => {
           </Typography>
           {/* description */}
           <Typography variant="body2" fontWeight={300}>
-            This is a demo website for Nile, an e-commerce platform.
+            Nile is a fictional e-commerce website built with React, Redux, and
+            Material-UI. Integrated with Node.js, Express, and MongoDB for the
+            backend.
           </Typography>
           {/* social media */}
           <Stack direction="row" gap={0.5} alignItems="center">

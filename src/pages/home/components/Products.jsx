@@ -1,10 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import { ProductsList } from "../../../components";
 
 const Products = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Container
@@ -17,7 +25,11 @@ const Products = () => {
         gap: 4,
       }}
     >
-      <Typography component="h2" variant="h3" fontWeight={700}>
+      <Typography
+        component="h2"
+        variant={isMobile ? "h4" : "h3"}
+        fontWeight={700}
+      >
         Top Products
       </Typography>
 

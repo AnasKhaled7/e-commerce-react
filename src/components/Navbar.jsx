@@ -154,6 +154,11 @@ const Navbar = (props) => {
                 <ListItemText primary="Profile" />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding onClick={() => navigate("/my-orders")}>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary="My Orders" />
+              </ListItemButton>
+            </ListItem>
             <ListItem disablePadding onClick={logoutHandler}>
               <ListItemButton sx={{ textAlign: "center" }}>
                 <ListItemText primary="Logout" />
@@ -295,13 +300,13 @@ const Navbar = (props) => {
             <ListItemIcon>
               <PersonOutlineOutlined />
             </ListItemIcon>
-            Your Profile
+            Profile
           </MenuItem>
           <MenuItem onClick={() => navigate("/my-orders")}>
             <ListItemIcon>
               <ReceiptLongRounded />
             </ListItemIcon>
-            Your Orders
+            My Orders
           </MenuItem>
 
           <Divider />

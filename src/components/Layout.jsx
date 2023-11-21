@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Divider } from "@mui/material";
-import { Navbar, Footer, Newsletter, ScrollToTop } from "./";
+import { Navbar, Footer, ScrollToTop } from "./";
 
 const Layout = () => {
   return (
@@ -8,9 +8,9 @@ const Layout = () => {
       <Navbar />
       <Outlet />
       <Divider />
-      <Newsletter />
-      <Divider />
-      <Footer />
+      <div style={{ backgroundColor: "#f5fafd" }}>
+        <Footer />
+      </div>
     </ScrollToTop>
   );
 };

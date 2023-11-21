@@ -1,8 +1,19 @@
 import { useState } from "react";
-import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
-import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import {
+  ArrowBackIosRounded,
+  ArrowForwardIosRounded,
+  KeyboardArrowRightRounded,
+} from "@mui/icons-material";
+
 import slide1 from "../../../assets/slide-1.png";
 import slide2 from "../../../assets/slide-2.png";
 import slide3 from "../../../assets/slide-3.png";
@@ -61,6 +72,8 @@ const Dots = ({ activeSlide, handleClick }) => {
 };
 
 const Slider = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [activeSlide, setActiveSlide] = useState(0);
 
   const handlePrevSlide = () => {
@@ -75,9 +88,7 @@ const Slider = () => {
     );
   };
 
-  const handleDotClick = (index) => {
-    setActiveSlide(index);
-  };
+  const handleDotClick = (index) => setActiveSlide(index);
 
   return (
     <Stack direction="row" sx={{ position: "relative", overflow: "hidden" }}>
@@ -93,7 +104,7 @@ const Slider = () => {
         }}
         onClick={handlePrevSlide}
       >
-        <ArrowBackIosRoundedIcon
+        <ArrowBackIosRounded
           sx={{ fontSize: { xs: "2.5rem", md: "3.5rem" } }}
         />
       </IconButton>
@@ -105,52 +116,46 @@ const Slider = () => {
           <Stack
             key={index}
             bgcolor={`#${item.bg}`}
-            direction="row"
-            alignItems="center"
-            gap={1}
             sx={{
               width: "100vw",
-              height: { xs: "auto", md: "calc(100vh - 64px)" },
-              minHeight: "500px",
-              px: { xs: 3, md: 6 },
+              height: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
+              minHeight: "550px",
               transform: `translateX(-${activeSlide * 100}%)`,
               transition: "transform 0.8s ease",
             }}
           >
-            {/* img container */}
-            <Box
-              sx={{
-                flex: { md: 1 },
-                display: { xs: "none", md: "flex" },
-                justifyContent: { md: "center" },
-              }}
-            >
-              <img src={item.img} alt={item.title} />
+            {/* img  */}
+            <Box height="50%">
+              <img
+                src={item.img}
+                alt={item.title}
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
             </Box>
 
             {/* info container */}
-            <Box flex={1.5} sx={{ textAlign: { xs: "center", md: "initial" } }}>
-              <Typography component="h2" variant="h3" fontWeight={700}>
+            <Stack
+              height="50%"
+              alignItems="center"
+              justifyContent="center"
+              sx={{ bgcolor: "#fff", textAlign: "center" }}
+            >
+              <Typography variant={isMobile ? "h4" : "h3"} fontWeight={700}>
                 {item.title}
               </Typography>
 
-              <Typography
-                variant="body2"
-                fontWeight={500}
-                letterSpacing="3px"
-                my={4}
-              >
+              <Typography variant="body2" letterSpacing="3px" my={4}>
                 {item.desc}
               </Typography>
 
               <Button
                 variant="contained"
                 size="large"
-                endIcon={<KeyboardArrowRightRoundedIcon />}
+                endIcon={<KeyboardArrowRightRounded />}
               >
                 Shop Now
               </Button>
-            </Box>
+            </Stack>
           </Stack>
         ))}
       </Stack>
@@ -166,7 +171,7 @@ const Slider = () => {
         }}
         onClick={handleNextSlide}
       >
-        <ArrowForwardIosRoundedIcon
+        <ArrowForwardIosRounded
           sx={{ fontSize: { xs: "2.5rem", md: "3.5rem" } }}
         />
       </IconButton>
