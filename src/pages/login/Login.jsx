@@ -14,6 +14,7 @@ import {
   Link,
   OutlinedInput,
   Paper,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -71,26 +72,30 @@ const Login = () => {
 
   // password visibility handler
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => event.preventDefault();
+  const handleMouseDownPassword = (e) => e.preventDefault();
 
   return (
     <FormSection>
       {/* form */}
       <Paper
         component="form"
+        variant="outlined"
         onSubmit={formik.handleSubmit}
         sx={{
-          p: { xs: 2, sm: 4 },
+          p: { xs: 3, sm: 5 },
           display: "flex",
           flexDirection: "column",
-          gap: 2,
+          gap: 3,
         }}
       >
         {/* heading */}
-        <Typography variant="h4" component="h2" textAlign="center" mb={4}>
+        <Typography
+          variant="h5"
+          component="h2"
+          textAlign="center"
+          fontWeight={500}
+        >
           Welcome Back!
-          <br />
-          Login to your account 👋
         </Typography>
 
         {/* email field */}
@@ -147,28 +152,30 @@ const Login = () => {
           size="large"
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
         >
-          {formik.isSubmitting ? <CircularProgress size={24} /> : "Submit"}
+          {formik.isSubmitting ? <CircularProgress size={24} /> : "Login"}
         </Button>
 
-        {/* register link */}
-        <Typography variant="body2" textAlign="center" mt={2}>
-          New customer?{" "}
-          <Link
-            component={NavLink}
-            to={redirect ? `/register?redirect=${redirect}` : "/register"}
-            underline="hover"
-          >
-            Register
-          </Link>
-        </Typography>
+        <Stack gap={2}>
+          {/* register link */}
+          <Typography variant="body2" textAlign="center">
+            New customer?{" "}
+            <Link
+              component={NavLink}
+              to={redirect ? `/register?redirect=${redirect}` : "/register"}
+              underline="hover"
+            >
+              Register
+            </Link>
+          </Typography>
 
-        {/* forgot password link */}
-        <Typography variant="body2" textAlign="center">
-          Forgot password?{" "}
-          <Link component={NavLink} to="/reset-password" underline="hover">
-            Reset password
-          </Link>
-        </Typography>
+          {/* forgot password link */}
+          <Typography variant="body2" textAlign="center">
+            Forgot password?{" "}
+            <Link component={NavLink} to="/reset-password" underline="hover">
+              Reset password
+            </Link>
+          </Typography>
+        </Stack>
       </Paper>
 
       <SnackbarComponent />
