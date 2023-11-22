@@ -8,3 +8,4 @@ export { default as PrivateRoute } from "./PrivateRoute";
 export { default as Message } from "./Message";
 export { default as FormSection } from "./FormSection";
 export { default as CheckoutSteps } from "./CheckoutSteps";
+export { default as AdminRoute } from "./AdminRoute";
