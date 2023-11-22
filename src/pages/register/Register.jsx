@@ -101,17 +101,23 @@ const Register = () => {
       {/* form */}
       <Paper
         component="form"
+        variant="outlined"
         onSubmit={formik.handleSubmit}
         sx={{
-          p: { xs: 2, sm: 4 },
+          p: { xs: 3, sm: 5 },
           display: "flex",
           flexDirection: "column",
-          gap: 2,
+          gap: 3,
         }}
       >
         {/* heading */}
-        <Typography variant="h4" component="h2" textAlign="center" mb={4}>
-          Create an account to continue shopping with us 🛒
+        <Typography
+          variant="h5"
+          component="h2"
+          textAlign="center"
+          fontWeight={500}
+        >
+          Create an account
         </Typography>
 
         {/* name fields */}
@@ -250,9 +256,8 @@ const Register = () => {
           variant="contained"
           size="large"
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
-          sx={{ my: 2 }}
         >
-          {formik.isSubmitting ? <CircularProgress size={24} /> : "Submit"}
+          {formik.isSubmitting ? <CircularProgress size={24} /> : "Register"}
         </Button>
 
         {/* login link */}
