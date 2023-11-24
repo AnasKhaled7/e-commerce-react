@@ -1,43 +1,34 @@
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
   Grid,
   Paper,
+  Skeleton,
   Stack,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
-import category1 from "../../../assets/category-1.jpg";
-import category2 from "../../../assets/category-2.jpg";
-import category3 from "../../../assets/category-3.jpg";
+import { KeyboardArrowRightRounded } from "@mui/icons-material";
 
-const categories = [
-  {
-    img: category1,
-    title: "SHIRT STYLE!",
-  },
-  {
-    img: category2,
-    title: "LOUNGEWEAR LOVE",
-  },
-  {
-    img: category3,
-    title: "LIGHT JACKETS",
-  },
-];
+import { useGetCategoriesQuery } from "../../../slices/categories.api.slice";
+import { Message } from "../../../components";
 
 const CategoryItem = ({ item }) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Paper variant="outlined" sx={{ position: "relative", height: "70vh" }}>
+    <Paper
+      variant="outlined"
+      sx={{ position: "relative", height: "60vh", minHeight: 300 }}
+    >
       <img
-        src={item.img}
-        alt={item.title}
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        src={item?.image?.url}
+        alt={item?.name}
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
       />
 
       <Stack
@@ -53,9 +44,15 @@ const CategoryItem = ({ item }) => {
           variant={isMobile ? "h6" : "h5"}
           color="#fff"
         >
-          {item.title}
+          {item?.name}
         </Typography>
-        <Button variant="contained" endIcon={<KeyboardArrowRightRoundedIcon />}>
+        <Button
+          variant="contained"
+          endIcon={<KeyboardArrowRightRounded />}
+          onClick={() => {
+            navigate(`/products/category/${item._id}`);
+          }}
+        >
           Shop Now
         </Button>
       </Stack>
@@ -67,6 +64,8 @@ const Categories = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const { data, isLoading, error } = useGetCategoriesQuery();
+
   return (
     <Container
       maxWidth="xl"
@@ -75,29 +74,46 @@ const Categories = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 4,
+        gap: 6,
       }}
     >
       <Typography
         component="h2"
         variant={isMobile ? "h4" : "h3"}
         fontWeight={700}
+        textAlign="center"
       >
         Top Categories
       </Typography>
 
       <Grid container spacing={2}>
-        {categories.map((item, index) => (
-          <Grid key={index} item xs={12} sm={6} md={4}>
-            <CategoryItem item={item} />
-          </Grid>
-        ))}
+        {isLoading ? (
+          <>
+            {[1, 2, 3, 4].map((index) => (
+              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                <Skeleton variant="rounded" height={300} />
+              </Grid>
+            ))}
+          </>
+        ) : error ? (
+          <Message severity="error">
+            {error?.data?.message || error.error}
+          </Message>
+        ) : (
+          <>
+            {data?.categories.map((category) => (
+              <Grid key={category._id} item xs={12} sm={6} md={4} lg={3}>
+                <CategoryItem item={category} />
+              </Grid>
+            ))}
+          </>
+        )}
       </Grid>
 
       <Button
         variant="outlined"
         size="large"
-        endIcon={<KeyboardArrowRightRoundedIcon />}
+        endIcon={<KeyboardArrowRightRounded />}
       >
         View all categories
       </Button>

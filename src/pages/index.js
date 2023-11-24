@@ -11,3 +11,8 @@ export { default as PlaceOrder } from "./place-order/PlaceOrder";
 export { default as Order } from "./order/Order";
 export { default as Profile } from "./profile/Profile";
 export { default as MyOrders } from "./my-orders/MyOrders";
+export { default as CategoryProducts } from "./category-products/CategoryProducts";
+
+// admin
+export { default as Dashboard } from "./admin/dashboard/Dashboard";
+export { default as OrdersList } from "./admin/orders-list/OrdersList";
