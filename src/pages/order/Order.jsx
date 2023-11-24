@@ -1,14 +1,62 @@
 import { Fragment } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { Container, Divider, Paper, Stack, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import {
+  Button,
+  CircularProgress,
+  Container,
+  Divider,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { AttachMoneyRounded, LocalShippingRounded } from "@mui/icons-material";
 
 import { LoadingScreen, Message } from "../../components";
-import { useGetOrderDetailsQuery } from "../../slices/orders.api.slice";
+import {
+  useGetOrderDetailsQuery,
+  useDeliverOrderMutation,
+  usePayOrderMutation,
+} from "../../slices/orders.api.slice";
+import { useSnackbar } from "../../hooks/useSnackbar";
 
 const Order = () => {
   const { orderId } = useParams();
+  const { userInfo } = useSelector((state) => state.auth);
 
-  const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
+  const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
+
+  const {
+    data: order,
+    refetch,
+    isLoading,
+    error,
+  } = useGetOrderDetailsQuery(orderId);
+  const [payOrder, { isLoading: isPaying }] = usePayOrderMutation(orderId);
+  const [deliverOrder, { isLoading: isDelivering }] =
+    useDeliverOrderMutation(orderId);
+
+  const deliverOrderHandler = async () => {
+    hideSnackbar();
+    try {
+      await deliverOrder(orderId);
+      refetch();
+      showSnackbar("Order delivered successfully");
+    } catch (error) {
+      showSnackbar(error?.data?.message || error.error);
+    }
+  };
+
+  const payOrderHandler = async () => {
+    hideSnackbar();
+    try {
+      await payOrder(orderId);
+      refetch();
+      showSnackbar("Order paid successfully");
+    } catch (error) {
+      showSnackbar(error?.data?.message || error.error);
+    }
+  };
 
   return isLoading ? (
     <LoadingScreen />
@@ -52,6 +100,8 @@ const Order = () => {
           <Message severity="warning">Your order is pending</Message>
         ) : order.status === "processing" ? (
           <Message severity="info">Your order is being processed</Message>
+        ) : order.status === "cancelled" ? (
+          <Message severity="error">Your order has been cancelled</Message>
         ) : (
           <Message severity="success">
             Your order has been delivered successfully
@@ -62,7 +112,7 @@ const Order = () => {
       <Divider />
 
       <Paper
-        elevation={4}
+        variant="outlined"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -123,7 +173,7 @@ const Order = () => {
       <Divider />
 
       <Paper
-        elevation={4}
+        variant="outlined"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -153,18 +203,54 @@ const Order = () => {
           <Divider />
 
           <Stack direction="row" justifyContent="space-between">
-            <Typography>Tax</Typography>
-            <Typography>EGP {order.taxPrice}</Typography>
-          </Stack>
-
-          <Divider />
-
-          <Stack direction="row" justifyContent="space-between">
             <Typography>Total</Typography>
             <Typography>EGP {order.totalPrice}</Typography>
           </Stack>
         </Stack>
       </Paper>
+
+      {userInfo?.isAdmin && (
+        <>
+          <Divider />
+
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            gap={2}
+          >
+            {!order?.isPaid && order?.status !== "cancelled" && (
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={payOrderHandler}
+                disabled={isPaying}
+                endIcon={<LocalShippingRounded />}
+              >
+                {isPaying ? <CircularProgress size={24} /> : "Mark as Paid"}
+              </Button>
+            )}
+
+            {!order?.isDelivered && order?.status !== "cancelled" && (
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={deliverOrderHandler}
+                disabled={isDelivering}
+                endIcon={<AttachMoneyRounded />}
+              >
+                {isDelivering ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Mark as Delivered"
+                )}
+              </Button>
+            )}
+          </Stack>
+        </>
+      )}
+
+      <SnackbarComponent />
     </Container>
   );
 };

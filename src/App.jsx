@@ -13,7 +13,6 @@ import { AdminRoute, Layout, PrivateRoute } from "./components";
 import {
   Cart,
   CategoryProducts,
-  Dashboard,
   Home,
   Login,
   MyOrders,
@@ -53,9 +52,8 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path="/admin" element={<AdminRoute />}>
-        <Route path="/admin" element={<Dashboard />}>
-          <Route path="orders-list" element={<OrdersList />} />
-        </Route>
+        <Route path="orders-list" element={<OrdersList />} />
+        <Route path="orders-list/:orderId" element={<Order />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

@@ -1,9 +1,17 @@
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Divider } from "@mui/material";
+
 import { Navbar, Footer, ScrollToTop } from "./";
 
 const Layout = () => {
-  return (
+  const { userInfo } = useSelector((state) => state.auth);
+
+  return userInfo?.isAdmin ? (
+    <ScrollToTop>
+      <Outlet />
+    </ScrollToTop>
+  ) : (
     <ScrollToTop>
       <Navbar />
       <Outlet />

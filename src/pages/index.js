@@ -14,5 +14,5 @@ export { default as MyOrders } from "./my-orders/MyOrders";
 export { default as CategoryProducts } from "./category-products/CategoryProducts";
 
 // admin
-export { default as Dashboard } from "./admin/dashboard/Dashboard";
+export { default as AdminLayout } from "./admin/admin-layout/AdminLayout";
 export { default as OrdersList } from "./admin/orders-list/OrdersList";
