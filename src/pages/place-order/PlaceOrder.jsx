@@ -20,11 +20,13 @@ const PlaceOrder = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.auth);
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
   useEffect(() => {
-    if (!cart.shippingAddress.address) navigate("/shipping");
-  }, [cart, navigate]);
+    if (!userInfo.shippingAddress.address && userInfo.phone)
+      navigate("/shipping");
+  }, [userInfo, navigate]);
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
 
@@ -32,20 +34,19 @@ const PlaceOrder = () => {
     hideSnackbar();
     try {
       const orderItems = cart.cartItems.map((item) => ({
-        product: item._id,
-        name: item.name,
-        image: item.defaultImage.url,
-        price: item.price,
-        quantity: item.quantity,
+        product: item?._id,
+        name: item?.name,
+        image: item?.image?.url,
+        price: item?.price,
+        quantity: item?.quantity,
       }));
 
       const res = await createOrder({
         orderItems: orderItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
+        shippingAddress: userInfo.shippingAddress,
+        phone: userInfo.phone,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
       }).unwrap();
 
@@ -76,8 +77,9 @@ const PlaceOrder = () => {
             <Typography variant="h5">Shipping</Typography>
             <Typography>
               <strong>Address: </strong>
-              {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
-              {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
+              {userInfo?.shippingAddress?.address},{" "}
+              {userInfo?.shippingAddress?.city},{" "}
+              {userInfo?.shippingAddress?.postalCode}
             </Typography>
           </Stack>
 
@@ -97,7 +99,7 @@ const PlaceOrder = () => {
                       gap={2}
                     >
                       <img
-                        src={item.defaultImage.url}
+                        src={item?.image?.url}
                         alt={item.name}
                         width="100"
                         height="100"
@@ -127,6 +129,7 @@ const PlaceOrder = () => {
 
         {/* right part: order summary */}
         <Paper
+          variant="outlined"
           sx={{
             flex: 1,
             display: "flex",
@@ -149,11 +152,6 @@ const PlaceOrder = () => {
             <Stack direction="row" justifyContent="space-between">
               <Typography>Shipping</Typography>
               <Typography>EGP {cart.shippingPrice}</Typography>
-            </Stack>
-
-            <Stack direction="row" justifyContent="space-between">
-              <Typography>Tax</Typography>
-              <Typography>EGP {cart.taxPrice}</Typography>
             </Stack>
 
             <Stack direction="row" justifyContent="space-between">

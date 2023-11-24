@@ -11,12 +11,19 @@ import {
 } from "@mui/material";
 
 import { CheckoutSteps, FormSection } from "../../components";
-import { saveShippingAddress } from "../../slices/cart.slice";
+import { useUpdateProfileMutation } from "../../slices/users.api.slice";
+import { setCredentials } from "../../slices/auth.slice";
+import { useSnackbar } from "../../hooks/useSnackbar";
 
 const Shipping = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { shippingAddress } = useSelector((state) => state.cart);
+
+  const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const [updateProfile] = useUpdateProfileMutation();
 
   // formik validation schema
   const validationSchema = Yup.object({
@@ -29,18 +36,35 @@ const Shipping = () => {
   });
 
   // formik submit handler
-  const onSubmit = (values) => {
-    dispatch(saveShippingAddress(values));
-    navigate("/place-order");
+  const onSubmit = async (values) => {
+    hideSnackbar();
+    try {
+      const changedValues = {};
+      for (const key in values) {
+        if (values[key] !== formik.initialValues[key]) {
+          changedValues[key] = values[key];
+        }
+      }
+      if (Object.keys(changedValues).length === 0) {
+        navigate("/place-order");
+        return;
+      }
+      const res = await updateProfile(changedValues).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/place-order");
+    } catch (error) {
+      console.log(error);
+      showSnackbar(error?.data?.message || error.error, "error");
+    }
   };
 
   // formik hook for form handling
   const formik = useFormik({
     initialValues: {
-      address: shippingAddress?.address || "",
-      city: shippingAddress?.city || "",
-      postalCode: shippingAddress?.postalCode || "",
-      phone: shippingAddress?.phone || "",
+      address: userInfo?.shippingAddress?.address || "",
+      city: userInfo?.shippingAddress?.city || "",
+      postalCode: userInfo?.shippingAddress?.postalCode || "",
+      phone: userInfo?.phone || "",
     },
     validationSchema,
     onSubmit,
@@ -48,6 +72,7 @@ const Shipping = () => {
   return (
     <FormSection>
       <Paper
+        variant="outlined"
         component="form"
         onSubmit={formik.handleSubmit}
         sx={{
@@ -133,6 +158,9 @@ const Shipping = () => {
         {/* checkout steps */}
         <CheckoutSteps activeStep={1} />
       </Paper>
+
+      {/* snackbar */}
+      <SnackbarComponent />
     </FormSection>
   );
 };

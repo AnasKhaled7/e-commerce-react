@@ -13,6 +13,7 @@ export const apiSlice = createApi({
     "Product",
     "Products",
     "Carts",
+    "Order",
     "Orders",
   ],
   endpoints: (builder) => ({}),

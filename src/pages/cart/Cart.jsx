@@ -52,7 +52,7 @@ const Cart = () => {
 
       <Divider />
 
-      {cart.cartItems.length === 0 ? (
+      {cart?.cartItems.length === 0 ? (
         <Stack direction="column" alignItems="center" gap={2} sx={{ flex: 1 }}>
           <Message severity="info">
             Your cart is empty{" "}
@@ -66,7 +66,7 @@ const Cart = () => {
           {/* products in cart */}
           <Stack flex={2}>
             {cart.cartItems.map((item) => (
-              <Fragment key={item._id}>
+              <Fragment key={item?._id}>
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -74,8 +74,8 @@ const Cart = () => {
                   sx={{ gap: { xs: 1, sm: 4 } }}
                 >
                   <img
-                    src={item.defaultImage.url}
-                    alt={item.name}
+                    src={item?.image?.url}
+                    alt={item?.name}
                     style={{
                       width: "150px",
                       height: "150px",
@@ -89,13 +89,13 @@ const Cart = () => {
                     <Typography
                       variant="h6"
                       component={NavLink}
-                      to={`/products/${item._id}`}
+                      to={`/products/${item?._id}`}
                       color="inherit"
                     >
-                      {item.name}
+                      {item?.name}
                     </Typography>
 
-                    <Typography fontWeight={500}>EGP {item.price}</Typography>
+                    <Typography fontWeight={500}>EGP {item?.price}</Typography>
 
                     {/* product amount */}
                     <Stack direction="row" alignItems="center" gap={2}>
@@ -104,13 +104,13 @@ const Cart = () => {
                           <InputLabel id="cart-select-quantity">Qty</InputLabel>
                           <Select
                             labelId="cart-select-quantity"
-                            value={item.quantity}
+                            value={item?.quantity}
                             label="Qty"
                             onChange={(e) =>
                               addToCartHandler(item, Number(e.target.value))
                             }
                           >
-                            {[...Array(item.countInStock).keys()].map(
+                            {[...Array(item?.countInStock).keys()].map(
                               (index) => (
                                 <MenuItem key={index + 1} value={index + 1}>
                                   {index + 1}
@@ -125,7 +125,7 @@ const Cart = () => {
 
                       <IconButton
                         color="error"
-                        onClick={() => removeFromCartHandler(item._id)}
+                        onClick={() => removeFromCartHandler(item?._id)}
                       >
                         <DeleteOutlineRounded />
                       </IconButton>
@@ -151,7 +151,7 @@ const Cart = () => {
           >
             <Typography textAlign="center" variant="h6">
               Order Summary (
-              {cart.cartItems.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+              {cart?.cartItems.reduce((acc, item) => acc + item?.quantity, 0)}{" "}
               items)
             </Typography>
 
@@ -161,7 +161,7 @@ const Cart = () => {
               alignItems="center"
             >
               <Typography>Subtotal</Typography>
-              <Typography>EGP {cart.itemsPrice}</Typography>
+              <Typography>EGP {cart?.itemsPrice}</Typography>
             </Stack>
             <Stack
               direction="row"
@@ -169,15 +169,7 @@ const Cart = () => {
               alignItems="center"
             >
               <Typography>Shipping</Typography>
-              <Typography>EGP {cart.shippingPrice}</Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography>Taxes</Typography>
-              <Typography>EGP {cart.taxPrice}</Typography>
+              <Typography>EGP {cart?.shippingPrice}</Typography>
             </Stack>
             <Stack
               direction="row"
@@ -185,14 +177,14 @@ const Cart = () => {
               alignItems="center"
             >
               <Typography variant="h6">Total</Typography>
-              <Typography variant="h6">EGP {cart.totalPrice}</Typography>
+              <Typography variant="h6">EGP {cart?.totalPrice}</Typography>
             </Stack>
 
             <Button
               variant="contained"
               size="large"
               endIcon={<ShoppingCartCheckoutRounded />}
-              disabled={cart.cartItems.length === 0}
+              disabled={cart?.cartItems?.length === 0}
               onClick={checkoutHandler}
             >
               Checkout Now

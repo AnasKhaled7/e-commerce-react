@@ -11,7 +11,6 @@ import {
   Divider,
   Drawer,
   IconButton,
-  InputBase,
   Link,
   List,
   ListItem,
@@ -24,13 +23,10 @@ import {
   Stack,
   Toolbar,
   Tooltip,
-  alpha,
-  styled,
   useScrollTrigger,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
-  Search,
   ShoppingCartOutlined,
   Logout,
   PersonOutlineOutlined,
@@ -59,49 +55,6 @@ HideOnScroll.propTypes = {
 
 const drawerWidth = 240;
 
-// search bar
-const SearchBox = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "16ch",
-      "&:focus": {
-        width: "24ch",
-      },
-    },
-  },
-}));
-
 // navbar component
 const Navbar = (props) => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -109,17 +62,15 @@ const Navbar = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [logoutApiCall] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
+  const handleDrawerToggle = () => setMobileOpen((prevState) => !prevState);
 
   const logoutHandler = async () => {
     try {
-      await logoutApiCall().unwrap();
+      await logout().unwrap();
       dispatch(clearCredentials());
       navigate("/login");
     } catch (error) {
@@ -197,18 +148,6 @@ const Navbar = (props) => {
             >
               Nile
             </Link>
-
-            {/* center */}
-            <SearchBox>
-              <SearchIconWrapper>
-                <Search />
-              </SearchIconWrapper>
-              <StyledInputBase
-                id="search"
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </SearchBox>
 
             {/* right */}
             <Stack gap={0.5} direction="row" alignItems="center">

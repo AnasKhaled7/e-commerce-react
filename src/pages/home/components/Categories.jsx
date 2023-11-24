@@ -96,9 +96,11 @@ const Categories = () => {
             ))}
           </>
         ) : error ? (
-          <Message severity="error">
-            {error?.data?.message || error.error}
-          </Message>
+          <Grid item xs={12}>
+            <Message severity="error">
+              {error?.data?.message || error.error}
+            </Message>
+          </Grid>
         ) : (
           <>
             {data?.categories.map((category) => (

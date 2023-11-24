@@ -12,6 +12,7 @@ import {
 
 import { useGetMyOrdersQuery } from "../../slices/orders.api.slice";
 import { LoadingScreen, Message } from "../../components";
+import dateFormate from "../../utils/dateFormat";
 
 const MyOrders = () => {
   const navigate = useNavigate();
@@ -87,13 +88,7 @@ const MyOrders = () => {
                   <Typography variant="caption" color="text.secondary">
                     Order Date
                   </Typography>
-                  <Typography>
-                    {order.createdAt
-                      .substring(0, 10)
-                      .split("-")
-                      .reverse()
-                      .join(" / ")}
-                  </Typography>
+                  <Typography>{dateFormate(order?.createdAt)}</Typography>
                 </div>
 
                 <div>

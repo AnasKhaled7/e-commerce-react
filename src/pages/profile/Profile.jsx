@@ -72,8 +72,6 @@ const Profile = () => {
       const res = await updateProfile(changedValues).unwrap();
       dispatch(setCredentials({ ...res }));
       showSnackbar("Profile updated successfully", "success");
-
-      // formik.resetForm();
     } catch (error) {
       console.log(error);
       showSnackbar(error?.data?.message || error.error, "error");
@@ -123,6 +121,7 @@ const Profile = () => {
     <FormSection>
       {/* form */}
       <Paper
+        variant="outlined"
         component="form"
         onSubmit={formik.handleSubmit}
         sx={{

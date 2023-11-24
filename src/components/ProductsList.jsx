@@ -15,16 +15,26 @@ const ProductsList = ({ queryFunction, queryArgs = [] }) => {
           ))}
         </>
       ) : error ? (
-        <Message severity="error">
-          {error?.data?.message || error.error}
-        </Message>
+        <Grid item xs={12}>
+          <Message severity="error">
+            {error?.data?.message || error.error}
+          </Message>
+        </Grid>
       ) : (
         <>
-          {data?.products.map((product) => (
-            <Grid key={product._id} item xs={12} sm={6} md={4} lg={3}>
-              <ProductCard product={product} />
+          {data?.total === 0 ? (
+            <Grid item xs={12}>
+              <Message severity="info">No products found</Message>
             </Grid>
-          ))}
+          ) : (
+            <>
+              {data?.products.map((product) => (
+                <Grid key={product._id} item xs={12} sm={6} md={4} lg={3}>
+                  <ProductCard product={product} />
+                </Grid>
+              ))}
+            </>
+          )}
         </>
       )}
     </Grid>

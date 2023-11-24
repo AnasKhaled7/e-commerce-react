@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
-import { Container, Typography } from "@mui/material";
+import { Container, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 import { useGetCategoryQuery } from "../../slices/categories.api.slice";
 import { LoadingScreen, Message, ProductsList } from "../../components";
 import { useGetProductsByCategoryQuery } from "../../slices/products.api.slice";
 
 const CategoryProducts = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { categoryId } = useParams();
   const { data, isLoading, error } = useGetCategoryQuery(categoryId);
 
@@ -28,7 +30,7 @@ const CategoryProducts = () => {
       }}
     >
       {/* title */}
-      <Typography component="h2" variant="h3">
+      <Typography component="h2" variant={isMobile ? "h4" : "h3"}>
         {data?.category?.name}
       </Typography>
 
