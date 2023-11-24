@@ -12,11 +12,14 @@ import { CssBaseline } from "@mui/material";
 import { AdminRoute, Layout, PrivateRoute } from "./components";
 import {
   Cart,
+  CategoryProducts,
+  Dashboard,
   Home,
   Login,
   MyOrders,
   NotFound,
   Order,
+  OrdersList,
   PlaceOrder,
   Product,
   Products,
@@ -31,6 +34,10 @@ const router = createBrowserRouter(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
       <Route path="products" element={<Products />} />
+      <Route
+        path="products/category/:categoryId"
+        element={<CategoryProducts />}
+      />
       <Route path="products/:productId" element={<Product />} />
       <Route path="register" element={<Register />} />
       <Route path="login" element={<Login />} />
@@ -41,12 +48,14 @@ const router = createBrowserRouter(
         <Route path="shipping" element={<Shipping />} />
         <Route path="place-order" element={<PlaceOrder />} />
         <Route path="orders/:orderId" element={<Order />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="my-orders" element={<MyOrders />} />
       </Route>
 
-      <Route path="admin" element={<AdminRoute />}>
-        {/* routes here */}
+      <Route path="/admin" element={<AdminRoute />}>
+        <Route path="/admin" element={<Dashboard />}>
+          <Route path="orders-list" element={<OrdersList />} />
+        </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

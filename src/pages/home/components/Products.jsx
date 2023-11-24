@@ -6,8 +6,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
+import { KeyboardArrowRightRounded } from "@mui/icons-material";
+
 import { ProductsList } from "../../../components";
+import { useGetProductsQuery } from "../../../slices/products.api.slice";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ const Products = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 4,
+        gap: 6,
       }}
     >
       <Typography
@@ -33,12 +35,13 @@ const Products = () => {
         Top Products
       </Typography>
 
-      <ProductsList />
+      {/* products */}
+      <ProductsList queryFunction={useGetProductsQuery} />
 
       <Button
         variant="outlined"
         size="large"
-        endIcon={<KeyboardArrowRightRoundedIcon />}
+        endIcon={<KeyboardArrowRightRounded />}
         onClick={() => navigate("/products")}
       >
         View all products

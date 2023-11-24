@@ -1,5 +1,6 @@
 import { Container, Typography } from "@mui/material";
 import { ProductsList } from "../../components";
+import { useGetProductsQuery } from "../../slices/products.api.slice";
 
 const Products = () => {
   return (
@@ -19,7 +20,7 @@ const Products = () => {
       </Typography>
 
       {/* products */}
-      <ProductsList />
+      <ProductsList queryFunction={useGetProductsQuery} />
     </Container>
   );
 };

@@ -55,7 +55,7 @@ const Product = () => {
           {/* image container */}
           <Box flex={1}>
             <img
-              src={data?.product?.defaultImage.url}
+              src={data?.product?.image?.url}
               alt={data?.product?.name}
               style={{
                 width: "100%",
