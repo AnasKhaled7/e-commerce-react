@@ -112,13 +112,13 @@ const Categories = () => {
         )}
       </Grid>
 
-      <Button
+      {/* <Button
         variant="outlined"
         size="large"
         endIcon={<KeyboardArrowRightRounded />}
       >
         View all categories
-      </Button>
+      </Button> */}
     </Container>
   );
 };

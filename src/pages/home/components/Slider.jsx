@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   Box,
-  Button,
   IconButton,
   Stack,
   Typography,
@@ -11,7 +10,6 @@ import {
 import {
   ArrowBackIosRounded,
   ArrowForwardIosRounded,
-  KeyboardArrowRightRounded,
 } from "@mui/icons-material";
 
 import slide1 from "../../../assets/slide-1.png";
@@ -148,13 +146,13 @@ const Slider = () => {
                 {item.desc}
               </Typography>
 
-              <Button
+              {/* <Button
                 variant="contained"
                 size="large"
                 endIcon={<KeyboardArrowRightRounded />}
               >
                 Shop Now
-              </Button>
+              </Button> */}
             </Stack>
           </Stack>
         ))}
