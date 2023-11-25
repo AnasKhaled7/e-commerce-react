@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -20,12 +20,9 @@ import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../../slices/users.api.slice";
-import { setCredentials } from "../../slices/auth.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
-import { useEffect } from "react";
 
 const Shipping = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
@@ -48,18 +45,7 @@ const Shipping = () => {
   const onSubmit = async (values) => {
     hideSnackbar();
     try {
-      const changedValues = {};
-      for (const key in values) {
-        if (values[key] !== formik.initialValues[key]) {
-          changedValues[key] = values[key];
-        }
-      }
-      if (Object.keys(changedValues).length === 0) {
-        navigate("/place-order");
-        return;
-      }
-      const res = await updateProfile(changedValues).unwrap();
-      dispatch(setCredentials({ ...res }));
+      await updateProfile(values);
       navigate("/place-order");
     } catch (error) {
       console.log(error);
