@@ -1,4 +1,7 @@
-export const BASE_URL = "";
+export const BASE_URL =
+  process.env.REACT_APP_ENV === "production"
+    ? "https://nile-node.vercel.app"
+    : "";
 
 export const API_URL = `${BASE_URL}/api/v1`;
 
