@@ -67,6 +67,7 @@ const MyOrders = () => {
                     color="info"
                     size="small"
                     variant="outlined"
+                    sx={{ textTransform: "capitalize", alignSelf: "end" }}
                   />
                 ) : (
                   <Chip
@@ -74,6 +75,7 @@ const MyOrders = () => {
                     color="success"
                     size="small"
                     variant="outlined"
+                    sx={{ textTransform: "capitalize", alignSelf: "end" }}
                   />
                 )}
 

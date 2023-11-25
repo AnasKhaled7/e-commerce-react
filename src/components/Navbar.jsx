@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PropTypes } from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -32,9 +32,6 @@ import {
   PersonOutlineOutlined,
   ReceiptLongRounded,
 } from "@mui/icons-material";
-
-import { useLogoutMutation } from "../slices/users.api.slice";
-import { clearCredentials } from "../slices/auth.slice";
 import { deepPurple } from "@mui/material/colors";
 
 function HideOnScroll({ children, window }) {
@@ -58,25 +55,12 @@ const drawerWidth = 240;
 // navbar component
 const Navbar = (props) => {
   const { cartItems } = useSelector((state) => state.cart);
-  const { userInfo } = useSelector((state) => state.auth);
+  const { token, userInfo } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const [logout] = useLogoutMutation();
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => setMobileOpen((prevState) => !prevState);
-
-  const logoutHandler = async () => {
-    try {
-      await logout().unwrap();
-      dispatch(clearCredentials());
-      navigate("/login");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -98,7 +82,7 @@ const Navbar = (props) => {
       </Link>
       <Divider />
       <List>
-        {userInfo ? (
+        {token ? (
           <>
             <ListItem disablePadding onClick={() => navigate("/profile")}>
               <ListItemButton sx={{ textAlign: "center" }}>
@@ -110,7 +94,7 @@ const Navbar = (props) => {
                 <ListItemText primary="My Orders" />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding onClick={logoutHandler}>
+            <ListItem disablePadding onClick={props.logoutHandler}>
               <ListItemButton sx={{ textAlign: "center" }}>
                 <ListItemText primary="Logout" />
               </ListItemButton>
@@ -250,7 +234,7 @@ const Navbar = (props) => {
 
           <Divider />
 
-          <MenuItem onClick={logoutHandler}>
+          <MenuItem onClick={props.logoutHandler}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>

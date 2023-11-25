@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -22,11 +22,10 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { FormSection } from "../../components";
 import { useRegisterMutation } from "../../slices/users.api.slice";
-import { setCredentials } from "../../slices/auth.slice";
+
 import { useSnackbar } from "../../hooks/useSnackbar";
 
 const Register = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [register] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
@@ -69,9 +68,8 @@ const Register = () => {
   const onSubmit = async (values) => {
     hideSnackbar();
     try {
-      const res = await register(values).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate(redirect);
+      await register(values);
+      navigate("/login");
     } catch (error) {
       console.log(error);
       showSnackbar(error?.data?.message || error.error, "error");

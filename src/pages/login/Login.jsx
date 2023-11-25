@@ -29,6 +29,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
+
   const { userInfo } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -56,6 +57,7 @@ const Login = () => {
     hideSnackbar();
     try {
       const res = await login(values).unwrap();
+      // const userInfo = await getProfile().unwrap();
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (error) {

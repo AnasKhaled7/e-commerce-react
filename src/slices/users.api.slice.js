@@ -21,6 +21,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       providesTags: ["Auth"],
     }),
 
+    getProfile: builder.query({
+      query: () => ({
+        url: `${USERS_URL}/profile`,
+      }),
+      providesTags: ["Auth"],
+    }),
+
     sendResetPasswordEmail: builder.mutation({
       query: (data) => ({
         url: `${AUTH_URL}/reset-password-code`,
@@ -44,7 +51,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/logout`,
         method: "POST",
       }),
-      invalidatesTags: ["Users"],
+      invalidatesTags: ["Auth"],
     }),
 
     updateProfile: builder.mutation({
@@ -60,6 +67,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useGetProfileQuery,
   useSendResetPasswordEmailMutation,
   useResetPasswordMutation,
   useLogoutMutation,

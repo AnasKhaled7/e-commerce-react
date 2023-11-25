@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -10,10 +10,19 @@ import {
   Typography,
 } from "@mui/material";
 
-import { CheckoutSteps, FormSection } from "../../components";
-import { useUpdateProfileMutation } from "../../slices/users.api.slice";
+import {
+  CheckoutSteps,
+  FormSection,
+  LoadingScreen,
+  Message,
+} from "../../components";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "../../slices/users.api.slice";
 import { setCredentials } from "../../slices/auth.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
+import { useEffect } from "react";
 
 const Shipping = () => {
   const dispatch = useDispatch();
@@ -21,7 +30,7 @@ const Shipping = () => {
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
-  const { userInfo } = useSelector((state) => state.auth);
+  const { data, isLoading, error } = useGetProfileQuery();
 
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -61,14 +70,33 @@ const Shipping = () => {
   // formik hook for form handling
   const formik = useFormik({
     initialValues: {
-      address: userInfo?.shippingAddress?.address || "",
-      city: userInfo?.shippingAddress?.city || "",
-      postalCode: userInfo?.shippingAddress?.postalCode || "",
-      phone: userInfo?.phone || "",
+      address: data?.user?.shippingAddress?.address || "",
+      city: data?.user?.shippingAddress?.city || "",
+      postalCode: data?.user?.shippingAddress?.postalCode || "",
+      phone: data?.user?.phone || "",
     },
     validationSchema,
     onSubmit,
   });
+
+  useEffect(() => {
+    if (!data) return;
+    formik.setValues({
+      address: data?.user?.shippingAddress?.address || "",
+      city: data?.user?.shippingAddress?.city || "",
+      postalCode: data?.user?.shippingAddress?.postalCode || "",
+      phone: data?.user?.phone || "",
+    });
+    // eslint-disable-next-line
+  }, [data]);
+
+  if (isLoading) return <LoadingScreen />;
+  if (error) {
+    console.log(error);
+    return (
+      <Message severity="error">{error?.data?.message || error.error}</Message>
+    );
+  }
   return (
     <FormSection>
       <Paper
