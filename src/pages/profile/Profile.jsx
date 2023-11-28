@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -18,12 +18,9 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { FormSection, LoadingScreen, Message } from "../../components";
-import {
-  useGetProfileQuery,
-  useUpdateProfileMutation,
-} from "../../slices/users.api.slice";
-import { setCredentials } from "../../slices/auth.slice";
+import { FormSection } from "../../components";
+import { useUpdateProfileMutation } from "../../slices/users.api.slice";
+import { updateUserInfo } from "../../slices/auth.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
 
 const Profile = () => {
@@ -32,7 +29,8 @@ const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
-  const { data, isLoading, error } = useGetProfileQuery();
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [updateProfile] = useUpdateProfileMutation();
 
   // formik validation schema
@@ -70,9 +68,13 @@ const Profile = () => {
           changedValues[key] = values[key];
         }
       }
+      if (Object.keys(changedValues).length === 0) {
+        showSnackbar("Nothing to update", "info");
+        return;
+      }
 
       const res = await updateProfile(changedValues).unwrap();
-      dispatch(setCredentials({ ...res }));
+      dispatch(updateUserInfo({ ...res }));
       showSnackbar("Profile updated successfully", "success");
     } catch (error) {
       console.log(error);
@@ -83,15 +85,15 @@ const Profile = () => {
   // formik hook
   const formik = useFormik({
     initialValues: {
-      firstName: data?.user?.firstName || "",
-      lastName: data?.user?.lastName || "",
-      email: data?.user?.email || "",
+      firstName: userInfo?.firstName || "",
+      lastName: userInfo?.lastName || "",
+      email: userInfo?.email || "",
       password: "",
       confirmPassword: "",
-      address: data?.user?.shippingAddress?.address || "",
-      city: data?.user?.shippingAddress?.city || "",
-      postalCode: data?.user?.shippingAddress?.postalCode || "",
-      phone: data?.user?.phone || "",
+      address: userInfo?.shippingAddress?.address || "",
+      city: userInfo?.shippingAddress?.city || "",
+      postalCode: userInfo?.shippingAddress?.postalCode || "",
+      phone: userInfo?.phone || "",
     },
     validationSchema,
     onSubmit,
@@ -100,32 +102,25 @@ const Profile = () => {
   useEffect(() => {
     formik.resetForm({
       values: {
-        firstName: data?.user?.firstName || "",
-        lastName: data?.user?.lastName || "",
-        email: data?.user?.email || "",
+        firstName: userInfo?.firstName || "",
+        lastName: userInfo?.lastName || "",
+        email: userInfo?.email || "",
         password: "",
         confirmPassword: "",
-        address: data?.user?.shippingAddress?.address || "",
-        city: data?.user?.shippingAddress?.city || "",
-        postalCode: data?.user?.shippingAddress?.postalCode || "",
-        phone: data?.user?.phone || "",
+        address: userInfo?.shippingAddress?.address || "",
+        city: userInfo?.shippingAddress?.city || "",
+        postalCode: userInfo?.shippingAddress?.postalCode || "",
+        phone: userInfo?.phone || "",
       },
     });
 
     // eslint-disable-next-line
-  }, [data]);
+  }, [userInfo]);
 
   // password visibility handler
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (e) => e.preventDefault();
 
-  if (isLoading) return <LoadingScreen />;
-  if (error) {
-    console.log(error);
-    return (
-      <Message severity="error">{error?.data?.message || error.error}</Message>
-    );
-  }
   return (
     <FormSection>
       {/* form */}

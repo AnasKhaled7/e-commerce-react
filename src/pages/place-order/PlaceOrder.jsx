@@ -11,31 +11,25 @@ import {
   Typography,
 } from "@mui/material";
 
-import { CheckoutSteps, LoadingScreen, Message } from "../../components";
+import { CheckoutSteps, Message } from "../../components";
 import { useCreateOrderMutation } from "../../slices/orders.api.slice";
 import { clearCartItems } from "../../slices/cart.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
-import { useGetProfileQuery } from "../../slices/users.api.slice";
 
 const PlaceOrder = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.auth);
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
-
-  const {
-    data,
-    isLoading: dataLoading,
-    error: dataError,
-  } = useGetProfileQuery();
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
 
   useEffect(() => {
-    if (!data?.user?.shippingAddress?.address && data?.user?.phone)
+    if (!userInfo?.shippingAddress?.address && userInfo?.phone)
       navigate("/shipping");
-  }, [data, navigate]);
+  }, [userInfo, navigate]);
 
   const placeOrderHandler = async () => {
     hideSnackbar();
@@ -50,8 +44,8 @@ const PlaceOrder = () => {
 
       const res = await createOrder({
         orderItems: orderItems,
-        shippingAddress: data?.user?.shippingAddress,
-        phone: data?.user?.phone,
+        shippingAddress: userInfo?.shippingAddress,
+        phone: userInfo?.phone,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
@@ -65,8 +59,6 @@ const PlaceOrder = () => {
     }
   };
 
-  if (dataLoading) return <LoadingScreen />;
-  if (dataError) return <Message severity="error">{dataError.message}</Message>;
   return (
     <Container
       maxWidth="xl"
@@ -86,9 +78,9 @@ const PlaceOrder = () => {
             <Typography variant="h5">Shipping</Typography>
             <Typography>
               <strong>Address: </strong>
-              {data?.user?.shippingAddress?.address},{" "}
-              {data?.user?.shippingAddress?.city},{" "}
-              {data?.user?.shippingAddress?.postalCode}
+              {userInfo?.shippingAddress?.address},{" "}
+              {userInfo?.shippingAddress?.city},{" "}
+              {userInfo?.shippingAddress?.postalCode}
             </Typography>
           </Stack>
 

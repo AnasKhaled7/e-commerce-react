@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -10,24 +11,18 @@ import {
   Typography,
 } from "@mui/material";
 
-import {
-  CheckoutSteps,
-  FormSection,
-  LoadingScreen,
-  Message,
-} from "../../components";
-import {
-  useGetProfileQuery,
-  useUpdateProfileMutation,
-} from "../../slices/users.api.slice";
+import { CheckoutSteps, FormSection } from "../../components";
+import { useUpdateProfileMutation } from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
+import { updateUserInfo } from "../../slices/auth.slice";
 
 const Shipping = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
-  const { data, isLoading, error } = useGetProfileQuery();
+  const { userInfo } = useSelector((state) => state.auth);
 
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -45,7 +40,18 @@ const Shipping = () => {
   const onSubmit = async (values) => {
     hideSnackbar();
     try {
-      await updateProfile(values);
+      const changedValues = {};
+      for (const key in values) {
+        if (values[key] !== formik.initialValues[key]) {
+          changedValues[key] = values[key];
+        }
+      }
+      if (Object.keys(changedValues).length === 0) {
+        navigate("/place-order");
+        return;
+      }
+      const res = await updateProfile(changedValues).unwrap();
+      dispatch(updateUserInfo({ ...res }));
       navigate("/place-order");
     } catch (error) {
       console.log(error);
@@ -56,33 +62,26 @@ const Shipping = () => {
   // formik hook for form handling
   const formik = useFormik({
     initialValues: {
-      address: data?.user?.shippingAddress?.address || "",
-      city: data?.user?.shippingAddress?.city || "",
-      postalCode: data?.user?.shippingAddress?.postalCode || "",
-      phone: data?.user?.phone || "",
+      address: userInfo?.shippingAddress?.address || "",
+      city: userInfo?.shippingAddress?.city || "",
+      postalCode: userInfo?.shippingAddress?.postalCode || "",
+      phone: userInfo?.phone || "",
     },
     validationSchema,
     onSubmit,
   });
 
   useEffect(() => {
-    if (!data) return;
     formik.setValues({
-      address: data?.user?.shippingAddress?.address || "",
-      city: data?.user?.shippingAddress?.city || "",
-      postalCode: data?.user?.shippingAddress?.postalCode || "",
-      phone: data?.user?.phone || "",
+      address: userInfo?.shippingAddress?.address || "",
+      city: userInfo?.shippingAddress?.city || "",
+      postalCode: userInfo?.shippingAddress?.postalCode || "",
+      phone: userInfo?.phone || "",
     });
-    // eslint-disable-next-line
-  }, [data]);
 
-  if (isLoading) return <LoadingScreen />;
-  if (error) {
-    console.log(error);
-    return (
-      <Message severity="error">{error?.data?.message || error.error}</Message>
-    );
-  }
+    // eslint-disable-next-line
+  }, [userInfo]);
+
   return (
     <FormSection>
       <Paper
