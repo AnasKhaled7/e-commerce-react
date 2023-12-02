@@ -81,7 +81,7 @@ const AdminLayout = () => {
 
   const logoutHandler = async () => {
     try {
-      await logout().unwrap();
+      await logout();
       dispatch(clearCredentials());
       navigate("/login");
     } catch (error) {
@@ -133,6 +133,16 @@ const AdminLayout = () => {
           >
             <ListItemButton>
               <ListItemText primary="Orders" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem
+            disablePadding
+            onClick={() => navigate("/admin/products-list")}
+          >
+            <ListItemButton>
+              <ListItemText primary="Products" />
             </ListItemButton>
           </ListItem>
         </List>

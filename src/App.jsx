@@ -21,7 +21,9 @@ import {
   OrdersList,
   PlaceOrder,
   Product,
+  ProductDetails,
   Products,
+  ProductsList,
   Profile,
   Register,
   ResetPassword,
@@ -54,6 +56,8 @@ const router = createBrowserRouter(
       <Route path="/admin" element={<AdminRoute />}>
         <Route path="orders-list" element={<OrdersList />} />
         <Route path="orders-list/:orderId" element={<Order />} />
+        <Route path="products-list" element={<ProductsList />} />
+        <Route path="products-list/:productId" element={<ProductDetails />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

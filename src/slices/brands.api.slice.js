@@ -8,7 +8,13 @@ export const brandsApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ["Brands"],
     }),
+
+    getBrandsNames: builder.query({
+      query: () => ({ url: `${BRANDS_URL}/names` }),
+      keepUnusedDataFor: 5,
+      providesTags: ["Brands"],
+    }),
   }),
 });
 
-export const { useGetBrandsQuery } = brandsApiSlice;
+export const { useGetBrandsQuery, useGetBrandsNamesQuery } = brandsApiSlice;

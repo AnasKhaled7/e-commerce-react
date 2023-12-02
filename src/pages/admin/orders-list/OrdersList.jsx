@@ -1,5 +1,4 @@
-import { useGetOrdersQuery } from "../../../slices/orders.api.slice";
-import { Message, LoadingScreen } from "../../../components";
+import { NavLink } from "react-router-dom";
 import {
   Link,
   Paper,
@@ -15,7 +14,8 @@ import {
 import { CloseRounded } from "@mui/icons-material";
 
 import dateFormate from "../../../utils/dateFormat";
-import { NavLink } from "react-router-dom";
+import { useGetOrdersQuery } from "../../../slices/orders.api.slice";
+import { Message, LoadingScreen } from "../../../components";
 
 const OrdersList = () => {
   const { data, isLoading, error } = useGetOrdersQuery();
@@ -27,8 +27,8 @@ const OrdersList = () => {
     );
 
   return (
-    <Stack gap={2}>
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Stack gap={4}>
+      <Typography variant="h4" component="h1">
         Orders
       </Typography>
 

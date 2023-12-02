@@ -57,7 +57,6 @@ const Login = () => {
     hideSnackbar();
     try {
       const res = await login(values).unwrap();
-      // const userInfo = await getProfile().unwrap();
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (error) {
