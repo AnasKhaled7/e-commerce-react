@@ -9,7 +9,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      providesTags: ["Auth"],
     }),
 
     login: builder.mutation({
@@ -18,7 +17,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      providesTags: ["Auth"],
+      providesTags: ["User"],
     }),
 
     sendResetPasswordEmail: builder.mutation({
@@ -27,7 +26,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      providesTags: ["Auth"],
     }),
 
     resetPassword: builder.mutation({
@@ -36,7 +34,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      providesTags: ["Auth"],
     }),
 
     logout: builder.mutation({
@@ -44,7 +41,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/logout`,
         method: "POST",
       }),
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ["User"],
     }),
 
     updateProfile: builder.mutation({
@@ -53,6 +50,29 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: ["User"],
+    }),
+
+    getUsers: builder.query({
+      query: () => `${USERS_URL}`,
+      providesTags: ["Users"],
+    }),
+
+    blockUser: builder.mutation({
+      query: ({ userId, data }) => ({
+        url: `${USERS_URL}/block/${userId}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Users"],
+    }),
+
+    unblockUser: builder.mutation({
+      query: (userId) => ({
+        url: `${USERS_URL}/unblock/${userId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Users"],
     }),
   }),
 });
@@ -64,4 +84,7 @@ export const {
   useResetPasswordMutation,
   useLogoutMutation,
   useUpdateProfileMutation,
+  useGetUsersQuery,
+  useBlockUserMutation,
+  useUnblockUserMutation,
 } = usersApiSlice;

@@ -129,6 +129,16 @@ const AdminLayout = () => {
         <List>
           <ListItem
             disablePadding
+            onClick={() => navigate("/admin/users-list")}
+          >
+            <ListItemButton>
+              <ListItemText primary="Users" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <List>
+          <ListItem
+            disablePadding
             onClick={() => navigate("/admin/orders-list")}
           >
             <ListItemButton>

@@ -18,3 +18,4 @@ export { default as AdminLayout } from "./admin/admin-layout/AdminLayout";
 export { default as OrdersList } from "./admin/orders-list/OrdersList";
 export { default as ProductsList } from "./admin/products-list/ProductsList";
 export { default as ProductDetails } from "./admin/product-details/ProductDetails";
+export { default as UsersList } from "./admin/users-list/UsersList";

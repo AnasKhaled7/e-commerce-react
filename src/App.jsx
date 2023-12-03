@@ -28,6 +28,7 @@ import {
   Register,
   ResetPassword,
   Shipping,
+  UsersList,
 } from "./pages";
 
 const router = createBrowserRouter(
@@ -58,6 +59,7 @@ const router = createBrowserRouter(
         <Route path="orders-list/:orderId" element={<Order />} />
         <Route path="products-list" element={<ProductsList />} />
         <Route path="products-list/:productId" element={<ProductDetails />} />
+        <Route path="users-list" element={<UsersList />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
