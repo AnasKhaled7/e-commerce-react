@@ -6,6 +6,7 @@ import {
   Button,
   Container,
   Divider,
+  Fab,
   FormControl,
   InputLabel,
   MenuItem,
@@ -14,152 +15,231 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { AddShoppingCartRounded } from "@mui/icons-material";
+import { AddShoppingCartRounded, RateReviewRounded } from "@mui/icons-material";
 
 import { useGetProductQuery } from "../../slices/products.api.slice";
+import { useGetReviewsQuery } from "../../slices/reviews.api.slice";
 import { addToCart } from "../../slices/cart.slice";
 import { LoadingScreen, Message } from "../../components";
+import { useSnackbar } from "../../hooks/useSnackbar";
+import { AddReviewModal } from "./components";
 
 const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productId } = useParams();
+
   const [quantity, setQuantity] = useState(1);
+  const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
+
   const { data, isLoading, error } = useGetProductQuery(productId);
+  const {
+    data: reviews,
+    isLoading: isReviewsLoading,
+    error: reviewsError,
+  } = useGetReviewsQuery(productId);
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...data?.product, quantity }));
     navigate("/cart");
   };
 
+  // add review modal
+  const [openReviewModal, setOpenReviewModal] = useState(false);
+  const handleOpenReviewModal = () => setOpenReviewModal(true);
+  const handleCloseReviewModal = () => setOpenReviewModal(false);
+
+  if (isLoading || isReviewsLoading) return <LoadingScreen />;
+  if (error || reviewsError) {
+    return (
+      <Message severity="error">
+        {error?.data?.message || reviewsError?.data?.message}
+      </Message>
+    );
+  }
+
   return (
     <>
-      {isLoading ? (
-        <LoadingScreen />
-      ) : error ? (
-        <Message severity="error">
-          {error?.data?.message || error.error}
-        </Message>
-      ) : (
-        <Container
-          maxWidth="xl"
-          sx={{
-            py: 4,
-            display: "flex",
-            alignItems: { md: "center" },
-            flexDirection: { xs: "column", md: "row" },
-            gap: 4,
-            minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
-          }}
-        >
-          {/* image container */}
-          <Box flex={1}>
-            <img
-              src={data?.product?.image?.url}
-              alt={data?.product?.name}
-              style={{
-                width: "100%",
-                height: "100%",
-                maxHeight: "400px",
-                objectFit: "contain",
-              }}
-            />
-          </Box>
+      <Container
+        maxWidth="xl"
+        sx={{
+          py: 4,
+          display: "flex",
+          alignItems: { md: "center" },
+          flexDirection: { xs: "column", md: "row" },
+          gap: 4,
+          minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
+        }}
+      >
+        {/* image container */}
+        <Box flex={1}>
+          <img
+            src={data?.product?.image?.url}
+            alt={data?.product?.name}
+            style={{
+              width: "100%",
+              height: "100%",
+              maxHeight: "400px",
+              objectFit: "contain",
+            }}
+          />
+        </Box>
 
-          <Divider orientation="vertical" flexItem />
+        <Divider orientation="vertical" flexItem />
 
-          {/* info container */}
-          <Stack flex={1} gap={4}>
-            {/* name */}
-            <Typography variant="h4" fontWeight={700} textAlign="center">
-              {data?.product?.name}
-            </Typography>
+        {/* info container */}
+        <Stack flex={1} gap={4}>
+          {/* name */}
+          <Typography variant="h4" fontWeight={700} textAlign="center">
+            {data?.product?.name}
+          </Typography>
 
-            {/* description */}
-            <Stack gap={1}>
-              <Typography variant="caption">Description</Typography>
-              <Typography>{data?.product?.description}</Typography>
-            </Stack>
+          {/* description */}
+          <Stack gap={1}>
+            <Typography variant="caption">Description</Typography>
+            <Typography>{data?.product?.description}</Typography>
+          </Stack>
 
-            {/* rating */}
-            <Stack gap={1}>
-              <Typography variant="caption">Rating</Typography>
+          {/* rating */}
+          <Stack gap={1}>
+            <Typography variant="caption">Rating</Typography>
 
-              <Stack direction="row" alignItems="center" gap={1}>
-                <Rating
-                  name="rating"
-                  value={data?.product?.rating}
-                  precision={0.5}
-                  readOnly
-                />
-
-                <Typography variant="caption" color="text.secondary">
-                  ({data?.product?.numReviews} reviews)
-                </Typography>
-              </Stack>
-            </Stack>
-
-            {/* price */}
-            <Stack>
-              <Typography variant="caption">Price</Typography>
-              <Typography variant="h6">EGP {data?.product?.price}</Typography>
-            </Stack>
-
-            {/* status */}
             <Stack direction="row" alignItems="center" gap={1}>
-              <Typography
-                color={data?.product?.countInStock > 0 ? "green" : "error"}
-              >
-                {data?.product?.countInStock > 0 ? "In Stock" : "Out of Stock"}
-              </Typography>
+              <Rating
+                name="rating"
+                value={data?.product?.rating}
+                precision={0.5}
+                readOnly
+              />
 
               <Typography variant="caption" color="text.secondary">
-                ({data?.product?.countInStock} left)
+                ({data?.product?.numReviews} reviews)
               </Typography>
             </Stack>
-
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              {/* quantity selection */}
-              {data?.product?.countInStock > 0 && (
-                <Box sx={{ minWidth: 60 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel id="product-select-quantity">Qty</InputLabel>
-                    <Select
-                      labelId="product-select-quantity"
-                      value={quantity}
-                      label="Qty"
-                      onChange={(e) => setQuantity(Number(e.target.value))}
-                    >
-                      {[...Array(data?.product?.countInStock).keys()].map(
-                        (index) => (
-                          <MenuItem key={index + 1} value={index + 1}>
-                            {index + 1}
-                          </MenuItem>
-                        )
-                      )}
-                    </Select>
-                  </FormControl>
-                </Box>
-              )}
-
-              {/* add to cart */}
-              <Button
-                variant="contained"
-                size="large"
-                endIcon={<AddShoppingCartRounded />}
-                disabled={data?.product?.countInStock === 0}
-                onClick={addToCartHandler}
-              >
-                Add to Cart
-              </Button>
-            </Stack>
           </Stack>
-        </Container>
-      )}
+
+          {/* price */}
+          <Stack>
+            <Typography variant="caption">Price</Typography>
+            <Typography variant="h6">EGP {data?.product?.price}</Typography>
+          </Stack>
+
+          {/* status */}
+          <Stack direction="row" alignItems="center" gap={1}>
+            <Typography
+              color={data?.product?.countInStock > 0 ? "green" : "error"}
+            >
+              {data?.product?.countInStock > 0 ? "In Stock" : "Out of Stock"}
+            </Typography>
+
+            <Typography variant="caption" color="text.secondary">
+              ({data?.product?.countInStock} left)
+            </Typography>
+          </Stack>
+
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            {/* quantity selection */}
+            {data?.product?.countInStock > 0 && (
+              <Box sx={{ minWidth: 60 }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel id="product-select-quantity">Qty</InputLabel>
+                  <Select
+                    labelId="product-select-quantity"
+                    value={quantity}
+                    label="Qty"
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                  >
+                    {[...Array(data?.product?.countInStock).keys()].map(
+                      (index) => (
+                        <MenuItem key={index + 1} value={index + 1}>
+                          {index + 1}
+                        </MenuItem>
+                      )
+                    )}
+                  </Select>
+                </FormControl>
+              </Box>
+            )}
+
+            {/* add to cart */}
+            <Button
+              variant="contained"
+              size="large"
+              endIcon={<AddShoppingCartRounded />}
+              disabled={data?.product?.countInStock === 0}
+              onClick={addToCartHandler}
+            >
+              Add to Cart
+            </Button>
+          </Stack>
+        </Stack>
+
+        {/* snackbar */}
+        <SnackbarComponent />
+
+        {/* add review button */}
+        <Fab
+          color="primary"
+          size="medium"
+          aria-label="add"
+          sx={{ position: "fixed", bottom: "20px", right: "20px" }}
+          onClick={handleOpenReviewModal}
+        >
+          <RateReviewRounded />
+        </Fab>
+
+        {/* add review modal */}
+        <AddReviewModal
+          productId={productId}
+          open={openReviewModal}
+          handleClose={handleCloseReviewModal}
+          showSnackbar={showSnackbar}
+          hideSnackbar={hideSnackbar}
+        />
+      </Container>
+
+      <Divider />
+
+      {/* reviews */}
+      <Container
+        maxWidth="xl"
+        sx={{ display: "flex", flexDirection: "column", gap: 4, py: 4 }}
+      >
+        <Typography variant="h4" fontWeight={700} textAlign="center">
+          Reviews
+        </Typography>
+        {reviews?.numOfReviews === 0 ? (
+          <Message severity="info">No reviews found</Message>
+        ) : (
+          <Stack gap={2}>
+            {reviews?.reviews?.map((review) => (
+              <Stack key={review?._id} gap={0.5}>
+                <Typography variant="subtitle2" fontWeight={500}>
+                  {review?.user?.firstName}
+                </Typography>
+
+                <Rating
+                  name="rating"
+                  value={review?.rating}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                />
+
+                <Typography>{review?.comment}</Typography>
+
+                {/* divider */}
+                {reviews?.reviews?.indexOf(review) !==
+                  reviews?.numOfReviews - 1 && <Divider />}
+              </Stack>
+            ))}
+          </Stack>
+        )}
+      </Container>
     </>
   );
 };
