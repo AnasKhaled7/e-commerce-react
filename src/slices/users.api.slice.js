@@ -17,7 +17,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      providesTags: ["User"],
+      providesTags: ["Auth"],
     }),
 
     sendResetPasswordEmail: builder.mutation({
@@ -41,7 +41,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/logout`,
         method: "POST",
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Auth"],
     }),
 
     updateProfile: builder.mutation({

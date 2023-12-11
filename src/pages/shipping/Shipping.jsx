@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -54,8 +55,7 @@ const Shipping = () => {
       dispatch(updateUserInfo({ ...res }));
       navigate("/place-order");
     } catch (error) {
-      console.log(error);
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 
@@ -84,6 +84,9 @@ const Shipping = () => {
 
   return (
     <FormSection>
+      <Helmet>
+        <title>Shipping | Nile</title>
+      </Helmet>
       <Paper
         variant="outlined"
         component="form"

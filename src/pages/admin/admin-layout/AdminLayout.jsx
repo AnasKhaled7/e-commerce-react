@@ -89,6 +89,14 @@ const AdminLayout = () => {
     }
   };
 
+  const links = [
+    { text: "Users", to: "/admin/users-list" },
+    { text: "Orders", to: "/admin/orders-list" },
+    { text: "Products", to: "/admin/products-list" },
+    { text: "Brands", to: "/admin/brands-list" },
+    { text: "Categories", to: "/admin/categories-list" },
+  ];
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" open={open}>
@@ -126,36 +134,15 @@ const AdminLayout = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          <ListItem
-            disablePadding
-            onClick={() => navigate("/admin/users-list")}
-          >
-            <ListItemButton>
-              <ListItemText primary="Users" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <List>
-          <ListItem
-            disablePadding
-            onClick={() => navigate("/admin/orders-list")}
-          >
-            <ListItemButton>
-              <ListItemText primary="Orders" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <List>
-          <ListItem
-            disablePadding
-            onClick={() => navigate("/admin/products-list")}
-          >
-            <ListItemButton>
-              <ListItemText primary="Products" />
-            </ListItemButton>
-          </ListItem>
-        </List>
+        {links.map((link) => (
+          <List key={link.text}>
+            <ListItem disablePadding onClick={() => navigate(link.to)}>
+              <ListItemButton>
+                <ListItemText primary={link.text} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        ))}
         <Divider />
         <List>
           <ListItem disablePadding onClick={logoutHandler}>

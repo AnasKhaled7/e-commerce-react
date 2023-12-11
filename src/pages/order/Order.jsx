@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import {
   Button,
   CircularProgress,
@@ -43,7 +44,7 @@ const Order = () => {
       refetch();
       showSnackbar("Order delivered successfully");
     } catch (error) {
-      showSnackbar(error?.data?.message || error.error);
+      showSnackbar(error?.data?.message);
     }
   };
 
@@ -54,14 +55,14 @@ const Order = () => {
       refetch();
       showSnackbar("Order paid successfully");
     } catch (error) {
-      showSnackbar(error?.data?.message || error.error);
+      showSnackbar(error?.data?.message);
     }
   };
 
   return isLoading ? (
     <LoadingScreen />
   ) : error ? (
-    <Message severity="error">{error?.data?.message || error.error}</Message>
+    <Message severity="error">{error?.data?.message}</Message>
   ) : (
     <Container
       maxWidth="xl"
@@ -73,6 +74,9 @@ const Order = () => {
         minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
       }}
     >
+      <Helmet>
+        <title>Order | Nile</title>
+      </Helmet>
       <Typography
         variant="h6"
         component="h2"

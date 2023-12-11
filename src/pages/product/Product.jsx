@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import {
   Box,
   Button,
@@ -13,7 +14,9 @@ import {
   Rating,
   Select,
   Stack,
+  Tooltip,
   Typography,
+  Zoom,
 } from "@mui/material";
 import { AddShoppingCartRounded, RateReviewRounded } from "@mui/icons-material";
 
@@ -28,6 +31,7 @@ const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productId } = useParams();
+  const { userInfo } = useSelector((state) => state.auth);
 
   const [quantity, setQuantity] = useState(1);
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
@@ -60,6 +64,10 @@ const Product = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{data?.product?.name} | Nile</title>
+      </Helmet>
+
       <Container
         maxWidth="xl"
         sx={{
@@ -182,15 +190,23 @@ const Product = () => {
         <SnackbarComponent />
 
         {/* add review button */}
-        <Fab
-          color="primary"
-          size="medium"
-          aria-label="add"
-          sx={{ position: "fixed", bottom: "20px", right: "20px" }}
-          onClick={handleOpenReviewModal}
-        >
-          <RateReviewRounded />
-        </Fab>
+        {userInfo && (
+          <Tooltip
+            title="Add Review"
+            arrow
+            placement="top-end"
+            TransitionComponent={Zoom}
+          >
+            <Fab
+              color="secondary"
+              aria-label="add"
+              sx={{ position: "fixed", bottom: "20px", right: "20px" }}
+              onClick={handleOpenReviewModal}
+            >
+              <RateReviewRounded />
+            </Fab>
+          </Tooltip>
+        )}
 
         {/* add review modal */}
         <AddReviewModal
@@ -216,11 +232,9 @@ const Product = () => {
           <Message severity="info">No reviews found</Message>
         ) : (
           <Stack gap={2}>
-            {reviews?.reviews?.map((review) => (
+            {reviews?.reviews.map((review) => (
               <Stack key={review?._id} gap={0.5}>
-                <Typography variant="subtitle2" fontWeight={500}>
-                  {review?.user?.firstName}
-                </Typography>
+                <Typography>{review?.user?.firstName}</Typography>
 
                 <Rating
                   name="rating"
@@ -230,11 +244,11 @@ const Product = () => {
                   size="small"
                 />
 
-                <Typography>{review?.comment}</Typography>
+                <Typography variant="h6">{review?.comment}</Typography>
 
                 {/* divider */}
-                {reviews?.reviews?.indexOf(review) !==
-                  reviews?.numOfReviews - 1 && <Divider />}
+                {reviews?.reviews.indexOf(review) !==
+                  reviews?.reviews.length - 1 && <Divider />}
               </Stack>
             ))}
           </Stack>

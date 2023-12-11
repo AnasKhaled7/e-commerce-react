@@ -3,9 +3,7 @@ import {
   Button,
   Container,
   Grid,
-  Paper,
   Skeleton,
-  Stack,
   Typography,
   useMediaQuery,
   useTheme,
@@ -13,58 +11,14 @@ import {
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 
 import { useGetCategoriesQuery } from "../../../slices/categories.api.slice";
-import { Message } from "../../../components";
+import { CategoryCard, Message } from "../../../components";
 
-const CategoryItem = ({ item }) => {
+const Categories = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  return (
-    <Paper
-      variant="outlined"
-      sx={{ position: "relative", height: "60vh", minHeight: 300 }}
-    >
-      <img
-        src={item?.image?.url}
-        alt={item?.name}
-        style={{ width: "100%", height: "100%", objectFit: "contain" }}
-      />
-
-      <Stack
-        bgcolor="rgba(0,0,0,0.55)"
-        position="absolute"
-        alignItems="center"
-        justifyContent="center"
-        gap={4}
-        sx={{ inset: 0 }}
-      >
-        <Typography
-          component="h3"
-          variant={isMobile ? "h6" : "h5"}
-          color="#fff"
-        >
-          {item?.name}
-        </Typography>
-        <Button
-          variant="contained"
-          endIcon={<KeyboardArrowRightRounded />}
-          onClick={() => {
-            navigate(`/products/category/${item._id}`);
-          }}
-        >
-          Shop Now
-        </Button>
-      </Stack>
-    </Paper>
-  );
-};
-
-const Categories = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const { data, isLoading, error } = useGetCategoriesQuery();
+  const { data, isLoading, error } = useGetCategoriesQuery({ limit: 4 });
 
   return (
     <Container
@@ -83,7 +37,7 @@ const Categories = () => {
         fontWeight={700}
         textAlign="center"
       >
-        Top Categories
+        Categories
       </Typography>
 
       <Grid container spacing={2}>
@@ -97,28 +51,27 @@ const Categories = () => {
           </>
         ) : error ? (
           <Grid item xs={12}>
-            <Message severity="error">
-              {error?.data?.message || error.error}
-            </Message>
+            <Message severity="error">{error?.data?.message}</Message>
           </Grid>
         ) : (
           <>
             {data?.categories.map((category) => (
               <Grid key={category._id} item xs={12} sm={6} md={4} lg={3}>
-                <CategoryItem item={category} />
+                <CategoryCard item={category} />
               </Grid>
             ))}
           </>
         )}
       </Grid>
 
-      {/* <Button
+      <Button
         variant="outlined"
         size="large"
         endIcon={<KeyboardArrowRightRounded />}
+        onClick={() => navigate("/categories/page/1")}
       >
         View all categories
-      </Button> */}
+      </Button>
     </Container>
   );
 };

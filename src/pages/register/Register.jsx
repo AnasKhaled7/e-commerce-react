@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -22,7 +23,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { FormSection } from "../../components";
 import { useRegisterMutation } from "../../slices/users.api.slice";
-
 import { useSnackbar } from "../../hooks/useSnackbar";
 
 const Register = () => {
@@ -71,8 +71,7 @@ const Register = () => {
       await register(values);
       navigate("/login");
     } catch (error) {
-      console.log(error);
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 
@@ -96,7 +95,9 @@ const Register = () => {
 
   return (
     <FormSection>
-      {/* form */}
+      <Helmet>
+        <title>Register | Nile</title>
+      </Helmet>
       <Paper
         component="form"
         variant="outlined"

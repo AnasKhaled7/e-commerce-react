@@ -7,25 +7,14 @@ import {
   PaginationItem,
   Skeleton,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 
-import { LoadingScreen, Message, ProductCard } from "../../components";
-import { useGetProductsByCategoryQuery } from "../../slices/products.api.slice";
+import { CategoryCard, Message } from "../../components";
+import { useGetCategoriesQuery } from "../../slices/categories.api.slice";
 
-const CategoryProducts = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { categoryId, page } = useParams();
-  const { data, isLoading, error } = useGetProductsByCategoryQuery({
-    categoryId,
-    page,
-  });
-
-  if (isLoading) return <LoadingScreen />;
-
-  if (error) return <Message severity="error">{error?.data?.message}</Message>;
+const Categories = () => {
+  const { page } = useParams();
+  const { data, isLoading, error } = useGetCategoriesQuery({ page });
 
   return (
     <Container
@@ -39,12 +28,14 @@ const CategoryProducts = () => {
       }}
     >
       <Helmet>
-        <title>{data?.category} | Nile</title>
+        <title>Categories | Nile</title>
       </Helmet>
       {/* title */}
-      <Typography component="h2" variant={isMobile ? "h4" : "h3"}>
-        {data?.category}
+      <Typography component="h2" variant="h3">
+        Our Categories
       </Typography>
+
+      {/* categories */}
       <Grid container spacing={2}>
         {isLoading ? (
           <>
@@ -60,15 +51,15 @@ const CategoryProducts = () => {
           </Grid>
         ) : (
           <>
-            {data?.products.length === 0 ? (
+            {data?.total === 0 ? (
               <Grid item xs={12}>
-                <Message severity="info">No products found</Message>
+                <Message severity="info">No categories found</Message>
               </Grid>
             ) : (
               <>
-                {data?.products.map((product) => (
-                  <Grid key={product._id} item xs={12} sm={6} md={4} lg={3}>
-                    <ProductCard product={product} />
+                {data?.categories.map((category) => (
+                  <Grid key={category._id} item xs={12} sm={6} md={4} lg={3}>
+                    <CategoryCard item={category} />
                   </Grid>
                 ))}
               </>
@@ -89,7 +80,7 @@ const CategoryProducts = () => {
           renderItem={(item) => (
             <PaginationItem
               component={Link}
-              to={`/products/category/${categoryId}/page/${item.page}`}
+              to={`/categories/page/${item.page}`}
               {...item}
             />
           )}
@@ -99,5 +90,4 @@ const CategoryProducts = () => {
     </Container>
   );
 };
-
-export default CategoryProducts;
+export default Categories;

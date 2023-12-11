@@ -9,4 +9,4 @@ export { default as FormSection } from "./FormSection";
 export { default as CheckoutSteps } from "./CheckoutSteps";
 export { default as AdminRoute } from "./AdminRoute";
 export { default as ProductCard } from "./ProductCard";
-export { default as ProductsList } from "./ProductsList";
+export { default as CategoryCard } from "./CategoryCard";

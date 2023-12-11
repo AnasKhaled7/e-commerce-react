@@ -1,5 +1,6 @@
 import { Button, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -17,6 +18,9 @@ const NotFound = () => {
         minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
       }}
     >
+      <Helmet>
+        <title>404 | Nile</title>
+      </Helmet>
       <Typography variant="h2" component="h2" fontWeight={700}>
         404
       </Typography>

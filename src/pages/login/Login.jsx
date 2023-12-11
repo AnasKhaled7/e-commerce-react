@@ -24,6 +24,7 @@ import { FormSection } from "../../components";
 import { useLoginMutation } from "../../slices/users.api.slice";
 import { setCredentials } from "../../slices/auth.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -77,7 +78,9 @@ const Login = () => {
 
   return (
     <FormSection>
-      {/* form */}
+      <Helmet>
+        <title>Login | Nile</title>
+      </Helmet>
       <Paper
         component="form"
         variant="outlined"

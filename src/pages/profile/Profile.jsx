@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -77,8 +78,7 @@ const Profile = () => {
       dispatch(updateUserInfo({ ...res }));
       showSnackbar("Profile updated successfully", "success");
     } catch (error) {
-      console.log(error);
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 
@@ -123,7 +123,11 @@ const Profile = () => {
 
   return (
     <FormSection>
-      {/* form */}
+      <Helmet>
+        <title>
+          {userInfo?.firstName} {userInfo?.lastName} | Nile
+        </title>
+      </Helmet>
       <Paper
         variant="outlined"
         component="form"

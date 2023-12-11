@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -43,7 +44,7 @@ const ResetPassword = () => {
       localStorage.setItem("email", values.email);
       setOpen(true);
     } catch (error) {
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 
@@ -60,7 +61,9 @@ const ResetPassword = () => {
 
   return (
     <FormSection>
-      {/* form */}
+      <Helmet>
+        <title>Reset Password | Nile</title>
+      </Helmet>
       <Paper
         component="form"
         variant="outlined"

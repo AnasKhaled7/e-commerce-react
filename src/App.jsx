@@ -11,7 +11,10 @@ import {
 import { CssBaseline } from "@mui/material";
 import { AdminRoute, Layout, PrivateRoute } from "./components";
 import {
+  BrandsList,
   Cart,
+  Categories,
+  CategoriesList,
   CategoryProducts,
   Home,
   Login,
@@ -35,9 +38,10 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
-      <Route path="products" element={<Products />} />
+      <Route path="categories/page/:page" element={<Categories />} />
+      <Route path="products/page/:page" element={<Products />} />
       <Route
-        path="products/category/:categoryId"
+        path="products/category/:categoryId/page/:page"
         element={<CategoryProducts />}
       />
       <Route path="products/:productId" element={<Product />} />
@@ -60,6 +64,8 @@ const router = createBrowserRouter(
         <Route path="products-list" element={<ProductsList />} />
         <Route path="products-list/:productId" element={<ProductDetails />} />
         <Route path="users-list" element={<UsersList />} />
+        <Route path="brands-list" element={<BrandsList />} />
+        <Route path="categories-list" element={<CategoriesList />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   Button,
   Card,
@@ -33,6 +34,10 @@ const MyOrders = () => {
         minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
       }}
     >
+      <Helmet>
+        <title>My Orders | Nile</title>
+      </Helmet>
+
       <Typography
         variant="h6"
         component="h2"

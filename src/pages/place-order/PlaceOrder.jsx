@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import {
   Button,
   CircularProgress,
@@ -71,6 +72,9 @@ const PlaceOrder = () => {
         minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
       }}
     >
+      <Helmet>
+        <title>Place Order | Nile</title>
+      </Helmet>
       <Stack direction={{ xs: "column", md: "row" }} gap={4}>
         {/* left part: details */}
         <Stack flex={2} gap={4}>

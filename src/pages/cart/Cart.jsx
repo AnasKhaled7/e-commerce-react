@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import {
   Box,
   Button,
@@ -48,6 +49,9 @@ const Cart = () => {
         minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
       }}
     >
+      <Helmet>
+        <title>Cart | Nile</title>
+      </Helmet>
       <Typography variant="h4">Shopping Cart 🛒</Typography>
 
       <Divider />
