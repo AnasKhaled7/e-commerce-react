@@ -32,7 +32,7 @@ const Categories = () => {
       </Helmet>
       {/* title */}
       <Typography component="h2" variant="h3">
-        Our Categories
+        Categories
       </Typography>
 
       {/* categories */}

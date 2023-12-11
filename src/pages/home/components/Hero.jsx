@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Stack,
@@ -8,7 +9,6 @@ import {
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 
 import bgImg from "../../../assets/hero-bg.jpg";
-import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -24,9 +24,10 @@ const Hero = () => {
       px={2}
       sx={{
         height: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
+        minHeight: 400,
         color: "#fff",
         textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-        backgroundImage: `url(${bgImg})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${bgImg})`,
         backgroundSize: "cover",
         backgroundPosition: "bottom",
       }}

@@ -31,7 +31,7 @@ const Products = () => {
       </Helmet>
       {/* title */}
       <Typography component="h2" variant="h3">
-        Our Products
+        Products
       </Typography>
 
       {/* products */}

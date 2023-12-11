@@ -203,14 +203,12 @@ const Register = () => {
               Boolean(formik.errors.confirmPassword)
             }
           >
-            <InputLabel htmlFor="register-confirmPassword">
-              Confirm Password
-            </InputLabel>
+            <InputLabel htmlFor="register-confirmPassword">Confirm</InputLabel>
             <OutlinedInput
               required
               id="register-confirmPassword"
               name="confirmPassword"
-              label="Confirm Password"
+              label="Confirm"
               type={showPassword ? "text" : "password"}
               endAdornment={
                 <InputAdornment position="end">

@@ -17,9 +17,8 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Home | Nile</title>
+        <title>Nile</title>
       </Helmet>
-
       <Hero />
       <Divider />
       <Categories />
@@ -30,7 +29,6 @@ const Home = () => {
         <Products />
       </div>
       <Divider />
-
       <Brands />
     </>
   );

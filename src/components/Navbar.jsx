@@ -11,7 +11,6 @@ import {
   Divider,
   Drawer,
   IconButton,
-  Link,
   List,
   ListItem,
   ListItemButton,
@@ -23,6 +22,7 @@ import {
   Stack,
   Toolbar,
   Tooltip,
+  Typography,
   useScrollTrigger,
 } from "@mui/material";
 import {
@@ -32,7 +32,6 @@ import {
   PersonOutlineOutlined,
   ReceiptLongRounded,
 } from "@mui/icons-material";
-import { deepPurple } from "@mui/material/colors";
 
 function HideOnScroll({ children, window }) {
   const trigger = useScrollTrigger({
@@ -64,22 +63,19 @@ const Navbar = (props) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Link
-        component="button"
+    <Box onClick={handleDrawerToggle}>
+      <Typography
         variant="h4"
-        underline="none"
-        onClick={() => navigate("")}
-        sx={{ my: 2 }}
+        color="primary"
+        sx={{ my: 2, textAlign: "center", cursor: "pointer" }}
+        onClick={() => navigate("/")}
       >
         Nile
-      </Link>
+      </Typography>
       <Divider />
       <List>
         {token ? (
@@ -94,6 +90,7 @@ const Navbar = (props) => {
                 <ListItemText primary="My Orders" />
               </ListItemButton>
             </ListItem>
+            <Divider />
             <ListItem disablePadding onClick={props.logoutHandler}>
               <ListItemButton sx={{ textAlign: "center" }}>
                 <ListItemText primary="Logout" />
@@ -120,40 +117,42 @@ const Navbar = (props) => {
   return (
     <>
       <HideOnScroll {...props}>
-        <AppBar component="nav">
-          <Toolbar sx={{ justifyContent: "space-between", gap: 2 }}>
+        {/* color="inherit" */}
+        <AppBar component="nav" color="inherit">
+          <Toolbar sx={{ justifyContent: "space-between" }}>
             {/* left */}
-            <Link
-              component="button"
+            <Typography
               variant="h4"
-              underline="none"
-              onClick={() => navigate("")}
-              color="inherit"
+              color="primary"
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate("/")}
             >
               Nile
-            </Link>
+            </Typography>
 
             {/* right */}
-            <Stack gap={0.5} direction="row" alignItems="center">
-              <IconButton
-                color="inherit"
-                aria-label="go to cart"
-                onClick={() => navigate("/cart")}
-              >
-                <Badge
-                  badgeContent={cartItems.reduce(
-                    (acc, currentValue) => acc + currentValue.quantity,
-                    0
-                  )}
-                  color="success"
+            <Stack gap={1} direction="row" alignItems="center">
+              <Tooltip arrow title="Go to cart">
+                <IconButton
+                  color="inherit"
+                  aria-label="go to cart"
+                  onClick={() => navigate("/cart")}
                 >
-                  <ShoppingCartOutlined />
-                </Badge>
-              </IconButton>
+                  <Badge
+                    badgeContent={cartItems.reduce(
+                      (acc, currentValue) => acc + currentValue.quantity,
+                      0
+                    )}
+                    color="primary"
+                  >
+                    <ShoppingCartOutlined />
+                  </Badge>
+                </IconButton>
+              </Tooltip>
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 {userInfo ? (
-                  <Tooltip title="Account">
+                  <Tooltip arrow title="Account">
                     <IconButton
                       onClick={handleClick}
                       size="small"
@@ -161,15 +160,13 @@ const Navbar = (props) => {
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                     >
-                      <Avatar
-                        sx={{ width: 32, height: 32, bgcolor: deepPurple[400] }}
-                      >
+                      <Avatar sx={{ width: 32, height: 32 }}>
                         {userInfo?.firstName[0]}
                       </Avatar>
                     </IconButton>
                   </Tooltip>
                 ) : (
-                  <Button color="inherit" onClick={() => navigate("/login")}>
+                  <Button variant="outlined" onClick={() => navigate("/login")}>
                     Sign In
                   </Button>
                 )}

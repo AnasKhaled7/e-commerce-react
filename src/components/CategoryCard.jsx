@@ -17,7 +17,7 @@ const CategoryCard = ({ item }) => {
   return (
     <Paper
       variant="outlined"
-      sx={{ position: "relative", height: "40vh", minHeight: 250 }}
+      sx={{ position: "relative", height: "50vh", minHeight: 300 }}
     >
       <img
         src={item?.image}

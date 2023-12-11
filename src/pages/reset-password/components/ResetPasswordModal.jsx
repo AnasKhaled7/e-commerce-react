@@ -58,8 +58,7 @@ const ResetPasswordModal = ({ open, handleClose }) => {
       formik.resetForm();
       navigate("/login");
     } catch (error) {
-      console.log(error);
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 
@@ -148,14 +147,12 @@ const ResetPasswordModal = ({ open, handleClose }) => {
                 Boolean(formik.errors.confirmPassword)
               }
             >
-              <InputLabel htmlFor="reset-confirmPassword">
-                Confirm Password
-              </InputLabel>
+              <InputLabel htmlFor="reset-confirmPassword">Password</InputLabel>
               <OutlinedInput
                 required
                 id="reset-confirmPassword"
                 name="confirmPassword"
-                label="Confirm Password"
+                label="Password"
                 type={showPassword ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
