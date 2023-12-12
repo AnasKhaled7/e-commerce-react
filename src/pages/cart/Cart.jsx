@@ -197,7 +197,7 @@ const Cart = () => {
             <Button
               variant="outlined"
               size="large"
-              onClick={() => navigate("/products")}
+              onClick={() => navigate("/products/page/1")}
             >
               Continue Shopping
             </Button>

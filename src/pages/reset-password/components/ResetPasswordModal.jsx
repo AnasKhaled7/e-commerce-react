@@ -147,12 +147,12 @@ const ResetPasswordModal = ({ open, handleClose }) => {
                 Boolean(formik.errors.confirmPassword)
               }
             >
-              <InputLabel htmlFor="reset-confirmPassword">Password</InputLabel>
+              <InputLabel htmlFor="reset-confirmPassword">Confirm</InputLabel>
               <OutlinedInput
                 required
                 id="reset-confirmPassword"
                 name="confirmPassword"
-                label="Password"
+                label="Confirm"
                 type={showPassword ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
