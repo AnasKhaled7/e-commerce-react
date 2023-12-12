@@ -60,7 +60,7 @@ const Cart = () => {
         <Stack direction="column" alignItems="center" gap={2} sx={{ flex: 1 }}>
           <Message severity="info">
             Your cart is empty{" "}
-            <Link component={NavLink} to="/products" color="inherit">
+            <Link component={NavLink} to="/products/page/1" color="inherit">
               view products
             </Link>
           </Message>
