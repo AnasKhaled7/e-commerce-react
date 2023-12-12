@@ -30,7 +30,7 @@ import { useSnackbar } from "../../../hooks/useSnackbar";
 const ProductsList = () => {
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
-  const { data, refetch, isLoading, error } = useGetProductsQuery({
+  const { data, isLoading, error } = useGetProductsQuery({
     page: 1,
     limit: 10,
   });
@@ -47,7 +47,6 @@ const ProductsList = () => {
     if (window.confirm("Are you sure?")) {
       try {
         await deleteProduct(id);
-        refetch();
         showSnackbar("Product deleted successfully", "success");
       } catch (err) {
         showSnackbar(error?.data?.message, "error");
@@ -56,7 +55,6 @@ const ProductsList = () => {
   };
 
   if (isLoading || loadingDelete) return <LoadingScreen />;
-
   if (error) return <Message severity="error">{error?.data?.message}</Message>;
 
   return (
@@ -149,7 +147,6 @@ const ProductsList = () => {
       <AddProductModal
         open={openCreateModal}
         handleClose={handleCloseCreateModal}
-        refetch={refetch}
       />
 
       {/* snackbar */}

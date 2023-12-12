@@ -40,7 +40,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const AddProductModal = ({ open, handleClose, refetch }) => {
+const AddProductModal = ({ open, handleClose }) => {
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
   const theme = useTheme();
@@ -90,7 +90,6 @@ const AddProductModal = ({ open, handleClose, refetch }) => {
       let formData = new FormData();
       for (let field in values) formData.append(field, values[field]);
       await createProduct(formData);
-      refetch();
       formik.resetForm();
       handleClose();
     } catch (error) {

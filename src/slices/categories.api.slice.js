@@ -39,6 +39,19 @@ export const categoriesApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Categories", "Category"],
     }),
 
+    updateCategoryImage: builder.mutation({
+      query: ({ categoryId, image }) => {
+        const formData = new FormData();
+        formData.append("image", image);
+        return {
+          url: `${CATEGORIES_URL}/${categoryId}/image`,
+          method: "PATCH",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["Categories", "Category"],
+    }),
+
     deleteCategory: builder.mutation({
       query: (categoryId) => ({
         url: `${CATEGORIES_URL}/${categoryId}`,
@@ -55,5 +68,6 @@ export const {
   useGetCategoryQuery,
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
+  useUpdateCategoryImageMutation,
   useDeleteCategoryMutation,
 } = categoriesApiSlice;

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
 
-import { useUpdateProductImageMutation } from "../../../../slices/products.api.slice";
+import { useUpdateCategoryImageMutation } from "../../../../slices/categories.api.slice";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -25,9 +25,10 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
+
 const Extras = ({ data, showSnackbar, hideSnackbar }) => {
-  const { productId } = useParams();
-  const [updateProductImage] = useUpdateProductImageMutation();
+  const { categoryId } = useParams();
+  const [updateCategoryImage] = useUpdateCategoryImageMutation();
 
   // formik validation schema
   const validationSchema = Yup.object({
@@ -53,14 +54,14 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
   const onSubmit = async (values) => {
     hideSnackbar();
     try {
-      await updateProductImage({
-        productId,
+      const res = await updateCategoryImage({
+        categoryId,
         image: values.image,
       }).unwrap();
 
       formik.resetForm();
 
-      showSnackbar("Image updated successfully", "success");
+      showSnackbar(res?.message, "success");
     } catch (error) {
       showSnackbar(error?.data?.message, "error");
     }
@@ -97,17 +98,17 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
       {/* heading */}
       <Stack gap={2} alignItems="center">
         <Typography variant="h4" component="h2">
-          {data?.product?.name}
+          {data?.category?.name}
         </Typography>
 
-        <Typography>{data?.product?._id}</Typography>
+        <Typography>{data?.category?._id}</Typography>
       </Stack>
 
       {/* image */}
       <Box width={200} height={200} mx="auto">
         <img
-          src={data?.product?.image?.url}
-          alt={data?.product?.name}
+          src={data?.category?.image?.url}
+          alt={data?.category?.name}
           style={{
             width: "100%",
             height: "100%",
@@ -127,7 +128,7 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
         >
           Upload Image
           <VisuallyHiddenInput
-            id="edot-product-image"
+            id="edot-category-image"
             type="file"
             name="image"
             onChange={handleFileUpload}

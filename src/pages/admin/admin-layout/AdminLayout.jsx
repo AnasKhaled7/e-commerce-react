@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AppBar as MuiAppBar,
   Box,
@@ -90,16 +90,19 @@ const AdminLayout = () => {
   };
 
   const links = [
+    { text: "Dashboard", to: "/admin" },
     { text: "Users", to: "/admin/users-list" },
     { text: "Orders", to: "/admin/orders-list" },
-    { text: "Products", to: "/admin/products-list" },
     { text: "Brands", to: "/admin/brands-list" },
     { text: "Categories", to: "/admin/categories-list" },
+    { text: "Products", to: "/admin/products-list" },
   ];
 
-  return (
+  const { userInfo } = useSelector((state) => state.auth);
+
+  return userInfo?.isAdmin ? (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} component="nav" color="inherit">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -110,7 +113,13 @@ const AdminLayout = () => {
           >
             <Menu />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+
+          <Typography
+            variant="h5"
+            color="primary"
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate("/admin")}
+          >
             Nile
           </Typography>
         </Toolbar>
@@ -136,7 +145,13 @@ const AdminLayout = () => {
         <Divider />
         {links.map((link) => (
           <List key={link.text}>
-            <ListItem disablePadding onClick={() => navigate(link.to)}>
+            <ListItem
+              disablePadding
+              onClick={() => {
+                navigate(link.to);
+                handleDrawerClose();
+              }}
+            >
               <ListItemButton>
                 <ListItemText primary={link.text} />
               </ListItemButton>
@@ -157,6 +172,8 @@ const AdminLayout = () => {
         <Outlet />
       </Main>
     </Box>
+  ) : (
+    <Navigate to="/login" replace />
   );
 };
 export default AdminLayout;

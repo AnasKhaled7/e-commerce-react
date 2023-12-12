@@ -32,9 +32,7 @@ const Layout = () => {
       {isLoading ? (
         <LoadingScreen />
       ) : error ? (
-        <Message severity="error">
-          {error?.data?.message || error.error}
-        </Message>
+        <Message severity="error">{error?.data?.message}</Message>
       ) : (
         <ScrollToTop>
           <Navbar logoutHandler={logoutHandler} />

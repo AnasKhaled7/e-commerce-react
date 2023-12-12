@@ -16,9 +16,12 @@ export { default as CategoryProducts } from "./category-products/CategoryProduct
 
 // admin
 export { default as AdminLayout } from "./admin/admin-layout/AdminLayout";
+export { default as Dashboard } from "./admin/dashboard/Dashboard";
+export { default as UsersList } from "./admin/users-list/UsersList";
 export { default as OrdersList } from "./admin/orders-list/OrdersList";
+export { default as BrandsList } from "./admin/brands-list/BrandsList";
+export { default as BrandDetails } from "./admin/brand-details/BrandDetails";
+export { default as CategoriesList } from "./admin/categories-list/CategoriesList";
+export { default as CategoryDetails } from "./admin/category-details/CategoryDetails";
 export { default as ProductsList } from "./admin/products-list/ProductsList";
 export { default as ProductDetails } from "./admin/product-details/ProductDetails";
-export { default as UsersList } from "./admin/users-list/UsersList";
-export { default as BrandsList } from "./admin/brands-list/BrandsList";
-export { default as CategoriesList } from "./admin/categories-list/CategoriesList";

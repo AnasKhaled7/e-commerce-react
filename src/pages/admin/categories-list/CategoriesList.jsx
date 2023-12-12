@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   Button,
   IconButton,
+  Link,
   Paper,
   Stack,
   Table,
@@ -51,6 +53,7 @@ const CategoriesList = () => {
 
   if (isLoading || loadingDelete) return <LoadingScreen />;
   if (error) return <Message severity="error">{error?.data?.message}</Message>;
+
   return (
     <Stack gap={4}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -82,7 +85,14 @@ const CategoriesList = () => {
             <TableBody>
               {data?.categories.map((category) => (
                 <TableRow key={category?._id}>
-                  <TableCell>{category?._id}</TableCell>
+                  <TableCell>
+                    <Link
+                      component={NavLink}
+                      to={`/admin/categories-list/${category?._id}`}
+                    >
+                      {category?._id}
+                    </Link>
+                  </TableCell>
                   <TableCell>
                     <img
                       src={category?.image}

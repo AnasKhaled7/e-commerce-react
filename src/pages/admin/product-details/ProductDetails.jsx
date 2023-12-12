@@ -17,15 +17,8 @@ const ProductEdit = () => {
     useGetCategoriesNamesQuery();
   const { data: brands, isLoading: brandsLoading } = useGetBrandsNamesQuery();
 
-  if (isLoading || categoriesLoading || brandsLoading) {
-    return <LoadingScreen />;
-  }
-
-  if (error) {
-    return (
-      <Message severity="error">{error?.data?.message || error.error}</Message>
-    );
-  }
+  if (isLoading || categoriesLoading || brandsLoading) return <LoadingScreen />;
+  if (error) return <Message severity="error">{error?.data?.message}</Message>;
 
   return (
     <Stack gap={2} direction={{ xs: "column", md: "row" }}>

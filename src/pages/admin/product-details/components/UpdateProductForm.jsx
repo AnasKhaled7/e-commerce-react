@@ -60,8 +60,7 @@ const UpdateProductForm = ({
 
       showSnackbar("Product updated successfully", "success");
     } catch (error) {
-      console.log(error);
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 

@@ -63,31 +63,31 @@ const OrdersList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data?.orders.map((row) => (
+              {data?.orders.map((order) => (
                 <TableRow
-                  key={row?._id}
+                  key={order?._id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="order">
                     <Link
                       component={NavLink}
-                      to={`/admin/orders-list/${row._id}`}
+                      to={`/admin/orders-list/${order._id}`}
                     >
-                      {row?._id}
+                      {order?._id}
                     </Link>
                   </TableCell>
                   <TableCell align="center">
-                    {row?.user?.firstName} {row?.user?.lastName}
+                    {order?.user?.firstName} {order?.user?.lastName}
                   </TableCell>
                   <TableCell align="center">
-                    {dateFormate(row?.createdAt)}
+                    {dateFormate(order?.createdAt)}
                   </TableCell>
-                  <TableCell align="center">{row?.totalPrice}</TableCell>
+                  <TableCell align="center">{order?.totalPrice}</TableCell>
 
                   <TableCell align="center">
-                    {row?.isPaid ? (
+                    {order?.isPaid ? (
                       <Typography variant="body2" color="success">
-                        {dateFormate(row?.paidAt)}
+                        {dateFormate(order?.paidAt)}
                       </Typography>
                     ) : (
                       <Typography variant="body2" color="error">
@@ -96,9 +96,9 @@ const OrdersList = () => {
                     )}
                   </TableCell>
                   <TableCell align="center">
-                    {row?.isDelivered ? (
+                    {order?.isDelivered ? (
                       <Typography variant="body2" color="success">
-                        {dateFormate(row?.deliveredAt)}
+                        {dateFormate(order?.deliveredAt)}
                       </Typography>
                     ) : (
                       <Typography variant="body2" color="error">
@@ -107,21 +107,21 @@ const OrdersList = () => {
                     )}
                   </TableCell>
                   <TableCell align="center">
-                    {row?.status === "pending" ? (
+                    {order?.status === "pending" ? (
                       <Typography variant="body2" color="primary">
-                        {row?.status}
+                        {order?.status}
                       </Typography>
-                    ) : row?.status === "processing" ? (
+                    ) : order?.status === "processing" ? (
                       <Typography variant="body2" color="secondary">
-                        {row?.status}
+                        {order?.status}
                       </Typography>
-                    ) : row?.status === "delivered" ? (
+                    ) : order?.status === "delivered" ? (
                       <Typography variant="body2" color="textSecondary">
-                        {row?.status}
+                        {order?.status}
                       </Typography>
                     ) : (
                       <Typography variant="body2" color="error">
-                        {row?.status}
+                        {order?.status}
                       </Typography>
                     )}
                   </TableCell>
