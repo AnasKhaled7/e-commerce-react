@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
@@ -97,25 +97,8 @@ const Profile = () => {
     },
     validationSchema,
     onSubmit,
+    enableReinitialize: true,
   });
-
-  useEffect(() => {
-    formik.resetForm({
-      values: {
-        firstName: userInfo?.firstName || "",
-        lastName: userInfo?.lastName || "",
-        email: userInfo?.email || "",
-        password: "",
-        confirmPassword: "",
-        address: userInfo?.shippingAddress?.address || "",
-        city: userInfo?.shippingAddress?.city || "",
-        postalCode: userInfo?.shippingAddress?.postalCode || "",
-        phone: userInfo?.phone || "",
-      },
-    });
-
-    // eslint-disable-next-line
-  }, [userInfo]);
 
   // password visibility handler
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -224,13 +207,11 @@ const Profile = () => {
               Boolean(formik.errors.confirmPassword)
             }
           >
-            <InputLabel htmlFor="profile-confirmPassword">
-              Confirm Password
-            </InputLabel>
+            <InputLabel htmlFor="profile-confirmPassword">Confirm</InputLabel>
             <OutlinedInput
               id="profile-confirmPassword"
               name="confirmPassword"
-              label="Confirm Password"
+              label="Confirm"
               type={showPassword ? "text" : "password"}
               endAdornment={
                 <InputAdornment position="end">
