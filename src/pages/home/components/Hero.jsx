@@ -17,6 +17,7 @@ const Hero = () => {
 
   return (
     <Stack
+      component="header"
       gap={4}
       justifyContent="center"
       alignItems="center"
@@ -27,15 +28,23 @@ const Hero = () => {
         minHeight: 400,
         color: "#fff",
         textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${bgImg})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
         backgroundSize: "cover",
         backgroundPosition: "bottom",
       }}
     >
-      <Typography component="h1" variant={isMobile ? "h3" : "h1"}>
+      <Typography
+        component="h1"
+        fontWeight={500}
+        variant={isMobile ? "h2" : "h1"}
+      >
         Welcome to Nile
       </Typography>
-      <Typography component="h2" variant={isMobile ? "h6" : "h5"}>
+      <Typography
+        component="h2"
+        fontWeight={500}
+        variant={isMobile ? "h6" : "h5"}
+      >
         The best place to buy stuff online
       </Typography>
       <Button

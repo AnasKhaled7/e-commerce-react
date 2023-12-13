@@ -16,7 +16,6 @@ import {
   Stack,
   Tooltip,
   Typography,
-  Zoom,
 } from "@mui/material";
 import { AddShoppingCartRounded, RateReviewRounded } from "@mui/icons-material";
 
@@ -191,12 +190,7 @@ const Product = () => {
 
         {/* add review button */}
         {userInfo && (
-          <Tooltip
-            title="Add Review"
-            arrow
-            placement="top-end"
-            TransitionComponent={Zoom}
-          >
+          <Tooltip title="Add Review" arrow placement="top-end">
             <Fab
               color="secondary"
               aria-label="add"

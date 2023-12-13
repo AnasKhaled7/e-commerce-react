@@ -19,48 +19,47 @@ const Brands = () => {
   return (
     <Container
       maxWidth="xl"
+      component="section"
       sx={{
         py: 4,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 6,
+        justifyContent: "center",
+        gap: 4,
       }}
     >
       <Typography
         component="h2"
         variant={isMobile ? "h4" : "h3"}
-        fontWeight={700}
-        textAlign="center"
+        fontWeight={500}
       >
         Brands
       </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
         {isLoading ? (
           <>
             {[1, 2, 3, 4].map((index) => (
-              <Grid key={index} item xs={6} sm={4} md={3} lg={2}>
-                <Skeleton variant="rounded" height={100} />
+              <Grid key={index} item xs={2} md={1}>
+                <Skeleton variant="rounded" height={50} />
               </Grid>
             ))}
           </>
         ) : error ? (
           <Grid item xs={12}>
-            <Message severity="error">
-              {error?.data?.message || error.error}
-            </Message>
+            <Message severity="error">{error?.data?.message}</Message>
           </Grid>
         ) : (
           <>
             {data?.brands.map((brand) => (
-              <Grid key={brand._id} item xs={6} sm={4} md={3} lg={2}>
+              <Grid key={brand._id} item xs={2} md={1}>
                 <img
                   src={brand?.image?.url}
                   alt={brand?.name}
                   style={{
                     width: "100%",
-                    height: "100px",
+                    height: "50px",
                     objectFit: "contain",
                   }}
                 />

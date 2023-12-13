@@ -23,11 +23,7 @@ const Home = () => {
       <Divider />
       <Categories />
       <Divider />
-      <div
-        style={{ background: "linear-gradient(180deg, #FFF 0%, #F0F7FF 100%)" }}
-      >
-        <Products />
-      </div>
+      <Products />
       <Divider />
       <Brands />
     </>

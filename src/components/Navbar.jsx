@@ -66,10 +66,16 @@ const Navbar = (props) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+  const links = [
+    { name: "Profile", path: "/profile", icon: <PersonOutlineOutlined /> },
+    { name: "My Orders", path: "/my-orders", icon: <ReceiptLongRounded /> },
+  ];
+
   const drawer = (
     <Box onClick={handleDrawerToggle}>
       <Typography
         variant="h4"
+        fontWeight={500}
         color="primary"
         sx={{ my: 2, textAlign: "center", cursor: "pointer" }}
         onClick={() => navigate("/")}
@@ -80,17 +86,20 @@ const Navbar = (props) => {
       <List>
         {token ? (
           <>
-            <ListItem disablePadding onClick={() => navigate("/profile")}>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary="Profile" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding onClick={() => navigate("/my-orders")}>
-              <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary="My Orders" />
-              </ListItemButton>
-            </ListItem>
+            {links.map((link) => (
+              <ListItem
+                key={link.name}
+                disablePadding
+                onClick={() => navigate(link.path)}
+              >
+                <ListItemButton sx={{ textAlign: "center" }}>
+                  <ListItemText primary={link.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+
             <Divider />
+
             <ListItem disablePadding onClick={props.logoutHandler}>
               <ListItemButton sx={{ textAlign: "center" }}>
                 <ListItemText primary="Logout" />
@@ -123,6 +132,7 @@ const Navbar = (props) => {
             {/* left */}
             <Typography
               variant="h4"
+              fontWeight={500}
               color="primary"
               sx={{ cursor: "pointer" }}
               onClick={() => navigate("/")}
@@ -216,18 +226,12 @@ const Navbar = (props) => {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem onClick={() => navigate("/profile")}>
-            <ListItemIcon>
-              <PersonOutlineOutlined />
-            </ListItemIcon>
-            Profile
-          </MenuItem>
-          <MenuItem onClick={() => navigate("/my-orders")}>
-            <ListItemIcon>
-              <ReceiptLongRounded />
-            </ListItemIcon>
-            My Orders
-          </MenuItem>
+          {links.map((link) => (
+            <MenuItem key={link.name} onClick={() => navigate(`${link.path}`)}>
+              <ListItemIcon>{link.icon}</ListItemIcon>
+              {link.name}
+            </MenuItem>
+          ))}
 
           <Divider />
 

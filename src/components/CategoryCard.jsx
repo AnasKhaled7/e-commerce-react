@@ -26,22 +26,25 @@ const CategoryCard = ({ item }) => {
       />
 
       <Stack
-        bgcolor="rgba(0,0,0,0.55)"
+        bgcolor="rgba(0,0,0,0.5)"
         position="absolute"
         alignItems="center"
         justifyContent="center"
-        gap={4}
+        gap={2}
         sx={{ inset: 0 }}
       >
         <Typography
           component="h3"
           variant={isMobile ? "h6" : "h5"}
           color="#fff"
+          textAlign="center"
+          fontWeight={500}
         >
           {item?.name}
         </Typography>
         <Button
           variant="contained"
+          size="large"
           endIcon={<KeyboardArrowRightRounded />}
           onClick={() => {
             navigate(`/products/category/${item._id}/page/1`);

@@ -23,7 +23,7 @@ const icons = [
 const links = [
   {
     title: "Home",
-    to: "",
+    to: "/",
   },
   {
     title: "Cart",
@@ -47,6 +47,7 @@ const Footer = () => {
     <>
       <Container
         maxWidth="xl"
+        component="footer"
         sx={{
           display: "flex",
           flexWrap: "wrap",
@@ -58,10 +59,11 @@ const Footer = () => {
         <Stack flex={1} gap={2} minWidth={200} alignItems="start">
           {/* logo */}
           <Typography
-            component="h1"
             variant="h4"
+            fontWeight={500}
+            color="primary"
             sx={{ cursor: "pointer" }}
-            onClick={() => navigate("")}
+            onClick={() => navigate("/")}
           >
             Nile
           </Typography>

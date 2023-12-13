@@ -20,10 +20,10 @@ const ProductCard = ({ product }) => {
           height="200"
           image={product?.image?.url}
           alt={product?.name}
-          sx={{ objectFit: "contain" }}
+          sx={{ objectFit: "cover" }}
         />
         <CardContent>
-          <Typography gutterBottom variant="h6" component="div" noWrap>
+          <Typography variant="h6" noWrap>
             {product?.name}
           </Typography>
 
@@ -31,6 +31,7 @@ const ProductCard = ({ product }) => {
             <Rating
               name="rating"
               value={product?.rating}
+              size="small"
               precision={0.5}
               readOnly
             />
@@ -40,7 +41,9 @@ const ProductCard = ({ product }) => {
             </Typography>
           </Stack>
 
-          <Typography>EGP {product?.price}</Typography>
+          <Typography textAlign="end" fontWeight={500}>
+            EGP {product?.price}
+          </Typography>
         </CardContent>
       </CardActionArea>
     </Card>

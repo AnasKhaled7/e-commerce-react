@@ -23,24 +23,25 @@ const Categories = () => {
   return (
     <Container
       maxWidth="xl"
+      component="section"
       sx={{
         py: 4,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 6,
+        justifyContent: "center",
+        gap: 4,
       }}
     >
       <Typography
         component="h2"
         variant={isMobile ? "h4" : "h3"}
-        fontWeight={700}
-        textAlign="center"
+        fontWeight={500}
       >
         Categories
       </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
         {isLoading ? (
           <>
             {[1, 2, 3, 4].map((index) => (
@@ -55,11 +56,19 @@ const Categories = () => {
           </Grid>
         ) : (
           <>
-            {data?.categories.map((category) => (
-              <Grid key={category._id} item xs={12} sm={6} md={4} lg={3}>
-                <CategoryCard item={category} />
+            {data?.numOfCategories === 0 ? (
+              <Grid item xs={12}>
+                <Message severity="info">No categories found</Message>
               </Grid>
-            ))}
+            ) : (
+              <>
+                {data?.categories.map((category) => (
+                  <Grid key={category._id} item xs={12} sm={6} md={4} lg={3}>
+                    <CategoryCard item={category} />
+                  </Grid>
+                ))}
+              </>
+            )}
           </>
         )}
       </Grid>
