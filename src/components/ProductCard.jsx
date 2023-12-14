@@ -4,6 +4,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Chip,
   Rating,
   Stack,
   Typography,
@@ -23,9 +24,30 @@ const ProductCard = ({ product }) => {
           sx={{ objectFit: "cover" }}
         />
         <CardContent>
-          <Typography variant="h6" noWrap>
-            {product?.name}
-          </Typography>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h6" noWrap>
+              {product?.name}
+            </Typography>
+
+            {
+              // out of stock
+              product?.countInStock === 0 && (
+                <Chip label="Out of stock" color="warning" size="small" />
+              )
+            }
+
+            {product?.countInStock > 0 && product?.discount > 0 && (
+              <Chip
+                label={`${product?.discount}% OFF`}
+                color="error"
+                size="small"
+              />
+            )}
+          </Stack>
 
           <Stack direction="row" alignItems="center" my={1} gap={1}>
             <Rating
@@ -41,9 +63,40 @@ const ProductCard = ({ product }) => {
             </Typography>
           </Stack>
 
-          <Typography textAlign="end" fontWeight={500}>
-            EGP {product?.price}
-          </Typography>
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{
+              justifyContent:
+                product?.discount > 0 ? "space-between" : "flex-end",
+            }}
+          >
+            {
+              // don't render price if discount is 0
+              product?.discount > 0 && (
+                <Typography
+                  variant="body1"
+                  fontWeight={500}
+                  color="text.primary"
+                  sx={{
+                    textDecoration: product?.discount > 0 && "line-through",
+                  }}
+                >
+                  EGP {product?.price}
+                </Typography>
+              )
+            }
+
+            <Typography
+              textAlign="end"
+              fontWeight={500}
+              sx={{
+                color: product?.discount > 0 && "error.main",
+              }}
+            >
+              EGP {product?.finalPrice}
+            </Typography>
+          </Stack>
         </CardContent>
       </CardActionArea>
     </Card>

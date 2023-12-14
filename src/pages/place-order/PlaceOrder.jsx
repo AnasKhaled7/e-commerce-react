@@ -40,6 +40,8 @@ const PlaceOrder = () => {
         name: item?.name,
         image: item?.image?.url,
         price: item?.price,
+        discount: item?.discount,
+        finalPrice: item?.finalPrice,
         quantity: item?.quantity,
       }));
 
@@ -55,6 +57,7 @@ const PlaceOrder = () => {
       dispatch(clearCartItems());
       navigate(`/orders/${res.order._id}`);
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -94,7 +97,7 @@ const PlaceOrder = () => {
               <Message severity="info">Your cart is empty</Message>
             ) : (
               <Stack gap={2}>
-                {cart.cartItems.map((item) => (
+                {cart.cartItems.map((item, index) => (
                   <Fragment key={item._id}>
                     <Stack
                       direction="row"
@@ -123,7 +126,10 @@ const PlaceOrder = () => {
                       </Typography>
                     </Stack>
 
-                    <Divider />
+                    {
+                      // don't render divider for last item
+                      index !== cart.cartItems.length - 1 && <Divider />
+                    }
                   </Fragment>
                 ))}
               </Stack>

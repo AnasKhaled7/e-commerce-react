@@ -136,7 +136,10 @@ const Cart = () => {
                     </Stack>
                   </Stack>
                 </Stack>
-                <Divider />
+
+                {/* don't render divider for last item */}
+                {cart?.cartItems.indexOf(item) !==
+                  cart?.cartItems.length - 1 && <Divider />}
               </Fragment>
             ))}
           </Stack>

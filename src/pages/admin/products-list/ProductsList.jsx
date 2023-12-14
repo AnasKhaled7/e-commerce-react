@@ -54,6 +54,19 @@ const ProductsList = () => {
     }
   };
 
+  const columns = [
+    { label: "ID" },
+    { label: "Image" },
+    { label: "Name" },
+    { label: "Price" },
+    { label: "Discount" },
+    { label: "Final Price" },
+    { label: "Stock" },
+    { label: "Category" },
+    { label: "Brand" },
+    { label: "Actions" },
+  ];
+
   if (isLoading || loadingDelete) return <LoadingScreen />;
   if (error) return <Message severity="error">{error?.data?.message}</Message>;
 
@@ -79,27 +92,15 @@ const ProductsList = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell style={{ minWidth: 150 }} align="center">
-                  ID
-                </TableCell>
-                <TableCell style={{ minWidth: 150 }} align="center">
-                  Image
-                </TableCell>
-                <TableCell style={{ minWidth: 150 }} align="center">
-                  Name
-                </TableCell>
-                <TableCell style={{ minWidth: 150 }} align="center">
-                  Price
-                </TableCell>
-                <TableCell style={{ minWidth: 100 }} align="center">
-                  Category
-                </TableCell>
-                <TableCell style={{ minWidth: 150 }} align="center">
-                  Brand
-                </TableCell>
-                <TableCell style={{ minWidth: 150 }} align="center">
-                  Actions
-                </TableCell>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.label}
+                    style={{ minWidth: 170 }}
+                    align="center"
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -124,6 +125,11 @@ const ProductsList = () => {
                   </TableCell>
                   <TableCell align="center">{product?.name}</TableCell>
                   <TableCell align="center">EGP {product?.price}</TableCell>
+                  <TableCell align="center">{product?.discount}%</TableCell>
+                  <TableCell align="center">
+                    EGP {product?.finalPrice}
+                  </TableCell>
+                  <TableCell align="center">{product?.countInStock}</TableCell>
                   <TableCell align="center">
                     {product?.category?.name}
                   </TableCell>

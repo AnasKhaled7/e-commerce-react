@@ -128,8 +128,28 @@ const Product = () => {
           {/* price */}
           <Stack>
             <Typography variant="caption">Price</Typography>
-            <Typography variant="h6">EGP {data?.product?.price}</Typography>
+            <Typography>EGP {data?.product?.price}</Typography>
           </Stack>
+
+          {/* discount */}
+          {data?.product?.discount > 0 && (
+            <Stack>
+              <Typography variant="caption">Discount</Typography>
+              <Typography variant="h6">
+                {data?.product?.discount}% OFF
+              </Typography>
+            </Stack>
+          )}
+
+          {/* final price */}
+          {data?.product?.discount > 0 && (
+            <Stack>
+              <Typography variant="caption">Final Price</Typography>
+              <Typography variant="h6">
+                EGP {data?.product?.finalPrice}
+              </Typography>
+            </Stack>
+          )}
 
           {/* status */}
           <Stack direction="row" alignItems="center" gap={1}>

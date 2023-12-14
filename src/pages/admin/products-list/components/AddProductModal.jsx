@@ -62,10 +62,11 @@ const AddProductModal = ({ open, handleClose }) => {
     try {
       let formData = new FormData();
       for (let field in values) formData.append(field, values[field]);
-      await createProduct(formData);
+      await createProduct(formData).unwrap();
       formik.resetForm();
       handleClose();
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };

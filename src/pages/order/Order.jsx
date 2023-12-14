@@ -27,12 +27,7 @@ const Order = () => {
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
-  const {
-    data: order,
-    refetch,
-    isLoading,
-    error,
-  } = useGetOrderDetailsQuery(orderId);
+  const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
   const [payOrder, { isLoading: isPaying }] = usePayOrderMutation(orderId);
   const [deliverOrder, { isLoading: isDelivering }] =
     useDeliverOrderMutation(orderId);
@@ -41,7 +36,6 @@ const Order = () => {
     hideSnackbar();
     try {
       await deliverOrder(orderId);
-      refetch();
       showSnackbar("Order delivered successfully");
     } catch (error) {
       showSnackbar(error?.data?.message);
@@ -52,7 +46,6 @@ const Order = () => {
     hideSnackbar();
     try {
       await payOrder(orderId);
-      refetch();
       showSnackbar("Order paid successfully");
     } catch (error) {
       showSnackbar(error?.data?.message);
@@ -159,7 +152,7 @@ const Order = () => {
                       <strong>Qty: </strong> {item.quantity}
                     </Typography>
                     <Typography>
-                      <strong>Price: </strong> EGP {item.price}
+                      <strong>Price: </strong> EGP {item.finalPrice}
                     </Typography>
                   </Stack>
                 </Stack>
