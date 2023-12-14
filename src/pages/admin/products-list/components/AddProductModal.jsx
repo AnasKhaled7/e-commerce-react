@@ -1,5 +1,4 @@
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -27,6 +26,7 @@ import { useCreateProductMutation } from "../../../../slices/products.api.slice"
 import { useSnackbar } from "../../../../hooks/useSnackbar";
 import { useGetCategoriesNamesQuery } from "../../../../slices/categories.api.slice";
 import { useGetBrandsNamesQuery } from "../../../../slices/brands.api.slice";
+import { addProductValidation } from "../../../../utils/admin.validation";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -56,33 +56,6 @@ const AddProductModal = ({ open, handleClose }) => {
       formik.setFieldValue("image", e.currentTarget.files[0]);
   };
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
-    description: Yup.string().required("Description is required"),
-    image: Yup.mixed()
-      .test(
-        "fileSize",
-        "File too large",
-        (value) => value && value.size <= 1048576
-      ) // 1MB
-      .test(
-        "fileFormat",
-        "Unsupported Format",
-        (value) =>
-          value &&
-          ["image/jpg", "image/jpeg", "image/gif", "image/png"].includes(
-            value.type
-          )
-      )
-      .required("A file is required"),
-    category: Yup.string().required("Category is required"),
-    brand: Yup.string().required("Brand is required"),
-    price: Yup.number().required("Price is required"),
-    countInStock: Yup.number().required("Count in stock is required"),
-    discount: Yup.number(),
-  });
-
   // formik submit handler
   const onSubmit = async (values) => {
     hideSnackbar();
@@ -109,7 +82,7 @@ const AddProductModal = ({ open, handleClose }) => {
       countInStock: 0,
       discount: 0,
     },
-    validationSchema,
+    validationSchema: addProductValidation,
     onSubmit,
   });
 

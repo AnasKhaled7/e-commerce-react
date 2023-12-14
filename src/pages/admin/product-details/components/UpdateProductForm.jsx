@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -15,6 +14,7 @@ import {
 } from "@mui/material";
 
 import { useUpdateProductMutation } from "../../../../slices/products.api.slice";
+import { updateProductValidation } from "../../../../utils/admin.validation";
 
 const UpdateProductForm = ({
   data,
@@ -25,17 +25,6 @@ const UpdateProductForm = ({
 }) => {
   const { productId } = useParams();
   const [updateProduct] = useUpdateProductMutation();
-
-  // formik validation schema
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
-    description: Yup.string().required("Description is required"),
-    category: Yup.string().required("Category is required"),
-    brand: Yup.string().required("Brand is required"),
-    price: Yup.number().required("Price is required"),
-    countInStock: Yup.number().required("Count in stock is required"),
-    discount: Yup.number(),
-  });
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -75,7 +64,7 @@ const UpdateProductForm = ({
       countInStock: data?.product?.countInStock || "",
       discount: data?.product?.discount || "",
     },
-    validationSchema,
+    validationSchema: updateProductValidation,
     onSubmit,
     enableReinitialize: true,
   });

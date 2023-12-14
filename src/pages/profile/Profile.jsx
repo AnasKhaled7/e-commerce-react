@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -23,6 +22,7 @@ import { FormSection } from "../../components";
 import { useUpdateProfileMutation } from "../../slices/users.api.slice";
 import { updateUserInfo } from "../../slices/auth.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
+import { profileValidation } from "../../utils/customer.validation";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -33,31 +33,6 @@ const Profile = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const [updateProfile] = useUpdateProfileMutation();
-
-  // formik validation schema
-  const validationSchema = Yup.object({
-    firstName: Yup.string()
-      .min(3, "First Name must be at least 3 characters long")
-      .max(30, "First Name must be at most 30 characters long"),
-    lastName: Yup.string()
-      .min(3, "Last Name must be at least 3 characters long")
-      .max(30, "Last Name must be at most 30 characters long"),
-    email: Yup.string().email("Invalid email address"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters long")
-      .max(30, "Password must be at most 30 characters long"),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref("password"), null],
-      "Passwords must match"
-    ),
-    address: Yup.string(),
-    city: Yup.string(),
-    postalCode: Yup.string(),
-    phone: Yup.string().matches(
-      /^01[0-2,5]{1}[0-9]{8}$/,
-      "Invalid phone number"
-    ),
-  });
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -76,8 +51,9 @@ const Profile = () => {
 
       const res = await updateProfile(changedValues).unwrap();
       dispatch(updateUserInfo({ ...res }));
-      showSnackbar("Profile updated successfully", "success");
+      showSnackbar(res?.message, "success");
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -95,7 +71,7 @@ const Profile = () => {
       postalCode: userInfo?.shippingAddress?.postalCode || "",
       phone: userInfo?.phone || "",
     },
-    validationSchema,
+    validationSchema: profileValidation,
     onSubmit,
     enableReinitialize: true,
   });

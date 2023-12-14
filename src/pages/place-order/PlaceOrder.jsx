@@ -55,8 +55,7 @@ const PlaceOrder = () => {
       dispatch(clearCartItems());
       navigate(`/orders/${res.order._id}`);
     } catch (error) {
-      console.log(error);
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 

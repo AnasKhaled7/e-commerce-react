@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -25,6 +24,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import { useResetPasswordMutation } from "../../../slices/users.api.slice";
 import { useSnackbar } from "../../../hooks/useSnackbar";
+import { resetPasswordValidation } from "../../../utils/customer.validation";
 
 const ResetPasswordModal = ({ open, handleClose }) => {
   const navigate = useNavigate();
@@ -35,19 +35,6 @@ const ResetPasswordModal = ({ open, handleClose }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [resetPassword] = useResetPasswordMutation();
-
-  // formik validation schema
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email address").required("Required"),
-    code: Yup.string().required("Required"),
-    password: Yup.string()
-      .required("Required")
-      .min(6, "Password must be at least 6 characters long")
-      .max(30, "Password must be at most 30 characters long"),
-    confirmPassword: Yup.string()
-      .required("Required")
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
-  });
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -70,7 +57,7 @@ const ResetPasswordModal = ({ open, handleClose }) => {
       confirmPassword: "",
       email: localStorage.getItem("email"),
     },
-    validationSchema,
+    validationSchema: resetPasswordValidation,
     onSubmit,
   });
 

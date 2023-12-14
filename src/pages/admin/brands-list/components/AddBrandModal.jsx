@@ -1,5 +1,4 @@
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -20,6 +19,7 @@ import { Close, CloudUpload } from "@mui/icons-material";
 
 import { useCreateBrandMutation } from "../../../../slices/brands.api.slice";
 import { useSnackbar } from "../../../../hooks/useSnackbar";
+import { nameAndImageValidation } from "../../../../utils/admin.validation";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -46,27 +46,6 @@ const AddBrandModal = ({ open, handleClose }) => {
       formik.setFieldValue("image", e.currentTarget.files[0]);
   };
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
-    image: Yup.mixed()
-      .test(
-        "fileSize",
-        "File too large",
-        (value) => value && value.size <= 1048576
-      ) // 1MB
-      .test(
-        "fileFormat",
-        "Unsupported Format",
-        (value) =>
-          value &&
-          ["image/jpg", "image/jpeg", "image/gif", "image/png"].includes(
-            value.type
-          )
-      )
-      .required("A file is required"),
-  });
-
   // formik submit handler
   const onSubmit = async (values) => {
     hideSnackbar();
@@ -84,7 +63,7 @@ const AddBrandModal = ({ open, handleClose }) => {
   // formik hook
   const formik = useFormik({
     initialValues: { name: "", image: "" },
-    validationSchema,
+    validationSchema: nameAndImageValidation,
     onSubmit,
   });
 

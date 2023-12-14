@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -10,15 +9,11 @@ import {
 } from "@mui/material";
 
 import { useUpdateCategoryMutation } from "../../../../slices/categories.api.slice";
+import { nameValidation } from "../../../../utils/admin.validation";
 
 const UpdateCategoryForm = ({ data, showSnackbar, hideSnackbar }) => {
   const { categoryId } = useParams();
   const [updateCategory] = useUpdateCategoryMutation();
-
-  // formik validation schema
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
-  });
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -52,7 +47,7 @@ const UpdateCategoryForm = ({ data, showSnackbar, hideSnackbar }) => {
     initialValues: {
       name: data?.category?.name || "",
     },
-    validationSchema,
+    validationSchema: nameValidation,
     onSubmit,
     enableReinitialize: true,
   });

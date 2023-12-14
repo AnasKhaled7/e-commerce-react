@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -17,6 +16,7 @@ import { FormSection } from "../../components";
 import { useSendResetPasswordEmailMutation } from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { ResetPasswordModal } from "./components";
+import { emailValidation } from "../../utils/customer.validation";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -30,17 +30,12 @@ const ResetPassword = () => {
     if (userInfo?._id) navigate("/");
   }, [userInfo, navigate]);
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email address").required("Required"),
-  });
-
   // formik submit handler
   const onSubmit = async (values) => {
     hideSnackbar();
     try {
-      await sendResetPasswordEmail(values).unwrap();
-      showSnackbar("Password reset email sent successfully", "success");
+      const res = await sendResetPasswordEmail(values).unwrap();
+      showSnackbar(res?.message, "success");
       localStorage.setItem("email", values.email);
       setOpen(true);
     } catch (error) {
@@ -51,7 +46,7 @@ const ResetPassword = () => {
   // formik hook for form handling
   const formik = useFormik({
     initialValues: { email: "" },
-    validationSchema,
+    validationSchema: emailValidation,
     onSubmit,
   });
 

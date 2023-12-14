@@ -1,5 +1,4 @@
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -19,6 +18,7 @@ import {
 import { Close } from "@mui/icons-material";
 
 import { useCreateReviewMutation } from "../../../slices/reviews.api.slice";
+import { reviewValidation } from "../../../utils/customer.validation";
 
 const AddReviewModal = ({
   productId,
@@ -32,12 +32,6 @@ const AddReviewModal = ({
 
   const [createReview] = useCreateReviewMutation();
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    rating: Yup.number().min(1).max(5).required("Rating is required"),
-    comment: Yup.string(),
-  });
-
   // formik submit handler
   const onSubmit = async (values) => {
     hideSnackbar();
@@ -47,8 +41,7 @@ const AddReviewModal = ({
       handleClose();
       showSnackbar(res?.message, "success");
     } catch (error) {
-      console.log(error);
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 
@@ -58,7 +51,7 @@ const AddReviewModal = ({
       rating: 0,
       comment: "",
     },
-    validationSchema,
+    validationSchema: reviewValidation,
     onSubmit,
   });
 

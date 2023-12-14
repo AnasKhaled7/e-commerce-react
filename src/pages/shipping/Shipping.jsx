@@ -1,9 +1,7 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -16,6 +14,7 @@ import { CheckoutSteps, FormSection } from "../../components";
 import { useUpdateProfileMutation } from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { updateUserInfo } from "../../slices/auth.slice";
+import { shippingValidation } from "../../utils/customer.validation";
 
 const Shipping = () => {
   const dispatch = useDispatch();
@@ -26,16 +25,6 @@ const Shipping = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const [updateProfile] = useUpdateProfileMutation();
-
-  // formik validation schema
-  const validationSchema = Yup.object({
-    address: Yup.string().required("Required"),
-    city: Yup.string().required("Required"),
-    postalCode: Yup.string().required("Required"),
-    phone: Yup.string()
-      .required("Required")
-      .matches(/^01[0-2,5]{1}[0-9]{8}$/, "Invalid phone number"),
-  });
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -67,20 +56,10 @@ const Shipping = () => {
       postalCode: userInfo?.shippingAddress?.postalCode || "",
       phone: userInfo?.phone || "",
     },
-    validationSchema,
+    validationSchema: shippingValidation,
     onSubmit,
+    enableReinitialize: true,
   });
-
-  useEffect(() => {
-    formik.setValues({
-      address: userInfo?.shippingAddress?.address || "",
-      city: userInfo?.shippingAddress?.city || "",
-      postalCode: userInfo?.shippingAddress?.postalCode || "",
-      phone: userInfo?.phone || "",
-    });
-
-    // eslint-disable-next-line
-  }, [userInfo]);
 
   return (
     <FormSection>

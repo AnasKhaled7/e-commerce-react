@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -31,6 +30,7 @@ import {
 } from "../../../slices/users.api.slice";
 import { Message, LoadingScreen } from "../../../components";
 import { useSnackbar } from "../../../hooks/useSnackbar";
+import { blockUserValidation } from "../../../utils/admin.validation";
 
 const UsersList = () => {
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
@@ -65,11 +65,6 @@ const UsersList = () => {
     }
   };
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    reason: Yup.string().required("Required"),
-  });
-
   // formik submit handler
   const onSubmit = async (values) => {
     hideSnackbar();
@@ -88,7 +83,7 @@ const UsersList = () => {
     initialValues: {
       reason: "",
     },
-    validationSchema,
+    validationSchema: blockUserValidation,
     onSubmit,
   });
 

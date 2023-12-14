@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -13,6 +12,7 @@ import {
 import { CloudUpload } from "@mui/icons-material";
 
 import { useUpdateCategoryImageMutation } from "../../../../slices/categories.api.slice";
+import { imageValidation } from "../../../../utils/admin.validation";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -29,26 +29,6 @@ const VisuallyHiddenInput = styled("input")({
 const Extras = ({ data, showSnackbar, hideSnackbar }) => {
   const { categoryId } = useParams();
   const [updateCategoryImage] = useUpdateCategoryImageMutation();
-
-  // formik validation schema
-  const validationSchema = Yup.object({
-    image: Yup.mixed()
-      .test(
-        "fileSize",
-        "File too large",
-        (value) => value && value.size <= 1048576
-      ) // 1MB
-      .test(
-        "fileFormat",
-        "Unsupported Format",
-        (value) =>
-          value &&
-          ["image/jpg", "image/jpeg", "image/gif", "image/png"].includes(
-            value.type
-          )
-      )
-      .required("A image is required"),
-  });
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -72,7 +52,7 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
     initialValues: {
       image: "",
     },
-    validationSchema,
+    validationSchema: imageValidation,
     onSubmit,
   });
 

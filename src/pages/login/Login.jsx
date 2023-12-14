@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -24,7 +24,7 @@ import { FormSection } from "../../components";
 import { useLoginMutation } from "../../slices/users.api.slice";
 import { setCredentials } from "../../slices/auth.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
-import { Helmet } from "react-helmet-async";
+import { loginValidation } from "./../../utils/customer.validation";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -44,15 +44,6 @@ const Login = () => {
     if (userInfo) navigate(redirect);
   }, [userInfo, redirect, navigate]);
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email address").required("Required"),
-    password: Yup.string()
-      .required("Required")
-      .min(6, "Password must be at least 6 characters long")
-      .max(30, "Password must be at most 30 characters long"),
-  });
-
   // formik submit handler
   const onSubmit = async (values) => {
     hideSnackbar();
@@ -61,14 +52,14 @@ const Login = () => {
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (error) {
-      showSnackbar(error?.data?.message || error.error, "error");
+      showSnackbar(error?.data?.message, "error");
     }
   };
 
   // formik hook for form handling
   const formik = useFormik({
     initialValues: { email: "", password: "" },
-    validationSchema,
+    validationSchema: loginValidation,
     onSubmit,
   });
 

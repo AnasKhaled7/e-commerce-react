@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -13,6 +12,7 @@ import {
 import { CloudUpload } from "@mui/icons-material";
 
 import { useUpdateProductImageMutation } from "../../../../slices/products.api.slice";
+import { imageValidation } from "../../../../utils/admin.validation";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -29,38 +29,18 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
   const { productId } = useParams();
   const [updateProductImage] = useUpdateProductImageMutation();
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    image: Yup.mixed()
-      .test(
-        "fileSize",
-        "File too large",
-        (value) => value && value.size <= 1048576
-      ) // 1MB
-      .test(
-        "fileFormat",
-        "Unsupported Format",
-        (value) =>
-          value &&
-          ["image/jpg", "image/jpeg", "image/gif", "image/png"].includes(
-            value.type
-          )
-      )
-      .required("A image is required"),
-  });
-
   // formik submit handler
   const onSubmit = async (values) => {
     hideSnackbar();
     try {
-      await updateProductImage({
+      const res = await updateProductImage({
         productId,
         image: values.image,
       }).unwrap();
 
       formik.resetForm();
 
-      showSnackbar("Image updated successfully", "success");
+      showSnackbar(res?.message, "success");
     } catch (error) {
       showSnackbar(error?.data?.message, "error");
     }
@@ -71,7 +51,7 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
     initialValues: {
       image: "",
     },
-    validationSchema,
+    validationSchema: imageValidation,
     onSubmit,
   });
 

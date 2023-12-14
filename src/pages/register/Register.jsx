@@ -3,7 +3,6 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Button,
   CircularProgress,
@@ -24,6 +23,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FormSection } from "../../components";
 import { useRegisterMutation } from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
+import { registerValidation } from "../../utils/customer.validation";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -41,34 +41,11 @@ const Register = () => {
     if (userInfo) navigate(redirect);
   }, [userInfo, redirect, navigate]);
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    firstName: Yup.string()
-      .min(3, "First Name must be at least 3 characters long")
-      .max(30, "First Name must be at most 30 characters long")
-      .required("Required"),
-    lastName: Yup.string()
-      .min(3, "Last Name must be at least 3 characters long")
-      .max(30, "Last Name must be at most 30 characters long")
-      .required("Required"),
-    email: Yup.string().email("Invalid email address").required("Required"),
-    password: Yup.string()
-      .required("Required")
-      .min(6, "Password must be at least 6 characters long")
-      .max(30, "Password must be at most 30 characters long"),
-    confirmPassword: Yup.string()
-      .required("Required")
-      .oneOf([Yup.ref("password"), null], "Passwords must match"),
-    phone: Yup.string()
-      .matches(/^01[0-2,5]{1}[0-9]{8}$/, "Invalid phone number")
-      .required("Required"),
-  });
-
   // formik submit handler
   const onSubmit = async (values) => {
     hideSnackbar();
     try {
-      await register(values);
+      await register(values).unwrap();
       navigate("/login");
     } catch (error) {
       showSnackbar(error?.data?.message, "error");
@@ -85,7 +62,7 @@ const Register = () => {
       confirmPassword: "",
       phone: "",
     },
-    validationSchema,
+    validationSchema: registerValidation,
     onSubmit,
   });
 
