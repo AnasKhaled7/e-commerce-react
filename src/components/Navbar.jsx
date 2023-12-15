@@ -74,6 +74,7 @@ const Navbar = (props) => {
   const drawer = (
     <Box onClick={handleDrawerToggle}>
       <Typography
+        component="p"
         variant="h4"
         fontWeight={500}
         color="primary"
@@ -131,6 +132,7 @@ const Navbar = (props) => {
           <Toolbar sx={{ justifyContent: "space-between" }}>
             {/* left */}
             <Typography
+              component="p"
               variant="h4"
               fontWeight={500}
               color="primary"

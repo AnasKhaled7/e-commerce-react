@@ -42,7 +42,11 @@ const CategoryProducts = () => {
         <title>{data?.category} | Nile</title>
       </Helmet>
       {/* title */}
-      <Typography component="h2" variant={isMobile ? "h4" : "h3"}>
+      <Typography
+        component="h2"
+        fontWeight={500}
+        variant={isMobile ? "h4" : "h3"}
+      >
         {data?.category}
       </Typography>
       <Grid container spacing={2}>
@@ -60,7 +64,7 @@ const CategoryProducts = () => {
           </Grid>
         ) : (
           <>
-            {data?.products.length === 0 ? (
+            {data?.numOfProducts === 0 ? (
               <Grid item xs={12}>
                 <Message severity="info">No products found</Message>
               </Grid>

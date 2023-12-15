@@ -30,7 +30,7 @@ const CategoryCard = ({ item }) => {
         position="absolute"
         alignItems="center"
         justifyContent="center"
-        gap={2}
+        gap={4}
         sx={{ inset: 0 }}
       >
         <Typography

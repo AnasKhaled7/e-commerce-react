@@ -11,10 +11,12 @@ import { EmailRounded, FmdGoodRounded, LinkedIn } from "@mui/icons-material";
 
 const icons = [
   {
+    title: "LinkedIn",
     icon: <LinkedIn />,
     link: "https://www.linkedin.com/in/anas-khaled-b756a7271/",
   },
   {
+    title: "Email",
     icon: <EmailRounded />,
     link: "mailto:anas.elfayoumy7@gmail.com",
   },
@@ -59,6 +61,7 @@ const Footer = () => {
         <Stack flex={1} gap={2} minWidth={200} alignItems="start">
           {/* logo */}
           <Typography
+            component="p"
             variant="h4"
             fontWeight={500}
             color="primary"
@@ -75,10 +78,11 @@ const Footer = () => {
           </Typography>
           {/* social media */}
           <Stack direction="row" gap={0.5} alignItems="center">
-            {icons.map((item, index) => (
+            {icons.map((item) => (
               <IconButton
-                key={index}
+                key={item.title}
                 size="small"
+                aria-label={item.title}
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -95,9 +99,9 @@ const Footer = () => {
           <Typography variant="h5">Useful Links</Typography>
           {/* links */}
           <Stack gap={0.5} alignItems="start">
-            {links.map((item, index) => (
+            {links.map((item) => (
               <Link
-                key={index}
+                key={item.title}
                 component={NavLink}
                 color="inherit"
                 variant="body2"
