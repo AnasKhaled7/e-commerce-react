@@ -7,18 +7,14 @@ import {
   PaginationItem,
   Skeleton,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 
 import { Message, ProductCard } from "../../components";
 import { useGetProductsQuery } from "../../slices/products.api.slice";
 
 const Products = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { page } = useParams();
-  const { data, isLoading, error } = useGetProductsQuery({ page });
+  const { data, isLoading, isFetching, error } = useGetProductsQuery({ page });
   return (
     <Container
       maxWidth="xl"
@@ -34,17 +30,13 @@ const Products = () => {
         <title>Products | Nile</title>
       </Helmet>
       {/* title */}
-      <Typography
-        component="h2"
-        variant={isMobile ? "h4" : "h3"}
-        fontWeight={500}
-      >
+      <Typography variant="h3" fontWeight={500}>
         Products
       </Typography>
 
       {/* products */}
       <Grid container spacing={2}>
-        {isLoading ? (
+        {isLoading || isFetching ? (
           <>
             {[1, 2, 3, 4].map((index) => (
               <Grid key={index} item xs={12} sm={6} md={4} lg={3}>

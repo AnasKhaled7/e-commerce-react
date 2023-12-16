@@ -96,7 +96,6 @@ const UsersList = () => {
         <Typography variant="h4" component="h2">
           Users
         </Typography>
-
         {data?.numOfUsers === 0 ? (
           <Message severity="info">No orders found</Message>
         ) : (
@@ -153,7 +152,7 @@ const UsersList = () => {
           </TableContainer>
         )}
 
-        <SnackbarComponent />
+        {SnackbarComponent}
       </Stack>
 
       <Dialog

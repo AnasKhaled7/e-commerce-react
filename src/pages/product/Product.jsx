@@ -206,7 +206,7 @@ const Product = () => {
         </Stack>
 
         {/* snackbar */}
-        <SnackbarComponent />
+        {SnackbarComponent}
 
         {/* add review button */}
         {userInfo && (

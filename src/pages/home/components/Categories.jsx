@@ -1,13 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  Container,
-  Grid,
-  Skeleton,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Button, Container, Grid, Skeleton, Typography } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 
 import { useGetCategoriesQuery } from "../../../slices/categories.api.slice";
@@ -15,8 +7,6 @@ import { CategoryCard, Message } from "../../../components";
 
 const Categories = () => {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { data, isLoading, error } = useGetCategoriesQuery({ limit: 4 });
 
@@ -33,11 +23,7 @@ const Categories = () => {
         gap: 4,
       }}
     >
-      <Typography
-        component="h2"
-        variant={isMobile ? "h4" : "h3"}
-        fontWeight={500}
-      >
+      <Typography variant="h3" fontWeight={500}>
         Categories
       </Typography>
 

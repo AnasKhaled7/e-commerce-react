@@ -277,7 +277,7 @@ const Profile = () => {
         </Button>
       </Paper>
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </FormSection>
   );
 };

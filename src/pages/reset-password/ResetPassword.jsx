@@ -39,6 +39,7 @@ const ResetPassword = () => {
       localStorage.setItem("email", values.email);
       setOpen(true);
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -122,7 +123,7 @@ const ResetPassword = () => {
 
       <ResetPasswordModal open={open} handleClose={handleClose} />
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </FormSection>
   );
 };

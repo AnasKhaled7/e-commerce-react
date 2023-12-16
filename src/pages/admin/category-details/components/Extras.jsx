@@ -7,24 +7,11 @@ import {
   Paper,
   Stack,
   Typography,
-  styled,
 } from "@mui/material";
-import { CloudUpload } from "@mui/icons-material";
 
 import { useUpdateCategoryImageMutation } from "../../../../slices/categories.api.slice";
 import { imageValidation } from "../../../../utils/admin.validation";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import { ImageUploadField } from "../../../../components";
 
 const Extras = ({ data, showSnackbar, hideSnackbar }) => {
   const { categoryId } = useParams();
@@ -100,20 +87,10 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
 
       {/* upload image */}
       <Stack direction="row" gap={2} alignItems="center">
-        <Button
-          component="label"
-          size="large"
-          variant="outlined"
-          startIcon={<CloudUpload />}
-        >
-          Upload Image
-          <VisuallyHiddenInput
-            id="edot-category-image"
-            type="file"
-            name="image"
-            onChange={handleFileUpload}
-          />
-        </Button>
+        <ImageUploadField
+          id="edit-category-image"
+          handleFileUpload={handleFileUpload}
+        />
 
         {/* submit */}
         <Button

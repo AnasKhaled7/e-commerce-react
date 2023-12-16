@@ -52,7 +52,9 @@ const Cart = () => {
       <Helmet>
         <title>Cart | Nile</title>
       </Helmet>
-      <Typography variant="h4">Shopping Cart 🛒</Typography>
+      <Typography variant="h3" fontWeight={500}>
+        Shopping Cart 🛒
+      </Typography>
 
       <Divider />
 

@@ -44,7 +44,8 @@ const BrandsList = () => {
       try {
         const res = await deleteBrand(brandId).unwrap();
         showSnackbar(res?.message, "success");
-      } catch (err) {
+      } catch (error) {
+        console.log(error);
         showSnackbar(error?.data?.message, "error");
       }
     }
@@ -122,7 +123,7 @@ const BrandsList = () => {
         open={openCreateModal}
         handleClose={handleCloseCreateModal}
       />
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Stack>
   );
 };

@@ -44,6 +44,7 @@ const Shipping = () => {
       dispatch(updateUserInfo({ ...res }));
       navigate("/place-order");
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -155,7 +156,7 @@ const Shipping = () => {
       </Paper>
 
       {/* snackbar */}
-      <SnackbarComponent />
+      {SnackbarComponent}
     </FormSection>
   );
 };

@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -8,47 +7,20 @@ import {
   Paper,
   Stack,
   Typography,
-  styled,
 } from "@mui/material";
-import { CloudUpload } from "@mui/icons-material";
 
 import { useUpdateBrandImageMutation } from "../../../../slices/brands.api.slice";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import { imageValidation } from "../../../../utils/admin.validation";
+import { ImageUploadField } from "../../../../components";
 
 const Extras = ({ data, showSnackbar, hideSnackbar }) => {
   const { brandId } = useParams();
   const [updateBrandImage] = useUpdateBrandImageMutation();
 
-  // formik validation schema
-  const validationSchema = Yup.object({
-    image: Yup.mixed()
-      .test(
-        "fileSize",
-        "File too large",
-        (value) => value && value.size <= 1048576
-      ) // 1MB
-      .test(
-        "fileFormat",
-        "Unsupported Format",
-        (value) =>
-          value &&
-          ["image/jpg", "image/jpeg", "image/gif", "image/png"].includes(
-            value.type
-          )
-      )
-      .required("A image is required"),
-  });
+  const handleFileUpload = (e) => {
+    if (e.currentTarget.files.length)
+      formik.setFieldValue("image", e.currentTarget.files[0]);
+  };
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -63,6 +35,7 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
 
       showSnackbar(res?.message, "success");
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -72,14 +45,9 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
     initialValues: {
       image: "",
     },
-    validationSchema,
+    validationSchema: imageValidation,
     onSubmit,
   });
-
-  const handleFileUpload = (e) => {
-    if (e.currentTarget.files.length)
-      formik.setFieldValue("image", e.currentTarget.files[0]);
-  };
 
   return (
     <Paper
@@ -112,28 +80,17 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
           style={{
             width: "100%",
             height: "100%",
-            borderRadius: "50%",
-            objectFit: "cover",
+            objectFit: "contain",
           }}
         />
       </Box>
 
       {/* upload image */}
       <Stack direction="row" gap={2} alignItems="center">
-        <Button
-          component="label"
-          size="large"
-          variant="outlined"
-          startIcon={<CloudUpload />}
-        >
-          Upload Image
-          <VisuallyHiddenInput
-            id="edot-brand-image"
-            type="file"
-            name="image"
-            onChange={handleFileUpload}
-          />
-        </Button>
+        <ImageUploadField
+          id="edit-brand-image"
+          handleFileUpload={handleFileUpload}
+        />
 
         {/* submit */}
         <Button

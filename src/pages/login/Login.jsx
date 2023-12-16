@@ -52,6 +52,7 @@ const Login = () => {
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -173,7 +174,7 @@ const Login = () => {
         </Stack>
       </Paper>
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </FormSection>
   );
 };

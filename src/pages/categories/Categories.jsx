@@ -7,16 +7,12 @@ import {
   PaginationItem,
   Skeleton,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 
 import { CategoryCard, Message } from "../../components";
 import { useGetCategoriesQuery } from "../../slices/categories.api.slice";
 
 const Categories = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { page } = useParams();
   const { data, isLoading, error } = useGetCategoriesQuery({ page });
 
@@ -35,11 +31,7 @@ const Categories = () => {
         <title>Categories | Nile</title>
       </Helmet>
       {/* title */}
-      <Typography
-        component="h2"
-        variant={isMobile ? "h4" : "h3"}
-        fontWeight={500}
-      >
+      <Typography variant="h3" fontWeight={500}>
         Categories
       </Typography>
 

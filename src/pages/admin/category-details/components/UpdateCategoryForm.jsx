@@ -38,6 +38,7 @@ const UpdateCategoryForm = ({ data, showSnackbar, hideSnackbar }) => {
 
       showSnackbar(res?.message, "success");
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };

@@ -11,27 +11,15 @@ import {
   IconButton,
   Stack,
   TextField,
-  styled,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Close, CloudUpload } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 
 import { useCreateBrandMutation } from "../../../../slices/brands.api.slice";
 import { useSnackbar } from "../../../../hooks/useSnackbar";
 import { nameAndImageValidation } from "../../../../utils/admin.validation";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import ImageUploadField from "../../../../components/ImageUploadField";
 
 const AddBrandModal = ({ open, handleClose }) => {
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
@@ -52,10 +40,11 @@ const AddBrandModal = ({ open, handleClose }) => {
     try {
       let formData = new FormData();
       for (let field in values) formData.append(field, values[field]);
-      await createCBrand(formData);
+      await createCBrand(formData).unwrap();
       formik.resetForm();
       handleClose();
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -116,19 +105,10 @@ const AddBrandModal = ({ open, handleClose }) => {
           />
 
           {/* image */}
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUpload />}
-          >
-            Upload file
-            <VisuallyHiddenInput
-              id="create-brand-image"
-              type="file"
-              name="image"
-              onChange={handleFileUpload}
-            />
-          </Button>
+          <ImageUploadField
+            id="create-brand-image"
+            handleFileUpload={handleFileUpload}
+          />
           <FormHelperText>
             {formik.touched.image && formik.errors.image}
           </FormHelperText>
@@ -136,15 +116,12 @@ const AddBrandModal = ({ open, handleClose }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button
-          type="submit"
-          disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
-        >
-          {formik.isSubmitting ? <CircularProgress size={24} /> : "Add Brand"}
+        <Button type="submit" disabled={formik.isSubmitting}>
+          {formik.isSubmitting ? <CircularProgress size={24} /> : "Add"}
         </Button>
       </DialogActions>
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Dialog>
   );
 };

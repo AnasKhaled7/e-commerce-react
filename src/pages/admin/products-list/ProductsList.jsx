@@ -46,9 +46,10 @@ const ProductsList = () => {
     hideSnackbar();
     if (window.confirm("Are you sure?")) {
       try {
-        await deleteProduct(id);
-        showSnackbar("Product deleted successfully", "success");
+        const res = await deleteProduct(id).unwrap();
+        showSnackbar(res?.message, "success");
       } catch (err) {
+        console.log(err);
         showSnackbar(error?.data?.message, "error");
       }
     }
@@ -156,7 +157,7 @@ const ProductsList = () => {
       />
 
       {/* snackbar */}
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Stack>
   );
 };

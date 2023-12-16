@@ -247,7 +247,7 @@ const Order = () => {
         </>
       )}
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Container>
   );
 };

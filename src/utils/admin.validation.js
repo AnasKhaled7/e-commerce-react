@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-// add brand | add category
+// add brand | category
 export const nameAndImageValidation = Yup.object()
   .shape({
     name: Yup.string().trim().required("Name is required"),
@@ -20,7 +20,7 @@ export const nameAndImageValidation = Yup.object()
   })
   .required();
 
-// add brand image | add category image | add product image
+// update brand image | category image | product image
 export const imageValidation = Yup.object()
   .shape({
     image: Yup.mixed()
@@ -39,7 +39,7 @@ export const imageValidation = Yup.object()
   })
   .required();
 
-// add brand name | add category name
+// add brand name | category name
 export const nameValidation = Yup.object()
   .shape({
     name: Yup.string().trim().required("Name is required"),
@@ -51,7 +51,9 @@ export const addProductValidation = Yup.object()
   .shape({
     name: Yup.string().trim().required("Name is required"),
     description: Yup.string().trim().required("Description is required"),
-    price: Yup.number().required("Price is required"),
+    price: Yup.number()
+      .min(1, "Price should be greater than 1")
+      .required("Price is required"),
     countInStock: Yup.number().required("Count in stock is required"),
     category: Yup.string().required("Category is required"),
     brand: Yup.string().required("Brand is required"),
@@ -77,7 +79,9 @@ export const updateProductValidation = Yup.object()
   .shape({
     name: Yup.string().trim().required("Name is required"),
     description: Yup.string().trim().required("Description is required"),
-    price: Yup.number().required("Price is required"),
+    price: Yup.number()
+      .min(1, "Price should be greater than 1")
+      .required("Price is required"),
     countInStock: Yup.number().required("Count in stock is required"),
     category: Yup.string().required("Category is required"),
     brand: Yup.string().required("Brand is required"),

@@ -188,7 +188,7 @@ const PlaceOrder = () => {
 
       <CheckoutSteps activeStep={2} />
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Container>
   );
 };

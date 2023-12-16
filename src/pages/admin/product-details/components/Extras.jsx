@@ -7,24 +7,12 @@ import {
   Paper,
   Stack,
   Typography,
-  styled,
 } from "@mui/material";
-import { CloudUpload } from "@mui/icons-material";
 
 import { useUpdateProductImageMutation } from "../../../../slices/products.api.slice";
 import { imageValidation } from "../../../../utils/admin.validation";
+import { ImageUploadField } from "../../../../components";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 const Extras = ({ data, showSnackbar, hideSnackbar }) => {
   const { productId } = useParams();
   const [updateProductImage] = useUpdateProductImageMutation();
@@ -42,6 +30,7 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
 
       showSnackbar(res?.message, "success");
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -99,20 +88,10 @@ const Extras = ({ data, showSnackbar, hideSnackbar }) => {
 
       {/* upload image */}
       <Stack direction="row" gap={2} alignItems="center">
-        <Button
-          component="label"
-          size="large"
-          variant="outlined"
-          startIcon={<CloudUpload />}
-        >
-          Upload Image
-          <VisuallyHiddenInput
-            id="edot-product-image"
-            type="file"
-            name="image"
-            onChange={handleFileUpload}
-          />
-        </Button>
+        <ImageUploadField
+          id="edit-product-image"
+          handleFileUpload={handleFileUpload}
+        />
 
         {/* submit */}
         <Button

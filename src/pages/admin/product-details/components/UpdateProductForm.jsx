@@ -42,13 +42,14 @@ const UpdateProductForm = ({
         return;
       }
 
-      await updateProduct({
+      const res = await updateProduct({
         productId,
         product: changedValues,
       }).unwrap();
 
-      showSnackbar("Product updated successfully", "success");
+      showSnackbar(res?.message, "success");
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };

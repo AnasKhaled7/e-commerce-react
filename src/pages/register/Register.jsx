@@ -48,6 +48,7 @@ const Register = () => {
       await register(values).unwrap();
       navigate("/login");
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -247,7 +248,7 @@ const Register = () => {
         </Typography>
       </Paper>
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </FormSection>
   );
 };

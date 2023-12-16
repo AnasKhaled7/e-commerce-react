@@ -38,7 +38,7 @@ const ProductEdit = () => {
         hideSnackbar={hideSnackbar}
       />
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Stack>
   );
 };

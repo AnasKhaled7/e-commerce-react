@@ -16,29 +16,17 @@ import {
   Select,
   Stack,
   TextField,
-  styled,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Close, CloudUpload } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 
 import { useCreateProductMutation } from "../../../../slices/products.api.slice";
 import { useSnackbar } from "../../../../hooks/useSnackbar";
 import { useGetCategoriesNamesQuery } from "../../../../slices/categories.api.slice";
 import { useGetBrandsNamesQuery } from "../../../../slices/brands.api.slice";
 import { addProductValidation } from "../../../../utils/admin.validation";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import { ImageUploadField } from "../../../../components";
 
 const AddProductModal = ({ open, handleClose }) => {
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
@@ -248,19 +236,10 @@ const AddProductModal = ({ open, handleClose }) => {
           />
 
           {/* image */}
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUpload />}
-          >
-            Upload file
-            <VisuallyHiddenInput
-              id="product-image"
-              type="file"
-              name="image"
-              onChange={handleFileUpload}
-            />
-          </Button>
+          <ImageUploadField
+            id="add-product-image"
+            handleFileUpload={handleFileUpload}
+          />
           <FormHelperText>
             {formik.touched.image && formik.errors.image}
           </FormHelperText>
@@ -268,15 +247,12 @@ const AddProductModal = ({ open, handleClose }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button
-          type="submit"
-          disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
-        >
-          {formik.isSubmitting ? <CircularProgress size={24} /> : "Add Product"}
+        <Button type="submit" disabled={formik.isSubmitting}>
+          {formik.isSubmitting ? <CircularProgress size={24} /> : "Add"}
         </Button>
       </DialogActions>
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Dialog>
   );
 };

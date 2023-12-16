@@ -7,16 +7,12 @@ import {
   PaginationItem,
   Skeleton,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 
 import { LoadingScreen, Message, ProductCard } from "../../components";
 import { useGetProductsByCategoryQuery } from "../../slices/products.api.slice";
 
 const CategoryProducts = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { categoryId, page } = useParams();
   const { data, isLoading, error } = useGetProductsByCategoryQuery({
     categoryId,
@@ -42,11 +38,7 @@ const CategoryProducts = () => {
         <title>{data?.category} | Nile</title>
       </Helmet>
       {/* title */}
-      <Typography
-        component="h2"
-        fontWeight={500}
-        variant={isMobile ? "h4" : "h3"}
-      >
+      <Typography variant="h3" fontWeight={500}>
         {data?.category}
       </Typography>
       <Grid container spacing={2}>

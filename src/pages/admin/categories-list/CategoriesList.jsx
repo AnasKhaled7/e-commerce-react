@@ -45,7 +45,8 @@ const CategoriesList = () => {
       try {
         const res = await deleteCategory(categoryId).unwrap();
         showSnackbar(res?.message, "success");
-      } catch (err) {
+      } catch (error) {
+        console.log(error);
         showSnackbar(error?.data?.message, "error");
       }
     }
@@ -123,7 +124,7 @@ const CategoriesList = () => {
         open={openCreateModal}
         handleClose={handleCloseCreateModal}
       />
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Stack>
   );
 };

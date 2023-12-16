@@ -45,6 +45,7 @@ const ResetPasswordModal = ({ open, handleClose }) => {
       formik.resetForm();
       navigate("/login");
     } catch (error) {
+      console.log(error);
       showSnackbar(error?.data?.message, "error");
     }
   };
@@ -182,7 +183,7 @@ const ResetPasswordModal = ({ open, handleClose }) => {
         </Button>
       </DialogActions>
 
-      <SnackbarComponent />
+      {SnackbarComponent}
     </Dialog>
   );
 };
