@@ -9,3 +9,4 @@ export { default as FormSection } from "./FormSection";
 export { default as CheckoutSteps } from "./CheckoutSteps";
 export { default as ProductCard } from "./ProductCard";
 export { default as CategoryCard } from "./CategoryCard";
+export { default as ImageUploadField } from "./ImageUploadField";
