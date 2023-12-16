@@ -26,7 +26,7 @@ const Products = () => {
           gap: 4,
         }}
       >
-        <Typography variant="h3" fontWeight={500}>
+        <Typography variant="h3" fontWeight={700}>
           Products
         </Typography>
 

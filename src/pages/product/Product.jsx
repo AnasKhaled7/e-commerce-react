@@ -97,7 +97,18 @@ const Product = () => {
         {/* info container */}
         <Stack flex={1} gap={4}>
           {/* name */}
-          <Typography variant="h4" fontWeight={700} textAlign="center">
+          <Typography
+            component="h2"
+            variant="h4"
+            fontWeight={500}
+            mx="auto"
+            sx={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxWidth: "400px",
+            }}
+          >
             {data?.product?.name}
           </Typography>
 

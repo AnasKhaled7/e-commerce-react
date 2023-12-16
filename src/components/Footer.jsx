@@ -62,8 +62,8 @@ const Footer = () => {
           {/* logo */}
           <Typography
             component="p"
-            variant="h4"
-            fontWeight={500}
+            variant="h5"
+            fontWeight={700}
             color="primary"
             sx={{ cursor: "pointer" }}
             onClick={() => navigate("/")}
@@ -96,7 +96,9 @@ const Footer = () => {
         {/* center */}
         <Stack flex={1} gap={2} minWidth={200}>
           {/* title */}
-          <Typography variant="h5">Useful Links</Typography>
+          <Typography component="p" variant="h5" fontWeight={500}>
+            Useful Links
+          </Typography>
           {/* links */}
           <Stack gap={0.5} alignItems="start">
             {links.map((item) => (
@@ -117,7 +119,9 @@ const Footer = () => {
         {/* right */}
         <Stack flex={1} gap={2} minWidth={200}>
           {/* title */}
-          <Typography variant="h5">Contact</Typography>
+          <Typography component="p" variant="h5" fontWeight={500}>
+            Contact
+          </Typography>
           {/* links */}
           <Stack gap={2}>
             <Stack direction="row" alignItems="center" gap={1}>

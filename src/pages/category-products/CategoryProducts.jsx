@@ -6,10 +6,14 @@ import {
   Pagination,
   PaginationItem,
   Skeleton,
-  Typography,
 } from "@mui/material";
 
-import { LoadingScreen, Message, ProductCard } from "../../components";
+import {
+  LoadingScreen,
+  Message,
+  PageHeader,
+  ProductCard,
+} from "../../components";
 import { useGetProductsByCategoryQuery } from "../../slices/products.api.slice";
 
 const CategoryProducts = () => {
@@ -37,10 +41,10 @@ const CategoryProducts = () => {
       <Helmet>
         <title>{data?.category} | Nile</title>
       </Helmet>
-      {/* title */}
-      <Typography variant="h3" fontWeight={500}>
-        {data?.category}
-      </Typography>
+
+      <PageHeader text={data?.category} />
+
+      {/* products */}
       <Grid container spacing={2}>
         {isLoading ? (
           <>

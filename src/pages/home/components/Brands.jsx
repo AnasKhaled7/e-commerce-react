@@ -19,7 +19,7 @@ const Brands = () => {
         gap: 4,
       }}
     >
-      <Typography variant="h3" fontWeight={500}>
+      <Typography variant="h3" fontWeight={700}>
         Brands
       </Typography>
 

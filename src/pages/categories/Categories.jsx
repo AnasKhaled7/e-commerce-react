@@ -6,10 +6,9 @@ import {
   Pagination,
   PaginationItem,
   Skeleton,
-  Typography,
 } from "@mui/material";
 
-import { CategoryCard, Message } from "../../components";
+import { CategoryCard, Message, PageHeader } from "../../components";
 import { useGetCategoriesQuery } from "../../slices/categories.api.slice";
 
 const Categories = () => {
@@ -30,10 +29,8 @@ const Categories = () => {
       <Helmet>
         <title>Categories | Nile</title>
       </Helmet>
-      {/* title */}
-      <Typography variant="h3" fontWeight={500}>
-        Categories
-      </Typography>
+
+      <PageHeader text="Categories" />
 
       {/* categories */}
       <Grid container spacing={2}>

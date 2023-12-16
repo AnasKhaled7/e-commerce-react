@@ -22,10 +22,9 @@ const Hero = () => {
       justifyContent="center"
       alignItems="center"
       textAlign="center"
-      px={2}
+      p={2}
       sx={{
-        height: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
-        minHeight: 400,
+        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
         color: "#fff",
         textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
@@ -34,14 +33,14 @@ const Hero = () => {
       }}
     >
       <Typography
-        component="h1"
-        fontWeight={500}
+        component="h2"
+        fontWeight={700}
         variant={isMobile ? "h2" : "h1"}
       >
         Welcome to Nile
       </Typography>
       <Typography
-        component="h2"
+        component="p"
         fontWeight={500}
         variant={isMobile ? "h6" : "h5"}
       >

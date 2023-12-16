@@ -22,7 +22,7 @@ import {
   ShoppingCartCheckoutRounded,
 } from "@mui/icons-material";
 
-import { Message } from "../../components";
+import { Message, PageHeader } from "../../components";
 import { addToCart, removeFromCart } from "../../slices/cart.slice";
 
 const Cart = () => {
@@ -52,12 +52,9 @@ const Cart = () => {
       <Helmet>
         <title>Cart | Nile</title>
       </Helmet>
-      <Typography variant="h3" fontWeight={500}>
-        Shopping Cart 🛒
-      </Typography>
 
-      <Divider />
-
+      <PageHeader text="Shopping Cart" />
+      
       {cart?.cartItems.length === 0 ? (
         <Stack direction="column" alignItems="center" gap={2} sx={{ flex: 1 }}>
           <Message severity="info">

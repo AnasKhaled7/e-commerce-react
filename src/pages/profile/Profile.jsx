@@ -14,11 +14,10 @@ import {
   Paper,
   Stack,
   TextField,
-  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { FormSection } from "../../components";
+import { FormSection, PageHeader } from "../../components";
 import { useUpdateProfileMutation } from "../../slices/users.api.slice";
 import { updateUserInfo } from "../../slices/auth.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
@@ -95,13 +94,10 @@ const Profile = () => {
           p: { xs: 2, sm: 4 },
           display: "flex",
           flexDirection: "column",
-          gap: 2,
+          gap: 4,
         }}
       >
-        {/* heading */}
-        <Typography variant="h4" component="h2" textAlign="center" mb={4}>
-          User Profile
-        </Typography>
+        <PageHeader text="User Profile" />
 
         {/* name fields */}
         <Stack direction="row" gap={2}>

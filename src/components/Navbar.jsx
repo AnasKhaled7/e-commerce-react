@@ -127,12 +127,11 @@ const Navbar = (props) => {
   return (
     <>
       <HideOnScroll {...props}>
-        {/* color="inherit" */}
         <AppBar component="nav" color="inherit">
           <Toolbar sx={{ justifyContent: "space-between" }}>
             {/* left */}
             <Typography
-              component="p"
+              component="h1"
               variant="h4"
               fontWeight={500}
               color="primary"

@@ -30,15 +30,14 @@ const CategoryCard = ({ item }) => {
         position="absolute"
         alignItems="center"
         justifyContent="center"
-        gap={4}
+        gap={2}
         sx={{ inset: 0 }}
       >
         <Typography
-          component="h3"
+          component="p"
           variant={isMobile ? "h6" : "h5"}
           color="#fff"
           textAlign="center"
-          fontWeight={500}
         >
           {item?.name}
         </Typography>

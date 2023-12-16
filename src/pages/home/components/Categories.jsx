@@ -23,7 +23,7 @@ const Categories = () => {
         gap: 4,
       }}
     >
-      <Typography variant="h3" fontWeight={500}>
+      <Typography variant="h3" fontWeight={700}>
         Categories
       </Typography>
 

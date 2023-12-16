@@ -29,7 +29,7 @@ const ProductCard = ({ product }) => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography variant="h6" noWrap>
+            <Typography component="p" fontWeight={500} noWrap>
               {product?.name}
             </Typography>
 
@@ -75,8 +75,6 @@ const ProductCard = ({ product }) => {
               // don't render price if discount is 0
               product?.discount > 0 && (
                 <Typography
-                  variant="body1"
-                  fontWeight={500}
                   color="text.primary"
                   sx={{
                     textDecoration: product?.discount > 0 && "line-through",

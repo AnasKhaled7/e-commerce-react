@@ -6,10 +6,9 @@ import {
   Pagination,
   PaginationItem,
   Skeleton,
-  Typography,
 } from "@mui/material";
 
-import { Message, ProductCard } from "../../components";
+import { Message, PageHeader, ProductCard } from "../../components";
 import { useGetProductsQuery } from "../../slices/products.api.slice";
 
 const Products = () => {
@@ -29,10 +28,8 @@ const Products = () => {
       <Helmet>
         <title>Products | Nile</title>
       </Helmet>
-      {/* title */}
-      <Typography variant="h3" fontWeight={500}>
-        Products
-      </Typography>
+
+      <PageHeader text="Products" />
 
       {/* products */}
       <Grid container spacing={2}>

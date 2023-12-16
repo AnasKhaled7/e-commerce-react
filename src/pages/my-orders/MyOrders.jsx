@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { useGetMyOrdersQuery } from "../../slices/orders.api.slice";
-import { LoadingScreen, Message } from "../../components";
+import { LoadingScreen, Message, PageHeader } from "../../components";
 import dateFormate from "../../utils/dateFormat";
 
 const MyOrders = () => {
@@ -38,14 +38,7 @@ const MyOrders = () => {
         <title>My Orders | Nile</title>
       </Helmet>
 
-      <Typography
-        variant="h6"
-        component="h2"
-        fontWeight={700}
-        textAlign="center"
-      >
-        My Orders ({orders.length})
-      </Typography>
+      <PageHeader text={`My Orders (${orders.length})`} />
 
       <Grid container spacing={2}>
         {orders.map((order) => (
