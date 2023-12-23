@@ -1,30 +1,21 @@
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import {
-  Container,
-  Grid,
-  Pagination,
-  PaginationItem,
-  Skeleton,
-} from "@mui/material";
+import { Grid, Pagination, PaginationItem, Skeleton } from "@mui/material";
 
-import { Message, PageHeader, ProductCard } from "../../components";
+import {
+  Message,
+  PageHeader,
+  PageSection,
+  ProductCard,
+} from "../../components";
 import { useGetProductsQuery } from "../../slices/products.api.slice";
 
 const Products = () => {
   const { page } = useParams();
   const { data, isLoading, isFetching, error } = useGetProductsQuery({ page });
+  
   return (
-    <Container
-      maxWidth="xl"
-      sx={{
-        py: 4,
-        display: "flex",
-        flexDirection: "column",
-        gap: 4,
-        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
-      }}
-    >
+    <PageSection>
       <Helmet>
         <title>Products | Nile</title>
       </Helmet>
@@ -83,7 +74,7 @@ const Products = () => {
           sx={{ mt: "auto", mx: "auto" }}
         />
       )}
-    </Container>
+    </PageSection>
   );
 };
 export default Products;

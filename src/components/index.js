@@ -11,3 +11,4 @@ export { default as ProductCard } from "./ProductCard";
 export { default as CategoryCard } from "./CategoryCard";
 export { default as ImageUploadField } from "./ImageUploadField";
 export { default as PageHeader } from "./PageHeader";
+export { default as PageSection } from "./PageSection";

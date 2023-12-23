@@ -5,7 +5,6 @@ import { Helmet } from "react-helmet-async";
 import {
   Box,
   Button,
-  Container,
   Divider,
   FormControl,
   IconButton,
@@ -22,7 +21,7 @@ import {
   ShoppingCartCheckoutRounded,
 } from "@mui/icons-material";
 
-import { Message, PageHeader } from "../../components";
+import { Message, PageHeader, PageSection } from "../../components";
 import { addToCart, removeFromCart } from "../../slices/cart.slice";
 
 const Cart = () => {
@@ -39,22 +38,13 @@ const Cart = () => {
   const checkoutHandler = () => navigate("/login?redirect=/shipping");
 
   return (
-    <Container
-      maxWidth="xl"
-      sx={{
-        py: 4,
-        display: "flex",
-        flexDirection: "column",
-        gap: 4,
-        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
-      }}
-    >
+    <PageSection>
       <Helmet>
         <title>Cart | Nile</title>
       </Helmet>
 
       <PageHeader text="Shopping Cart" />
-      
+
       {cart?.cartItems.length === 0 ? (
         <Stack direction="column" alignItems="center" gap={2} sx={{ flex: 1 }}>
           <Message severity="info">
@@ -206,7 +196,7 @@ const Cart = () => {
           </Paper>
         </Stack>
       )}
-    </Container>
+    </PageSection>
   );
 };
 export default Cart;

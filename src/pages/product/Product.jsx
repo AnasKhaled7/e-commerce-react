@@ -64,10 +64,11 @@ const Product = () => {
   return (
     <>
       <Helmet>
-        <title>{data?.product?.name} | Nile</title>
+        <title>{data?.product?.name || ""} | Nile</title>
       </Helmet>
 
       <Container
+        component="section"
         maxWidth="xl"
         sx={{
           py: 4,
@@ -75,7 +76,7 @@ const Product = () => {
           alignItems: { md: "center" },
           flexDirection: { xs: "column", md: "row" },
           gap: 4,
-          minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
+          minHeight: { xs: "calc(100dvh - 56px)", sm: "calc(100dvh - 64px)" },
         }}
       >
         {/* image container */}

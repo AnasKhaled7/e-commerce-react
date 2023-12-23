@@ -83,7 +83,7 @@ const Profile = () => {
     <FormSection>
       <Helmet>
         <title>
-          {userInfo?.firstName} {userInfo?.lastName} | Nile
+          {userInfo?.firstName || ""} {userInfo?.lastName || ""} | Nile
         </title>
       </Helmet>
       <Paper

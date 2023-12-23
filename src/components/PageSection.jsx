@@ -1,14 +1,14 @@
-import Container from "@mui/material/Container";
+import { Container } from "@mui/material";
 
-const FormSection = ({ children }) => {
+const PageSection = ({ children }) => {
   return (
     <Container
-      maxWidth="sm"
+      component="section"
+      maxWidth="xl"
       sx={{
         py: 4,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         gap: 4,
         minHeight: { xs: "calc(100dvh - 56px)", sm: "calc(100dvh - 64px)" },
       }}
@@ -17,4 +17,5 @@ const FormSection = ({ children }) => {
     </Container>
   );
 };
-export default FormSection;
+
+export default PageSection;

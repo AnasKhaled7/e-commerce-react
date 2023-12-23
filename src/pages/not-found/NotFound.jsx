@@ -15,25 +15,25 @@ const NotFound = () => {
         alignItems: "center",
         justifyContent: "center",
         gap: 3,
-        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
+        minHeight: { xs: "calc(100dvh - 56px)", sm: "calc(100dvh - 64px)" },
       }}
     >
       <Helmet>
         <title>404 | Nile</title>
       </Helmet>
-      <Typography variant="h2" component="h2" fontWeight={700}>
+      <Typography variant="h2" fontWeight={700}>
         404
       </Typography>
-      <Typography variant="h5" component="h3" fontWeight={500}>
-        Page not found
+      <Typography variant="h5" component="p" fontWeight={500}>
+        Page Not Found
       </Typography>
 
       <Typography textAlign="center">
         Sorry, we couldn't find the page you're looking for.
       </Typography>
 
-      <Button variant="outlined" size="large" onClick={() => navigate("")}>
-        Go back
+      <Button variant="outlined" size="large" onClick={() => navigate("/")}>
+        Go back home
       </Button>
     </Container>
   );

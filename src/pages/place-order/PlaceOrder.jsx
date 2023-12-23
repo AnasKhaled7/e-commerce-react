@@ -5,14 +5,13 @@ import { Helmet } from "react-helmet-async";
 import {
   Button,
   CircularProgress,
-  Container,
   Divider,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
 
-import { CheckoutSteps, Message } from "../../components";
+import { CheckoutSteps, Message, PageSection } from "../../components";
 import { useCreateOrderMutation } from "../../slices/orders.api.slice";
 import { clearCartItems } from "../../slices/cart.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
@@ -63,17 +62,7 @@ const PlaceOrder = () => {
   };
 
   return (
-    <Container
-      maxWidth="xl"
-      sx={{
-        py: 4,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        gap: 4,
-        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
-      }}
-    >
+    <PageSection>
       <Helmet>
         <title>Place Order | Nile</title>
       </Helmet>
@@ -189,7 +178,7 @@ const PlaceOrder = () => {
       <CheckoutSteps activeStep={2} />
 
       {SnackbarComponent}
-    </Container>
+    </PageSection>
   );
 };
 export default PlaceOrder;

@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { FormSection } from "../../components";
+import { FormSection, PageHeader } from "../../components";
 import { useRegisterMutation } from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { registerValidation } from "../../utils/customer.validation";
@@ -84,18 +84,10 @@ const Register = () => {
           p: { xs: 3, sm: 5 },
           display: "flex",
           flexDirection: "column",
-          gap: 3,
+          gap: 4,
         }}
       >
-        {/* heading */}
-        <Typography
-          variant="h5"
-          component="h2"
-          textAlign="center"
-          fontWeight={500}
-        >
-          Create an account
-        </Typography>
+        <PageHeader text="Create an Account" />
 
         {/* name fields */}
         <Stack direction="row" gap={2}>

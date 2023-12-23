@@ -2,15 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
-import {
-  Button,
-  CircularProgress,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, CircularProgress, Paper, TextField } from "@mui/material";
 
-import { CheckoutSteps, FormSection } from "../../components";
+import { CheckoutSteps, FormSection, PageHeader } from "../../components";
 import { useUpdateProfileMutation } from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { updateUserInfo } from "../../slices/auth.slice";
@@ -72,16 +66,13 @@ const Shipping = () => {
         component="form"
         onSubmit={formik.handleSubmit}
         sx={{
-          p: { xs: 2, sm: 4 },
+          p: { xs: 2, sm: 5 },
           display: "flex",
           flexDirection: "column",
-          gap: 2,
+          gap: 4,
         }}
       >
-        {/* heading */}
-        <Typography variant="h4" component="h2" textAlign="center" mb={4}>
-          Shipping Address 🚚
-        </Typography>
+        <PageHeader text="Shipping Address" />
 
         {/* address */}
         <TextField

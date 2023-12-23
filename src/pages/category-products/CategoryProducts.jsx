@@ -1,17 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import {
-  Container,
-  Grid,
-  Pagination,
-  PaginationItem,
-  Skeleton,
-} from "@mui/material";
+import { Grid, Pagination, PaginationItem, Skeleton } from "@mui/material";
 
 import {
-  LoadingScreen,
   Message,
   PageHeader,
+  PageSection,
   ProductCard,
 } from "../../components";
 import { useGetProductsByCategoryQuery } from "../../slices/products.api.slice";
@@ -23,23 +17,10 @@ const CategoryProducts = () => {
     page,
   });
 
-  if (isLoading) return <LoadingScreen />;
-
-  if (error) return <Message severity="error">{error?.data?.message}</Message>;
-
   return (
-    <Container
-      maxWidth="xl"
-      sx={{
-        py: 4,
-        display: "flex",
-        flexDirection: "column",
-        gap: 4,
-        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
-      }}
-    >
+    <PageSection>
       <Helmet>
-        <title>{data?.category} | Nile</title>
+        <title>{data?.category || ""} | Nile</title>
       </Helmet>
 
       <PageHeader text={data?.category} />
@@ -96,7 +77,7 @@ const CategoryProducts = () => {
           sx={{ mt: "auto", mx: "auto" }}
         />
       )}
-    </Container>
+    </PageSection>
   );
 };
 

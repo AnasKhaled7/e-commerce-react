@@ -6,34 +6,28 @@ import {
   CardActions,
   CardContent,
   Chip,
-  Container,
   Grid,
   Typography,
 } from "@mui/material";
 
 import { useGetMyOrdersQuery } from "../../slices/orders.api.slice";
-import { LoadingScreen, Message, PageHeader } from "../../components";
+import {
+  LoadingScreen,
+  Message,
+  PageHeader,
+  PageSection,
+} from "../../components";
 import dateFormate from "../../utils/dateFormat";
 
 const MyOrders = () => {
   const navigate = useNavigate();
   const { data: orders, isLoading, error } = useGetMyOrdersQuery();
 
-  return isLoading ? (
-    <LoadingScreen />
-  ) : error ? (
-    <Message severity="error">{error?.data?.message || error.error}</Message>
-  ) : (
-    <Container
-      maxWidth="xl"
-      sx={{
-        py: 4,
-        display: "flex",
-        flexDirection: "column",
-        gap: 4,
-        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
-      }}
-    >
+  if (isLoading) return <LoadingScreen />;
+  if (error) return <Message severity="error">{error?.data?.message}</Message>;
+
+  return (
+    <PageSection>
       <Helmet>
         <title>My Orders | Nile</title>
       </Helmet>
@@ -112,7 +106,7 @@ const MyOrders = () => {
           </Grid>
         ))}
       </Grid>
-    </Container>
+    </PageSection>
   );
 };
 export default MyOrders;

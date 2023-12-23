@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { FormSection } from "../../components";
+import { FormSection, PageHeader } from "../../components";
 import { useSendResetPasswordEmailMutation } from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { ResetPasswordModal } from "./components";
@@ -68,18 +68,10 @@ const ResetPassword = () => {
           p: { xs: 3, sm: 5 },
           display: "flex",
           flexDirection: "column",
-          gap: 3,
+          gap: 4,
         }}
       >
-        {/* heading */}
-        <Typography
-          variant="h5"
-          component="h2"
-          textAlign="center"
-          fontWeight={500}
-        >
-          Reset Password
-        </Typography>
+        <PageHeader text="Reset Password" />
 
         {/* description */}
         <Typography textAlign="center" color="text.secondary">

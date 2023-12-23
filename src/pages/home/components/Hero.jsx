@@ -24,9 +24,8 @@ const Hero = () => {
       textAlign="center"
       p={2}
       sx={{
-        minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" },
+        minHeight: { xs: "calc(100dvh - 56px)", sm: "calc(100dvh - 64px)" },
         color: "#fff",
-        textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
         backgroundSize: "cover",
         backgroundPosition: "bottom",
@@ -34,7 +33,7 @@ const Hero = () => {
     >
       <Typography
         component="h2"
-        fontWeight={700}
+        fontWeight={500}
         variant={isMobile ? "h2" : "h1"}
       >
         Welcome to Nile
