@@ -17,7 +17,7 @@ const authSlice = createSlice({
       localStorage.setItem("token", JSON.stringify(action.payload.token));
 
       state.userInfo = action.payload.user;
-      localStorage.setItem("userInfo", JSON.stringify(action.payload.userInfo));
+      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },
 
     clearCredentials(state) {
@@ -30,7 +30,7 @@ const authSlice = createSlice({
 
     updateUserInfo(state, action) {
       state.userInfo = action.payload.user;
-      localStorage.setItem("userInfo", JSON.stringify(action.payload.userInfo));
+      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
     },
   },
 });
