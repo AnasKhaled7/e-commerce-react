@@ -2,8 +2,9 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = () => {
-  const { userInfo, token } = useSelector((state) => state.auth);
+  const { decodedToken } = useSelector((state) => state.auth);
 
-  return userInfo && token ? <Outlet /> : <Navigate to="/login" replace />;
+  if (decodedToken?.exp * 1000 > Date.now()) return <Outlet />;
+  return <Navigate to="/login" replace />;
 };
 export default PrivateRoute;

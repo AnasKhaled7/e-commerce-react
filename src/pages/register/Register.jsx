@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
 import {
@@ -24,10 +24,13 @@ import { FormSection, PageHeader } from "../../components";
 import { useRegisterMutation } from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { registerValidation } from "../../utils/customer.validation";
+import { setCredentials } from "../../slices/auth.slice";
 
 const Register = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [register] = useRegisterMutation();
+
   const { userInfo } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -45,8 +48,9 @@ const Register = () => {
   const onSubmit = async (values) => {
     hideSnackbar();
     try {
-      await register(values).unwrap();
-      navigate("/login");
+      const res = await register(values).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
     } catch (error) {
       console.log(error);
       showSnackbar(error?.data?.message, "error");
@@ -222,7 +226,7 @@ const Register = () => {
           type="submit"
           variant="contained"
           size="large"
-          disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
+          disabled={formik.isSubmitting}
         >
           {formik.isSubmitting ? <CircularProgress size={24} /> : "Register"}
         </Button>

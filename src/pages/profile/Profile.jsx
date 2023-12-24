@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
 import {
@@ -17,21 +16,25 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-import { FormSection, PageHeader } from "../../components";
-import { useUpdateProfileMutation } from "../../slices/users.api.slice";
-import { updateUserInfo } from "../../slices/auth.slice";
+import {
+  FormSection,
+  LoadingScreen,
+  Message,
+  PageHeader,
+} from "../../components";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
 import { profileValidation } from "../../utils/customer.validation";
 
 const Profile = () => {
-  const dispatch = useDispatch();
-
   const [showPassword, setShowPassword] = useState(false);
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
-  const { userInfo } = useSelector((state) => state.auth);
-
   const [updateProfile] = useUpdateProfileMutation();
+  const { data, isLoading, error } = useGetProfileQuery();
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -49,7 +52,6 @@ const Profile = () => {
       }
 
       const res = await updateProfile(changedValues).unwrap();
-      dispatch(updateUserInfo({ ...res }));
       showSnackbar(res?.message, "success");
     } catch (error) {
       console.log(error);
@@ -60,15 +62,15 @@ const Profile = () => {
   // formik hook
   const formik = useFormik({
     initialValues: {
-      firstName: userInfo?.firstName || "",
-      lastName: userInfo?.lastName || "",
-      email: userInfo?.email || "",
+      firstName: data?.user?.firstName || "",
+      lastName: data?.user?.lastName || "",
+      email: data?.user?.email || "",
       password: "",
       confirmPassword: "",
-      address: userInfo?.shippingAddress?.address || "",
-      city: userInfo?.shippingAddress?.city || "",
-      postalCode: userInfo?.shippingAddress?.postalCode || "",
-      phone: userInfo?.phone || "",
+      address: data?.user?.shippingAddress?.address || "",
+      city: data?.user?.shippingAddress?.city || "",
+      postalCode: data?.user?.shippingAddress?.postalCode || "",
+      phone: data?.user?.phone || "",
     },
     validationSchema: profileValidation,
     onSubmit,
@@ -79,11 +81,14 @@ const Profile = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (e) => e.preventDefault();
 
+  if (isLoading) return <LoadingScreen />;
+  if (error) return <Message severity="error">{error?.data?.message}</Message>;
+
   return (
     <FormSection>
       <Helmet>
         <title>
-          {userInfo?.firstName || ""} {userInfo?.lastName || ""} | Nile
+          {data?.user?.firstName || ""} {data?.user?.lastName || ""} | Nile
         </title>
       </Helmet>
       <Paper
@@ -267,7 +272,6 @@ const Profile = () => {
           variant="contained"
           size="large"
           disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
-          sx={{ mt: 2 }}
         >
           {formik.isSubmitting ? <CircularProgress size={24} /> : "Update"}
         </Button>

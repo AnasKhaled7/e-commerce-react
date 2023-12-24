@@ -29,13 +29,17 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const cart = useSelector((state) => state.cart);
+  const { token } = useSelector((state) => state.auth);
 
   const addToCartHandler = (product, quantity) =>
     dispatch(addToCart({ ...product, quantity }));
 
   const removeFromCartHandler = (id) => dispatch(removeFromCart(id));
 
-  const checkoutHandler = () => navigate("/login?redirect=/shipping");
+  const checkoutHandler = () => {
+    if (token) navigate("/shipping");
+    else navigate("/login?redirect=shipping");
+  };
 
   return (
     <PageSection>

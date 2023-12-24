@@ -11,25 +11,31 @@ import {
   Typography,
 } from "@mui/material";
 
-import { CheckoutSteps, Message, PageSection } from "../../components";
+import {
+  CheckoutSteps,
+  LoadingScreen,
+  Message,
+  PageSection,
+} from "../../components";
 import { useCreateOrderMutation } from "../../slices/orders.api.slice";
 import { clearCartItems } from "../../slices/cart.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
+import { useGetProfileQuery } from "../../slices/users.api.slice";
 
 const PlaceOrder = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
-  const { userInfo } = useSelector((state) => state.auth);
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
   const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+  const { data, isLoading: dataLoading, dataError } = useGetProfileQuery();
 
   useEffect(() => {
-    if (!userInfo?.shippingAddress?.address && userInfo?.phone)
+    if (!data?.user?.shippingAddress?.address && data?.user?.phone)
       navigate("/shipping");
-  }, [userInfo, navigate]);
+  }, [data, navigate]);
 
   const placeOrderHandler = async () => {
     hideSnackbar();
@@ -46,8 +52,8 @@ const PlaceOrder = () => {
 
       const res = await createOrder({
         orderItems: orderItems,
-        shippingAddress: userInfo?.shippingAddress,
-        phone: userInfo?.phone,
+        shippingAddress: data?.user?.shippingAddress,
+        phone: data?.user?.phone,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         totalPrice: cart.totalPrice,
@@ -61,6 +67,10 @@ const PlaceOrder = () => {
     }
   };
 
+  if (dataLoading) return <LoadingScreen />;
+  if (dataError)
+    return <Message severity="error">{dataError?.data?.message}</Message>;
+
   return (
     <PageSection>
       <Helmet>
@@ -73,9 +83,9 @@ const PlaceOrder = () => {
             <Typography variant="h5">Shipping</Typography>
             <Typography>
               <strong>Address: </strong>
-              {userInfo?.shippingAddress?.address},{" "}
-              {userInfo?.shippingAddress?.city},{" "}
-              {userInfo?.shippingAddress?.postalCode}
+              {data?.user?.shippingAddress?.address},{" "}
+              {data?.user?.shippingAddress?.city},{" "}
+              {data?.user?.shippingAddress?.postalCode}
             </Typography>
           </Stack>
 

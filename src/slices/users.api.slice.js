@@ -44,6 +44,11 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Auth"],
     }),
 
+    getProfile: builder.query({
+      query: () => `${USERS_URL}/profile`,
+      providesTags: ["User"],
+    }),
+
     updateProfile: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/profile`,
@@ -83,6 +88,7 @@ export const {
   useSendResetPasswordEmailMutation,
   useResetPasswordMutation,
   useLogoutMutation,
+  useGetProfileQuery,
   useUpdateProfileMutation,
   useGetUsersQuery,
   useBlockUserMutation,

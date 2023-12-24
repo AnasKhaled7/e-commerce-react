@@ -54,7 +54,7 @@ const drawerWidth = 240;
 // navbar component
 const Navbar = (props) => {
   const { cartItems } = useSelector((state) => state.cart);
-  const { token, userInfo } = useSelector((state) => state.auth);
+  const { decodedToken } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -85,7 +85,7 @@ const Navbar = (props) => {
       </Typography>
       <Divider />
       <List>
-        {token ? (
+        {decodedToken?.exp * 1000 > Date.now() ? (
           <>
             {links.map((link) => (
               <ListItem
@@ -162,7 +162,7 @@ const Navbar = (props) => {
               </Tooltip>
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                {userInfo ? (
+                {decodedToken?.exp * 1000 > Date.now() ? (
                   <Tooltip arrow title="Account">
                     <IconButton
                       onClick={handleClick}
@@ -171,9 +171,7 @@ const Navbar = (props) => {
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                     >
-                      <Avatar sx={{ width: 32, height: 32 }}>
-                        {userInfo?.firstName[0]}
-                      </Avatar>
+                      <Avatar sx={{ width: 32, height: 32 }} />
                     </IconButton>
                   </Tooltip>
                 ) : (
@@ -197,7 +195,7 @@ const Navbar = (props) => {
       </HideOnScroll>
 
       {/* drop down menu */}
-      {userInfo && (
+      {decodedToken?.exp * 1000 > Date.now() && (
         <Menu
           anchorEl={anchorEl}
           id="account-menu"

@@ -1,24 +1,29 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useFormik } from "formik";
 import { Button, CircularProgress, Paper, TextField } from "@mui/material";
 
-import { CheckoutSteps, FormSection, PageHeader } from "../../components";
-import { useUpdateProfileMutation } from "../../slices/users.api.slice";
+import {
+  CheckoutSteps,
+  FormSection,
+  LoadingScreen,
+  Message,
+  PageHeader,
+} from "../../components";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "../../slices/users.api.slice";
 import { useSnackbar } from "../../hooks/useSnackbar";
-import { updateUserInfo } from "../../slices/auth.slice";
 import { shippingValidation } from "../../utils/customer.validation";
 
 const Shipping = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
-  const { userInfo } = useSelector((state) => state.auth);
-
   const [updateProfile] = useUpdateProfileMutation();
+  const { data, isLoading, error } = useGetProfileQuery();
 
   // formik submit handler
   const onSubmit = async (values) => {
@@ -34,8 +39,7 @@ const Shipping = () => {
         navigate("/place-order");
         return;
       }
-      const res = await updateProfile(changedValues).unwrap();
-      dispatch(updateUserInfo({ ...res }));
+      await updateProfile(changedValues).unwrap();
       navigate("/place-order");
     } catch (error) {
       console.log(error);
@@ -46,15 +50,18 @@ const Shipping = () => {
   // formik hook for form handling
   const formik = useFormik({
     initialValues: {
-      address: userInfo?.shippingAddress?.address || "",
-      city: userInfo?.shippingAddress?.city || "",
-      postalCode: userInfo?.shippingAddress?.postalCode || "",
-      phone: userInfo?.phone || "",
+      address: data?.user?.shippingAddress?.address || "",
+      city: data?.user?.shippingAddress?.city || "",
+      postalCode: data?.user?.shippingAddress?.postalCode || "",
+      phone: data?.user?.phone || "",
     },
     validationSchema: shippingValidation,
     onSubmit,
     enableReinitialize: true,
   });
+
+  if (isLoading) return <LoadingScreen />;
+  if (error) return <Message severity="error">{error?.data?.message}</Message>;
 
   return (
     <FormSection>

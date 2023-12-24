@@ -138,7 +138,7 @@ const Login = () => {
           type="submit"
           variant="contained"
           size="large"
-          disabled={!(formik.isValid && formik.dirty) || formik.isSubmitting}
+          disabled={formik.isSubmitting}
         >
           {formik.isSubmitting ? <CircularProgress size={24} /> : "Login"}
         </Button>

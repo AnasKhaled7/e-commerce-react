@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 
-const tokenFromStorage = localStorage.getItem("token");
-const userInfoFromStorage = localStorage.getItem("userInfo");
+const token = localStorage.getItem("token");
+const decodedToken = localStorage.getItem("decodedToken");
 
 const initialState = {
-  token: tokenFromStorage ? JSON.parse(tokenFromStorage) : null,
-  userInfo: userInfoFromStorage ? JSON.parse(userInfoFromStorage) : null,
+  token: token ? JSON.parse(token) : null,
+  decodedToken: decodedToken ? JSON.parse(decodedToken) : null,
 };
 
 const authSlice = createSlice({
@@ -16,26 +17,21 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       localStorage.setItem("token", JSON.stringify(action.payload.token));
 
-      state.userInfo = action.payload.user;
-      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+      const decodedToken = jwtDecode(action.payload.token);
+      state.decodedToken = decodedToken;
+      localStorage.setItem("decodedToken", JSON.stringify(state.decodedToken));
     },
 
     clearCredentials(state) {
       state.token = null;
       localStorage.removeItem("token");
 
-      state.userInfo = null;
-      localStorage.removeItem("userInfo");
-    },
-
-    updateUserInfo(state, action) {
-      state.userInfo = action.payload.user;
-      localStorage.setItem("userInfo", JSON.stringify(state.userInfo));
+      state.decodedToken = null;
+      localStorage.removeItem("decodedToken");
     },
   },
 });
 
-export const { setCredentials, clearCredentials, updateUserInfo } =
-  authSlice.actions;
+export const { setCredentials, clearCredentials } = authSlice.actions;
 
 export default authSlice.reducer;

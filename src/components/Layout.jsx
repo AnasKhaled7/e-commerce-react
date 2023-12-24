@@ -2,16 +2,16 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "@mui/material";
 
-import { Navbar, Footer, ScrollToTop, LoadingScreen } from "./";
+import { Navbar, Footer, ScrollToTop, LoadingScreen, Message } from "./";
 import { clearCredentials } from "../slices/auth.slice";
 import { useLogoutMutation } from "../slices/users.api.slice";
-import { Message } from "@mui/icons-material";
 
 const Layout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logout, { isLoading, error }] = useLogoutMutation();
-  const { userInfo } = useSelector((state) => state.auth);
+
+  const { decodedToken } = useSelector((state) => state.auth);
 
   const logoutHandler = async () => {
     try {
@@ -23,27 +23,26 @@ const Layout = () => {
     }
   };
 
-  return userInfo?.isAdmin ? (
+  if (decodedToken?.isAdmin && decodedToken?.exp * 1000 > Date.now()) {
+    return (
+      <ScrollToTop>
+        <Outlet />
+      </ScrollToTop>
+    );
+  }
+
+  if (isLoading) return <LoadingScreen />;
+  if (error) return <Message severity="error">{error?.data?.message}</Message>;
+
+  return (
     <ScrollToTop>
+      <Navbar logoutHandler={logoutHandler} />
       <Outlet />
+      <Divider />
+      <div style={{ backgroundColor: "#f5fafd" }}>
+        <Footer />
+      </div>
     </ScrollToTop>
-  ) : (
-    <>
-      {isLoading ? (
-        <LoadingScreen />
-      ) : error ? (
-        <Message severity="error">{error?.data?.message}</Message>
-      ) : (
-        <ScrollToTop>
-          <Navbar logoutHandler={logoutHandler} />
-          <Outlet />
-          <Divider />
-          <div style={{ backgroundColor: "#f5fafd" }}>
-            <Footer />
-          </div>
-        </ScrollToTop>
-      )}
-    </>
   );
 };
 export default Layout;
