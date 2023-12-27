@@ -20,7 +20,6 @@ const Home = () => {
         <title>Nile</title>
       </Helmet>
       <Hero />
-      <Divider />
       <Categories />
       <Divider />
       <Products />

@@ -23,7 +23,8 @@ const Products = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 4,
+          textAlign: "center",
+          gap: 6,
         }}
       >
         <Typography variant="h3" fontWeight={700}>

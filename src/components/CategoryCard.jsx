@@ -1,23 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  Paper,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Button, Paper, Stack } from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 
 const CategoryCard = ({ item }) => {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Paper
       variant="outlined"
-      sx={{ position: "relative", height: "50vh", minHeight: 300 }}
+      sx={{ position: "relative", height: "40vh", minHeight: 200 }}
     >
       <img
         src={item?.image}
@@ -30,26 +21,16 @@ const CategoryCard = ({ item }) => {
         position="absolute"
         alignItems="center"
         justifyContent="center"
-        gap={2}
         sx={{ inset: 0 }}
       >
-        <Typography
-          component="p"
-          variant={isMobile ? "h6" : "h5"}
-          color="#fff"
-          textAlign="center"
-        >
-          {item?.name}
-        </Typography>
         <Button
           variant="contained"
-          size="large"
           endIcon={<KeyboardArrowRightRounded />}
           onClick={() => {
             navigate(`/products/category/${item._id}/page/1`);
           }}
         >
-          Shop Now
+          {item?.name}
         </Button>
       </Stack>
     </Paper>

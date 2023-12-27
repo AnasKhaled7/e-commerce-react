@@ -20,11 +20,12 @@ const Categories = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 4,
+        textAlign: "center",
+        gap: 6,
       }}
     >
       <Typography variant="h3" fontWeight={700}>
-        Categories
+        Shop by Categories
       </Typography>
 
       <Grid container spacing={2} justifyContent="center" alignItems="center">
