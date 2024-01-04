@@ -22,13 +22,13 @@ const ResetPassword = () => {
   const navigate = useNavigate();
 
   const [sendResetPasswordEmail] = useSendResetPasswordEmailMutation();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { decodedToken } = useSelector((state) => state.auth);
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
   useEffect(() => {
-    if (userInfo?._id) navigate("/");
-  }, [userInfo, navigate]);
+    if (decodedToken?._id) navigate("/");
+  }, [decodedToken, navigate]);
 
   // formik submit handler
   const onSubmit = async (values) => {

@@ -22,7 +22,7 @@ import { useSnackbar } from "../../hooks/useSnackbar";
 
 const Order = () => {
   const { orderId } = useParams();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { decodedToken } = useSelector((state) => state.auth);
 
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
@@ -195,7 +195,7 @@ const Order = () => {
         </Stack>
       </Paper>
 
-      {userInfo?.isAdmin && (
+      {decodedToken?.isAdmin && (
         <>
           <Divider />
 

@@ -31,7 +31,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [login] = useLoginMutation();
 
-  const { userInfo } = useSelector((state) => state.auth);
+  const { decodedToken } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
@@ -41,8 +41,8 @@ const Login = () => {
   const redirect = searchParams.get("redirect") || "/";
 
   useEffect(() => {
-    if (userInfo) navigate(redirect);
-  }, [userInfo, redirect, navigate]);
+    if (decodedToken) navigate(redirect);
+  }, [decodedToken, redirect, navigate]);
 
   // formik submit handler
   const onSubmit = async (values) => {

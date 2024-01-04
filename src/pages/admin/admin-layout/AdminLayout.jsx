@@ -98,9 +98,9 @@ const AdminLayout = () => {
     { text: "Products", to: "/admin/products-list" },
   ];
 
-  const { userInfo } = useSelector((state) => state.auth);
+  const { decodedToken } = useSelector((state) => state.auth);
 
-  return userInfo?.isAdmin ? (
+  return decodedToken?.isAdmin ? (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" open={open} component="nav" color="inherit">
         <Toolbar>

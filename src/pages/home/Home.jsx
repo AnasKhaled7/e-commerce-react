@@ -8,11 +8,11 @@ import { Brands, Categories, Hero, Products } from "./components";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { decodedToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (userInfo?.isAdmin) navigate("/admin");
-  }, [userInfo, navigate]);
+    if (decodedToken?.isAdmin) navigate("/admin");
+  }, [decodedToken, navigate]);
 
   return (
     <>
