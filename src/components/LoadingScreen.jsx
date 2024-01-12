@@ -5,7 +5,9 @@ const LoadingScreen = () => {
     <Stack
       alignItems="center"
       justifyContent="center"
-      sx={{ minHeight: { xs: "calc(100vh - 56px)", sm: "calc(100vh - 64px)" } }}
+      sx={{
+        minHeight: { xs: "calc(100svh - 56px)", sm: "calc(100svh - 64px)" },
+      }}
     >
       <CircularProgress size="3.5rem" />
     </Stack>
