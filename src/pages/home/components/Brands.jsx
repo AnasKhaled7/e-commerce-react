@@ -1,9 +1,19 @@
-import { Container, Grid, Skeleton, Typography } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Skeleton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 import { Message } from "../../../components";
 import { useGetBrandsQuery } from "../../../slices/brands.api.slice";
 
 const Brands = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const { data, isLoading, error } = useGetBrandsQuery();
 
   return (
@@ -17,11 +27,15 @@ const Brands = () => {
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        gap: 6,
+        gap: 4,
       }}
     >
-      <Typography variant="h3" fontWeight={700}>
-        Shop by Brands
+      <Typography
+        component="h3"
+        variant={isMobile ? "h4" : "h3"}
+        fontWeight={500}
+      >
+        Shop by Brand
       </Typography>
 
       <Grid container spacing={2} justifyContent="center" alignItems="center">

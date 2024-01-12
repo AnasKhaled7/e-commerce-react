@@ -10,7 +10,7 @@ const PageSection = ({ children }) => {
         display: "flex",
         flexDirection: "column",
         gap: 4,
-        minHeight: { xs: "calc(100dvh - 56px)", sm: "calc(100dvh - 64px)" },
+        minHeight: { xs: "calc(100lvh - 56px)", sm: "calc(100lvh - 64px)" },
       }}
     >
       {children}

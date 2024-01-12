@@ -76,11 +76,21 @@ const PlaceOrder = () => {
       <Helmet>
         <title>Place Order | Nile</title>
       </Helmet>
+
+      <CheckoutSteps activeStep={2} />
+
       <Stack direction={{ xs: "column", md: "row" }} gap={4}>
         {/* left part: details */}
         <Stack flex={2} gap={4}>
           <Stack gap={1}>
-            <Typography variant="h5">Shipping</Typography>
+            <Typography
+              component="h2"
+              variant="h5"
+              fontWeight={700}
+              color="Highlight"
+            >
+              Shipping
+            </Typography>
             <Typography>
               <strong>Address: </strong>
               {data?.user?.shippingAddress?.address},{" "}
@@ -90,7 +100,14 @@ const PlaceOrder = () => {
           </Stack>
 
           <Stack gap={1}>
-            <Typography variant="h5">Order Items</Typography>
+            <Typography
+              component="h2"
+              variant="h5"
+              fontWeight={700}
+              color="Highlight"
+            >
+              Order Items
+            </Typography>
 
             {cart.cartItems.length === 0 ? (
               <Message severity="info">Your cart is empty</Message>
@@ -184,8 +201,6 @@ const PlaceOrder = () => {
           </Stack>
         </Paper>
       </Stack>
-
-      <CheckoutSteps activeStep={2} />
 
       {SnackbarComponent}
     </PageSection>

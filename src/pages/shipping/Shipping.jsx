@@ -68,6 +68,8 @@ const Shipping = () => {
       <Helmet>
         <title>Shipping | Nile</title>
       </Helmet>
+
+      {/* form */}
       <Paper
         variant="outlined"
         component="form"
@@ -79,6 +81,9 @@ const Shipping = () => {
           gap: 4,
         }}
       >
+        {/* checkout steps */}
+        <CheckoutSteps activeStep={1} />
+
         <PageHeader text="Shipping Address" />
 
         {/* address */}
@@ -144,13 +149,9 @@ const Shipping = () => {
           variant="contained"
           size="large"
           disabled={!formik.isValid || formik.isSubmitting}
-          sx={{ my: 2 }}
         >
           {formik.isSubmitting ? <CircularProgress size={24} /> : "Continue"}
         </Button>
-
-        {/* checkout steps */}
-        <CheckoutSteps activeStep={1} />
       </Paper>
 
       {/* snackbar */}

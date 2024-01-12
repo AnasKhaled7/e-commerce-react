@@ -1,5 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Container, Grid, Skeleton, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Grid,
+  Skeleton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { KeyboardArrowRightRounded } from "@mui/icons-material";
 
 import { useGetProductsQuery } from "../../../slices/products.api.slice";
@@ -7,6 +15,8 @@ import { Message, ProductCard } from "../../../components";
 
 const Products = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { data, isLoading, error } = useGetProductsQuery({ limit: 4 });
 
@@ -24,11 +34,15 @@ const Products = () => {
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          gap: 6,
+          gap: 4,
         }}
       >
-        <Typography variant="h3" fontWeight={700}>
-          Products
+        <Typography
+          component="h3"
+          variant={isMobile ? "h4" : "h3"}
+          fontWeight={500}
+        >
+          Latest Products
         </Typography>
 
         {/* products */}
