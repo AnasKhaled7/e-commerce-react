@@ -195,7 +195,7 @@ const Order = () => {
         </Stack>
       </Paper>
 
-      {decodedToken?.isAdmin && decodedToken?.exp * 1000 > Date.now() && (
+      {decodedToken?.isAdmin && (
         <>
           <Divider />
 

@@ -23,7 +23,7 @@ const Layout = () => {
     }
   };
 
-  if (decodedToken?.isAdmin && decodedToken?.exp * 1000 > Date.now()) {
+  if (decodedToken?.isAdmin) {
     return (
       <ScrollToTop>
         <Outlet />

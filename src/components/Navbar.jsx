@@ -85,7 +85,7 @@ const Navbar = (props) => {
       </Typography>
       <Divider />
       <List>
-        {decodedToken?.exp * 1000 > Date.now() ? (
+        {decodedToken ? (
           <>
             {links.map((link) => (
               <ListItem
@@ -162,7 +162,7 @@ const Navbar = (props) => {
               </Tooltip>
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                {decodedToken?.exp * 1000 > Date.now() ? (
+                {decodedToken ? (
                   <Tooltip arrow title="Account">
                     <IconButton
                       onClick={handleClick}
@@ -195,7 +195,7 @@ const Navbar = (props) => {
       </HideOnScroll>
 
       {/* drop down menu */}
-      {decodedToken?.exp * 1000 > Date.now() && (
+      {decodedToken && (
         <Menu
           anchorEl={anchorEl}
           id="account-menu"

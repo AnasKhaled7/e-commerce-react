@@ -37,7 +37,7 @@ const Cart = () => {
   const removeFromCartHandler = (id) => dispatch(removeFromCart(id));
 
   const checkoutHandler = () => {
-    if (decodedToken && decodedToken?.exp * 1000 > Date.now())
+    if (decodedToken)
       navigate("/shipping");
     else navigate("/login?redirect=shipping");
   };

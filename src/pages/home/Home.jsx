@@ -11,8 +11,7 @@ const Home = () => {
   const { decodedToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (decodedToken?.isAdmin && decodedToken?.exp * 1000 > Date.now())
-      navigate("/admin");
+    if (decodedToken?.isAdmin) navigate("/admin");
   }, [decodedToken, navigate]);
 
   return (

@@ -41,8 +41,7 @@ const Register = () => {
   const redirect = searchParams.get("redirect") || "/";
 
   useEffect(() => {
-    if (decodedToken && decodedToken?.exp * 1000 > Date.now())
-      navigate(redirect);
+    if (decodedToken) navigate(redirect);
   }, [decodedToken, redirect, navigate]);
 
   // formik submit handler

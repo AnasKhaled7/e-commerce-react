@@ -100,7 +100,7 @@ const AdminLayout = () => {
 
   const { decodedToken } = useSelector((state) => state.auth);
 
-  return decodedToken?.isAdmin && decodedToken?.exp * 1000 > Date.now() ? (
+  return decodedToken?.isAdmin ? (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" open={open} component="nav" color="inherit">
         <Toolbar>
