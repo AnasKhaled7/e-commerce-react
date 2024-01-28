@@ -76,7 +76,7 @@ const Product = () => {
           alignItems: { md: "center" },
           flexDirection: { xs: "column", md: "row" },
           gap: 4,
-          minHeight: { xs: "calc(100svh - 56px)", sm: "calc(100svh - 64px)" },
+          minHeight: { xs: "calc(100dvh - 56px)", sm: "calc(100dvh - 64px)" },
         }}
       >
         {/* image container */}

@@ -24,7 +24,7 @@ const Hero = () => {
       textAlign="center"
       p={2}
       sx={{
-        minHeight: { xs: "calc(100svh - 56px)", sm: "calc(100svh - 64px)" },
+        minHeight: { xs: "calc(100dvh - 56px)", sm: "calc(100dvh - 64px)" },
         color: "#fff",
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${bgImg})`,
         backgroundSize: "cover",
