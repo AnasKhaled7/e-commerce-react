@@ -27,7 +27,8 @@ const ResetPassword = () => {
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
 
   useEffect(() => {
-    if (decodedToken?._id) navigate("/");
+    if (decodedToken?._id && decodedToken?.exp * 1000 > Date.now())
+      navigate("/");
   }, [decodedToken, navigate]);
 
   // formik submit handler

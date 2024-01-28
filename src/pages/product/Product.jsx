@@ -30,7 +30,7 @@ const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { productId } = useParams();
-  const { token } = useSelector((state) => state.auth);
+  const { decodedToken } = useSelector((state) => state.auth);
 
   const [quantity, setQuantity] = useState(1);
   const [showSnackbar, hideSnackbar, SnackbarComponent] = useSnackbar();
@@ -221,7 +221,7 @@ const Product = () => {
         {SnackbarComponent}
 
         {/* add review button */}
-        {token && (
+        {decodedToken && (
           <Tooltip title="Add Review" arrow placement="top-end">
             <Fab
               color="secondary"

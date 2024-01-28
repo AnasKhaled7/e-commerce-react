@@ -41,7 +41,7 @@ const Login = () => {
   const redirect = searchParams.get("redirect") || "/";
 
   useEffect(() => {
-    if (decodedToken) navigate(redirect);
+    if (decodedToken?.exp * 1000 > Date.now()) navigate(redirect);
   }, [decodedToken, redirect, navigate]);
 
   // formik submit handler
